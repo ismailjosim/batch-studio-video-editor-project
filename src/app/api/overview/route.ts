@@ -4,6 +4,29 @@ import { connectDB } from "@/lib/db";
 import { GenerationHistory, VideoProject } from "@/lib/models";
 
 export async function GET(req: NextRequest) {
+  const hasGeminiKey = Boolean(
+    process.env.GEMINI_API_KEY ||
+      process.env.GOOGLE_API_KEY ||
+      process.env.GOOGLE_AI_KEY,
+  );
+
+  const hasDbConfig = Boolean(process.env.DB_URL || process.env.MONGODB_URI);
+
+  if (!hasDbConfig) {
+    return NextResponse.json({
+      success: true,
+      stats: {
+        totalProjects: 0,
+        totalRenders: 0,
+        hasGeminiKey,
+        dbConnected: false,
+      },
+      recentProjects: [],
+      recentRenders: [],
+      message: "Database environment variable (DB_URL / MONGODB_URI) is not configured in Vercel.",
+    });
+  }
+
   try {
     await connectDB();
     const session = await auth.api.getSession({
@@ -33,12 +56,6 @@ export async function GET(req: NextRequest) {
           .lean(),
       ]);
 
-    const hasGeminiKey = Boolean(
-      process.env.GEMINI_API_KEY ||
-        process.env.GOOGLE_API_KEY ||
-        process.env.GOOGLE_AI_KEY,
-    );
-
     return NextResponse.json({
       success: true,
       stats: {
@@ -51,14 +68,22 @@ export async function GET(req: NextRequest) {
       recentRenders,
     });
   } catch (err: unknown) {
-    const error = err as Error;
+    const error = err as Error & { digest?: string };
+    if (error?.digest?.startsWith("NEXT_")) {
+      throw error;
+    }
     console.error("GET /api/overview error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error.message || "Failed to load overview data",
+    return NextResponse.json({
+      success: true,
+      stats: {
+        totalProjects: 0,
+        totalRenders: 0,
+        hasGeminiKey,
+        dbConnected: false,
       },
-      { status: 500 },
-    );
+      recentProjects: [],
+      recentRenders: [],
+      warning: error.message || "Failed to load database overview metrics",
+    });
   }
 }

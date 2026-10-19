@@ -40,21 +40,22 @@ const mongoClient = new MongoClient(uri);
 const db = mongoClient.db("batch-studio-DB");
 
 const getAuthBaseUrl = () => {
-  if (process.env.NODE_ENV === "development") {
-    if (
-      process.env.BETTER_AUTH_URL?.includes("localhost") ||
-      process.env.BETTER_AUTH_URL?.includes("127.0.0.1")
-    ) {
-      return process.env.BETTER_AUTH_URL;
-    }
-    return "http://localhost:3000";
+  if (process.env.BETTER_AUTH_URL) return process.env.BETTER_AUTH_URL;
+  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
   }
-  return process.env.BETTER_AUTH_URL || "http://localhost:3000";
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return "http://localhost:3000";
 };
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL || getAuthBaseUrl(),
-  secret: process.env.BETTER_AUTH_SECRET,
+  baseURL: getAuthBaseUrl(),
+  secret:
+    process.env.BETTER_AUTH_SECRET ||
+    "dollar-doodles-better-auth-studio-secret-key-32chars-min-fallback",
 
   database: mongodbAdapter(db, {
     client: mongoClient,
@@ -81,15 +82,6 @@ export const auth = betterAuth({
     },
   },
 
-  emailAndPassword: {
-    enabled: true,
-    minPasswordLength: 8,
-    maxPasswordLength: 128,
-    autoSignIn: true,
-    revokeSessionsOnPasswordReset: true,
-    resetPasswordTokenExpiresIn: 120,
-  },
-
   socialProviders: {
     google: {
       clientId: (process.env.GOOGLE_CLIENT_ID as string) || "",
@@ -110,6 +102,13 @@ export const auth = betterAuth({
     ...(process.env.BETTER_AUTH_URL ? [process.env.BETTER_AUTH_URL] : []),
     ...(process.env.NEXT_PUBLIC_APP_URL
       ? [process.env.NEXT_PUBLIC_APP_URL]
+      : []),
+    ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
+    ...(process.env.NEXT_PUBLIC_VERCEL_URL
+      ? [`https://${process.env.NEXT_PUBLIC_VERCEL_URL}`]
+      : []),
+    ...(process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]
       : []),
   ],
 });
