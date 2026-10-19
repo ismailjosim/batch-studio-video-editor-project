@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 
 export const metadata: Metadata = {
-  title: "Dashboard — Dollar Doodles Studio Suite",
+  title: "Dashboard — Batch Studio Suite (by JC Design)",
   description:
-    "Production suite featuring 2K SRT Video Generator, SRT Batch Splitter, and Nano Banana Gemini Pro AI.",
+    "Production suite featuring 2K SRT Video Generator, Whisper AI Transcriber, Subtitle Precision Studio, and AI Voiceover.",
 };
 
 export default function DashboardLayout({

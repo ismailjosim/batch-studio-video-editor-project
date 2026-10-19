@@ -39,7 +39,7 @@ export function TimelineCueBlock({
       }}
       className={`absolute top-2.5 h-20 rounded-xl px-2.5 py-1.5 flex flex-col justify-between transition-colors duration-150 cursor-pointer ${
         isSelected
-          ? "bg-emerald-950/50 border-2 border-emerald-400 text-white shadow-lg shadow-emerald-500/25 z-20"
+          ? "bg-cyan-950/40 border-2 border-cyan-400 text-white shadow-lg shadow-cyan-500/30 z-20"
           : "bg-[#131622]/90 hover:bg-[#181c2c] border border-white/10 text-slate-200 shadow-sm z-10"
       }`}
       style={{
@@ -52,15 +52,15 @@ export function TimelineCueBlock({
         onPointerDown={(e) => onPointerDownResize(e, cue, "start")}
         onPointerMove={onPointerMoveResize}
         onPointerUp={onPointerUpResize}
-        className="absolute left-0 top-0 bottom-0 w-3 cursor-ew-resize flex items-center justify-center group hover:bg-emerald-400/20 rounded-l-xl z-30"
+        className="absolute left-0 top-0 bottom-0 w-3 cursor-ew-resize flex items-center justify-center group hover:bg-cyan-400/20 rounded-l-xl z-30"
         title="Drag to adjust start time (Snaps to needle)"
       >
-        <div className="w-1 h-8 rounded-full bg-slate-500/40 group-hover:bg-emerald-400 transition-colors" />
+        <div className="w-1 h-8 rounded-full bg-slate-500/40 group-hover:bg-cyan-400 transition-colors" />
       </div>
 
       {/* Cue Content */}
       <div className="flex items-center justify-between gap-1 text-[10px] font-mono text-slate-400 pointer-events-none leading-none">
-        <span className="font-bold text-emerald-400">#{cue.id}</span>
+        <span className="font-bold text-cyan-400">#{cue.id}</span>
         <span className="truncate text-[9px] opacity-80 font-mono">
           {formatDisplayTime(startMs / 1000, true)}
         </span>
@@ -75,10 +75,10 @@ export function TimelineCueBlock({
         onPointerDown={(e) => onPointerDownResize(e, cue, "end")}
         onPointerMove={onPointerMoveResize}
         onPointerUp={onPointerUpResize}
-        className="absolute right-0 top-0 bottom-0 w-3 cursor-ew-resize flex items-center justify-center group hover:bg-emerald-400/20 rounded-r-xl z-30"
+        className="absolute right-0 top-0 bottom-0 w-3 cursor-ew-resize flex items-center justify-center group hover:bg-cyan-400/20 rounded-r-xl z-30"
         title="Drag to adjust end time (Snaps to needle)"
       >
-        <div className="w-1 h-8 rounded-full bg-slate-500/40 group-hover:bg-emerald-400 transition-colors" />
+        <div className="w-1 h-8 rounded-full bg-slate-500/40 group-hover:bg-cyan-400 transition-colors" />
       </div>
     </div>
   );

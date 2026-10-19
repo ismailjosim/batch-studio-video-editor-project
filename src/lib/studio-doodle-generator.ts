@@ -99,7 +99,7 @@ export function generateStudioDoodleSvg(
 
     <!-- Top Badge / Watermark -->
     <rect x="40" y="40" width="260" height="42" rx="12" fill="#0f172a" stroke="#ffffff15" stroke-width="2"/>
-    <text x="56" y="67" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="16" fill="#10b981">DOLLAR DOODLES</text>
+    <text x="56" y="67" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="16" fill="#00d2ff">DOLLAR DOODLES</text>
     <text x="210" y="67" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#94a3b8">STUDIO</text>
 
     <!-- Prompt caption text at bottom -->

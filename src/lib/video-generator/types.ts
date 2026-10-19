@@ -39,6 +39,7 @@ export interface VideoSettings {
   isSubtitleBurnInEnabled?: boolean;
   subtitlePreset?:
     | "hormozi-pop"
+    | "jc-cyan-glow"
     | "emerald-glow"
     | "classic-yellow"
     | "minimal-clean";

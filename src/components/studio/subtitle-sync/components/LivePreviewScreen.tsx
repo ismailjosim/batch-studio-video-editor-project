@@ -7,6 +7,7 @@ import { computeDefaultWordTimings } from "../subtitle-sync-utils";
 export type AspectRatio = "9:16" | "16:9" | "1:1";
 export type SubtitleStylePreset =
   | "hormozi-pop"
+  | "jc-cyan-glow"
   | "emerald-glow"
   | "classic-yellow"
   | "minimal-clean";
@@ -57,7 +58,7 @@ export function LivePreviewScreen({
 
         {/* Play/Pause Hover Overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-20">
-          <div className="w-10 h-10 rounded-full bg-emerald-400/90 text-black flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 rounded-full bg-cyan-400/90 text-black flex items-center justify-center shadow-lg">
             {isPlaying ? (
               <Pause className="w-5 h-5 fill-current" />
             ) : (
@@ -90,13 +91,13 @@ export function LivePreviewScreen({
         </div>
 
         {/* Bottom Safe Area Line */}
-        <div className="absolute bottom-2 inset-x-4 h-0.5 bg-emerald-500/20 rounded-full pointer-events-none" />
+        <div className="absolute bottom-2 inset-x-4 h-0.5 bg-cyan-500/20 rounded-full pointer-events-none" />
       </div>
 
       {/* Quick Info & Tips */}
       <div className="flex flex-col gap-2 max-w-xs text-xs text-slate-400">
         <div className="flex items-center gap-1.5 font-bold text-slate-200">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
           <span>Realtime Burn-In Preview</span>
         </div>
         <p className="text-[11px] leading-relaxed text-slate-400">
@@ -106,7 +107,7 @@ export function LivePreviewScreen({
         <div className="p-2.5 rounded-xl bg-black/40 border border-white/5 flex flex-col gap-1 text-[10px] font-mono">
           <div className="flex justify-between">
             <span className="text-slate-500">Active Cue:</span>
-            <span className="text-emerald-400 font-bold">
+            <span className="text-cyan-400 font-bold">
               {activeCue ? `#${activeCue.id}` : "None"}
             </span>
           </div>
@@ -130,8 +131,9 @@ function getStylePresetClasses(preset: SubtitleStylePreset): string {
   switch (preset) {
     case "hormozi-pop":
       return "font-heading font-black tracking-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)] text-sm sm:text-base leading-tight uppercase stroke-black";
+    case "jc-cyan-glow":
     case "emerald-glow":
-      return "font-sans font-extrabold tracking-tight text-emerald-300 drop-shadow-[0_0_16px_rgba(16,185,129,0.7)] text-sm sm:text-base leading-tight";
+      return "font-sans font-extrabold tracking-tight text-cyan-300 drop-shadow-[0_0_16px_rgba(0,210,255,0.7)] text-sm sm:text-base leading-tight";
     case "classic-yellow":
       return "font-sans font-bold text-[#ffeb3b] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] text-xs sm:text-sm leading-normal";
     case "minimal-clean":
@@ -171,15 +173,15 @@ function formatSubtitleWords(
       );
     }
 
-    if (preset === "emerald-glow") {
+    if (preset === "jc-cyan-glow" || preset === "emerald-glow") {
       return (
         <span
           key={idx}
           className={`inline-block px-1 py-0.5 rounded transition-all duration-75 ${
             isCurrentlySpoken
-              ? "text-emerald-300 font-black scale-110 drop-shadow-[0_0_14px_rgba(52,211,153,0.95)] bg-emerald-500/25 ring-1 ring-emerald-400/40"
+              ? "text-cyan-300 font-black scale-110 drop-shadow-[0_0_14px_rgba(0,210,255,0.95)] bg-cyan-500/25 ring-1 ring-cyan-400/40"
               : isPast
-                ? "text-teal-100 font-extrabold opacity-95"
+                ? "text-cyan-100 font-extrabold opacity-95"
                 : "text-slate-400 font-semibold"
           }`}
         >

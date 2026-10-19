@@ -78,7 +78,7 @@ export function SubtitleTransport({
           className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-black transition-all cursor-pointer shadow-lg shrink-0 ${
             isPlaying
               ? "bg-linear-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 shadow-orange-500/25"
-              : "bg-linear-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 shadow-emerald-500/30 hover:scale-[1.02]"
+              : "bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 shadow-cyan-500/30 hover:scale-[1.02]"
           }`}
           title={isPlaying ? "Pause (Space)" : "Play (Space)"}
         >
@@ -90,7 +90,7 @@ export function SubtitleTransport({
         </button>
 
         {/* Current Time Readout */}
-        <span className="font-mono text-sm font-bold text-emerald-400 min-w-20 tracking-tight">
+        <span className="font-mono text-sm font-bold text-cyan-400 min-w-20 tracking-tight">
           {formatDisplayTime(currentTime, true, false)}
         </span>
 
@@ -103,7 +103,7 @@ export function SubtitleTransport({
             step={0.01}
             value={Math.min(safeDuration, currentTime)}
             onChange={(e) => onSeek(parseFloat(e.target.value))}
-            className="w-full h-2 bg-[#141724] rounded-lg appearance-none cursor-pointer accent-emerald-400 group-hover:h-2.5 transition-all outline-hidden"
+            className="w-full h-2 bg-[#141724] rounded-lg appearance-none cursor-pointer accent-cyan-400 group-hover:h-2.5 transition-all outline-hidden"
           />
         </div>
 
@@ -145,7 +145,7 @@ export function SubtitleTransport({
                 onClick={() => onChangePlaybackRate(rate)}
                 className={`px-1.5 py-0.5 rounded-lg text-[10px] font-mono transition-all cursor-pointer ${
                   playbackRate === rate
-                    ? "bg-emerald-400 text-black font-bold"
+                    ? "bg-cyan-400 text-black font-bold"
                     : "text-slate-400 hover:text-white"
                 }`}
               >
@@ -160,7 +160,7 @@ export function SubtitleTransport({
             onClick={onToggleAutoScroll}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl border text-[11px] font-semibold transition-all cursor-pointer ml-1 ${
               isAutoScrollEnabled
-                ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
+                ? "bg-cyan-500/15 border-cyan-500/30 text-cyan-400"
                 : "bg-white/5 border-white/10 text-slate-400 hover:text-slate-200"
             }`}
             title="Auto-scroll timeline to follow playhead needle when reaching edge"
@@ -169,7 +169,7 @@ export function SubtitleTransport({
             <span className="hidden sm:inline">Follow Playhead</span>
             <span
               className={`w-1.5 h-1.5 rounded-full ${
-                isAutoScrollEnabled ? "bg-emerald-400" : "bg-slate-500"
+                isAutoScrollEnabled ? "bg-cyan-400" : "bg-slate-500"
               }`}
             />
           </button>
@@ -188,9 +188,9 @@ export function SubtitleTransport({
               {isMuted || volume === 0 ? (
                 <VolumeX className="w-3.5 h-3.5 text-rose-400" />
               ) : volume < 0.5 ? (
-                <Volume1 className="w-3.5 h-3.5 text-emerald-400" />
+                <Volume1 className="w-3.5 h-3.5 text-cyan-400" />
               ) : (
-                <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+                <Volume2 className="w-3.5 h-3.5 text-cyan-400" />
               )}
             </button>
 
@@ -206,7 +206,7 @@ export function SubtitleTransport({
                   onChangeVolume(val);
                 }
               }}
-              className="w-16 sm:w-20 h-1.5 bg-[#141724] rounded-lg appearance-none cursor-pointer accent-emerald-400"
+              className="w-16 sm:w-20 h-1.5 bg-[#141724] rounded-lg appearance-none cursor-pointer accent-cyan-400"
               aria-label="Audio Volume Slider"
             />
 
@@ -285,7 +285,7 @@ export function SubtitleTransport({
             step={10}
             value={zoom}
             onChange={(e) => onChangeZoom(parseInt(e.target.value, 10))}
-            className="w-20 sm:w-28 h-1.5 bg-[#141724] rounded-lg appearance-none cursor-pointer accent-emerald-400"
+            className="w-20 sm:w-28 h-1.5 bg-[#141724] rounded-lg appearance-none cursor-pointer accent-cyan-400"
           />
 
           <button
@@ -300,7 +300,7 @@ export function SubtitleTransport({
           <button
             type="button"
             onClick={() => onChangeZoom(100)}
-            className="px-1.5 py-0.5 rounded border border-white/10 text-[10px] font-mono text-emerald-400 font-bold hover:bg-emerald-500/10 transition-colors cursor-pointer"
+            className="px-1.5 py-0.5 rounded border border-white/10 text-[10px] font-mono text-cyan-400 font-bold hover:bg-cyan-500/10 transition-colors cursor-pointer"
             title="Reset Zoom to 100%"
           >
             {zoom}%

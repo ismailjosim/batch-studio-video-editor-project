@@ -6,9 +6,9 @@ import { toast } from "sonner";
 import { consumeTransferAudio, saveTransferCues } from "@/lib/studio-transfer";
 import type { SubtitleCue } from "../subtitle-sync-types";
 import {
-  DEMO_SUBTITLE_CUES,
   autoAlignCuesToVoice,
   createDemoAudioBuffer,
+  DEMO_SUBTITLE_CUES,
   decodeAudioWaveform,
   detectVoiceIntervals,
   parseSrt,
@@ -29,13 +29,13 @@ export function useSubtitleSession(
 ) {
   const router = useRouter();
 
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [audioFileName, setAudioFileName] = useState("voiceover_demo.mp3");
-  const [srtFileName, setSrtFileName] = useState("voiceover_Sentence_SRT.srt");
+  const [audioUrl, setAudioUrl] = useState<string | null>("/demo.wav");
+  const [audioFileName, setAudioFileName] = useState("demo.wav");
+  const [srtFileName, setSrtFileName] = useState("demo.srt");
   const [waveformPeaks, setWaveformPeaks] = useState<number[]>([]);
   const [isAudioLoading, setIsAudioLoading] = useState<boolean>(false);
   const [statusText, setStatusText] = useState<string>(
-    "Timeline loaded · 30 second view",
+    "Loaded demo.wav & demo.srt",
   );
 
   const pendingAudioRef = useRef<{ file: File; buffer: ArrayBuffer } | null>(
@@ -129,30 +129,78 @@ export function useSubtitleSession(
     }
   };
 
-  // Load Built-in Demo Project
+  // Load Built-in Demo Project (/demo.wav & /demo.srt)
   const handleLoadDemoProject = useCallback(async () => {
     saveUndoState();
     setIsAudioLoading(true);
     try {
-      const demoBuffer = createDemoAudioBuffer();
-      const demoBlob = new Blob([demoBuffer], { type: "audio/wav" });
-      if (audioUrl) URL.revokeObjectURL(audioUrl);
-      const newUrl = URL.createObjectURL(demoBlob);
+      const [wavRes, srtRes] = await Promise.all([
+        fetch("/demo.wav"),
+        fetch("/demo.srt"),
+      ]);
 
-      setAudioUrl(newUrl);
-      setAudioFileName("voiceover_demo.wav");
-      setSrtFileName("voiceover_Sentence_SRT.srt");
-      setCues(DEMO_SUBTITLE_CUES);
-      setSelectedId(1);
-      setDuration(25);
-      seekTo(0);
+      if (wavRes.ok && srtRes.ok) {
+        const [wavBuffer, srtText] = await Promise.all([
+          wavRes.arrayBuffer(),
+          srtRes.text(),
+        ]);
 
-      const { peaks, audioBuffer } = await decodeAudioWaveform(demoBuffer);
-      currentAudioBufferRef.current = audioBuffer || null;
-      setWaveformPeaks(peaks);
+        const parsedCues = parseSrt(srtText);
+        if (parsedCues.length > 0) {
+          setCues(parsedCues);
+          setSelectedId(parsedCues[0]?.id || 1);
+        }
 
-      setStatusText("Demo project loaded with waveform & 10 sample cues");
-      toast.success("Demo project loaded with synthesized audio & sample SRT!");
+        if (audioUrl?.startsWith("blob:")) {
+          URL.revokeObjectURL(audioUrl);
+        }
+        const wavBlob = new Blob([wavBuffer], { type: "audio/wav" });
+        const newUrl = URL.createObjectURL(wavBlob);
+
+        setAudioUrl(newUrl);
+        setAudioFileName("demo.wav");
+        setSrtFileName("demo.srt");
+
+        const {
+          peaks,
+          duration: decodedDur,
+          audioBuffer,
+        } = await decodeAudioWaveform(wavBuffer);
+        currentAudioBufferRef.current = audioBuffer || null;
+        setWaveformPeaks(peaks);
+        if (decodedDur && Number.isFinite(decodedDur)) {
+          setDuration(decodedDur);
+        }
+        seekTo(0);
+
+        setStatusText(
+          `Loaded demo.wav and demo.srt · ${parsedCues.length} subtitles`,
+        );
+        toast.success("Loaded demo.wav and demo.srt successfully!");
+      } else {
+        // Fallback to in-memory demo if fetch failed
+        const demoBuffer = createDemoAudioBuffer();
+        const demoBlob = new Blob([demoBuffer], { type: "audio/wav" });
+        if (audioUrl?.startsWith("blob:")) {
+          URL.revokeObjectURL(audioUrl);
+        }
+        const newUrl = URL.createObjectURL(demoBlob);
+
+        setAudioUrl(newUrl);
+        setAudioFileName("demo.wav");
+        setSrtFileName("demo.srt");
+        setCues(DEMO_SUBTITLE_CUES);
+        setSelectedId(1);
+        setDuration(16);
+        seekTo(0);
+
+        const { peaks, audioBuffer } = await decodeAudioWaveform(demoBuffer);
+        currentAudioBufferRef.current = audioBuffer || null;
+        setWaveformPeaks(peaks);
+
+        setStatusText("Demo project loaded with waveform & sample cues");
+        toast.success("Demo project loaded!");
+      }
     } catch (err) {
       console.error("Demo load failed:", err);
       toast.error("Failed to load demo audio");
@@ -316,7 +364,7 @@ export function useSubtitleSession(
   useEffect(() => {
     consumeTransferAudio()
       .then(async (transfer) => {
-        if (transfer && transfer.blob) {
+        if (transfer?.blob) {
           const { blob, fileName } = transfer;
           const newUrl = URL.createObjectURL(blob);
           setAudioUrl(newUrl);

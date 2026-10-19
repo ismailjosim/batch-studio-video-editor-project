@@ -154,7 +154,7 @@ export function SubtitleTimeline({
       <div
         ref={shellRef}
         onScroll={handleScroll}
-        className="relative w-full max-w-full overflow-x-auto overflow-y-hidden select-none scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-black/40 scroll-smooth"
+        className="relative w-full max-w-full overflow-x-auto overflow-y-hidden select-none scrollbar-thin scrollbar-thumb-cyan-500/25 scrollbar-track-black/40 scroll-smooth"
         style={{ minHeight: "284px" }}
       >
         {/* Timeline Inner Content with dynamic calculated width */}
@@ -172,7 +172,7 @@ export function SubtitleTimeline({
           {/* 2. Track Header: Subtitles */}
           <div className="flex items-center justify-between px-3 py-1 bg-[#10121a]/90 border-b border-white/10 text-[9px] uppercase font-bold tracking-widest text-slate-400">
             <span>SUBTITLES TRACK</span>
-            <span className="text-emerald-400 font-mono font-semibold">
+            <span className="text-cyan-400 font-mono font-semibold">
               {cues.length} Cues
             </span>
           </div>

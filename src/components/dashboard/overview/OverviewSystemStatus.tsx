@@ -23,7 +23,7 @@ export function OverviewSystemStatus({
       status: "Hardware Accelerated",
       active: true,
       icon: Cpu,
-      color: "text-emerald-400",
+      color: "text-cyan-400",
     },
     {
       name: "Gemini Pro AI Engine",
@@ -37,14 +37,14 @@ export function OverviewSystemStatus({
       status: dbConnected ? "Connected (Atlas)" : "Connecting...",
       active: dbConnected,
       icon: Database,
-      color: dbConnected ? "text-teal-400" : "text-amber-400",
+      color: dbConnected ? "text-pink-400" : "text-amber-400",
     },
     {
       name: "Better-Auth Session",
       status: "Customer Secured",
       active: true,
       icon: ShieldCheck,
-      color: "text-emerald-400",
+      color: "text-cyan-400",
     },
   ];
 
@@ -52,10 +52,10 @@ export function OverviewSystemStatus({
     <div className="p-4 rounded-2xl border border-white/10 bg-[#0c0d14]/70 backdrop-blur-md">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
         <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
           <span>Studio Acceleration Engines & Health</span>
         </span>
-        <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1.5">
+        <span className="text-[11px] text-cyan-400 font-semibold flex items-center gap-1.5">
           <CheckCircle2 className="w-3.5 h-3.5" />
           <span>All Systems Operational</span>
         </span>

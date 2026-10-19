@@ -2,6 +2,7 @@
 
 import {
   ArrowRight,
+  Loader2,
   Music,
   Plus,
   Radio,
@@ -18,6 +19,7 @@ interface SidebarFilesSectionProps {
   hasAudio: boolean;
   hasSrt: boolean;
   hasBgm?: boolean;
+  isAudioLoading?: boolean;
   onSelectAudioFile: (file: File) => void;
   onSelectSrtFile: (file: File) => void;
   onSelectBgmFile?: (file: File) => void;
@@ -33,6 +35,7 @@ export function SidebarFilesSection({
   hasAudio,
   hasSrt,
   hasBgm,
+  isAudioLoading = false,
   onSelectAudioFile,
   onSelectSrtFile,
   onSelectBgmFile,
@@ -51,7 +54,7 @@ export function SidebarFilesSection({
         <span
           className={`w-2 h-2 rounded-full ${
             hasAudio && hasSrt
-              ? "bg-emerald-400 shadow-[0_0_8px_#34d399]"
+              ? "bg-cyan-400 shadow-[0_0_8px_#00d2ff]"
               : "bg-amber-400"
           }`}
         />
@@ -93,9 +96,9 @@ export function SidebarFilesSection({
       <button
         type="button"
         onClick={() => audioInputRef.current?.click()}
-        className="flex items-center gap-3 p-2.5 rounded-2xl border border-white/10 hover:border-emerald-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-left transition-all cursor-pointer group"
+        className="flex items-center gap-3 p-2.5 rounded-2xl border border-white/10 hover:border-cyan-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-left transition-all cursor-pointer group"
       >
-        <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+        <div className="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
           <Music className="w-4 h-4" />
         </div>
         <div className="flex-1 min-w-0">
@@ -113,9 +116,9 @@ export function SidebarFilesSection({
       <button
         type="button"
         onClick={() => srtInputRef.current?.click()}
-        className="flex items-center gap-3 p-2.5 rounded-2xl border border-white/10 hover:border-teal-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-left transition-all cursor-pointer group"
+        className="flex items-center gap-3 p-2.5 rounded-2xl border border-white/10 hover:border-pink-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-left transition-all cursor-pointer group"
       >
-        <div className="w-8 h-8 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+        <div className="w-8 h-8 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
           <Type className="w-4 h-4" />
         </div>
         <div className="flex-1 min-w-0">
@@ -155,10 +158,20 @@ export function SidebarFilesSection({
       <button
         type="button"
         onClick={onLoadTimeline}
-        className="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-2xl bg-linear-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg shadow-emerald-500/20 transition-all cursor-pointer"
+        disabled={isAudioLoading}
+        className="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-2xl bg-linear-to-r from-[#00d2ff] via-[#ec4899] to-[#f97316] hover:opacity-95 text-black font-extrabold text-xs shadow-lg shadow-cyan-500/25 transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
       >
-        <span>Load Timeline</span>
-        <ArrowRight className="w-3.5 h-3.5" />
+        {isAudioLoading ? (
+          <>
+            <Loader2 className="w-3.5 h-3.5 animate-spin text-black" />
+            <span>Decoding Timeline...</span>
+          </>
+        ) : (
+          <>
+            <span>Load Timeline</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </>
+        )}
       </button>
 
       {/* Load Demo Sample Project */}
@@ -166,11 +179,16 @@ export function SidebarFilesSection({
         <button
           id="btn-demo-project"
           type="button"
+          disabled={isAudioLoading}
           onClick={onLoadDemoProject}
-          className="flex items-center justify-center gap-1.5 w-full py-2 px-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-semibold text-[10px] transition-all cursor-pointer"
+          className="flex items-center justify-center gap-1.5 w-full py-2 px-2.5 rounded-xl border border-cyan-500/20 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white font-semibold text-[10px] transition-all cursor-pointer disabled:opacity-50"
           title="Load synthesized voiceover & demo SRT"
         >
-          <Sparkles className="w-3 h-3 text-emerald-400" />
+          {isAudioLoading ? (
+            <Loader2 className="w-3 h-3 animate-spin text-cyan-400" />
+          ) : (
+            <Sparkles className="w-3 h-3 text-cyan-400" />
+          )}
           <span>Demo Project</span>
         </button>
         <button

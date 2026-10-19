@@ -46,7 +46,7 @@ export function AudioUploader({
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-[#10121a]/70 backdrop-blur-md p-5 shadow-xl">
       <div className="flex items-center gap-2 border-b border-white/5 pb-3 text-sm font-bold text-white tracking-wide">
-        <Mic className="w-4 h-4 text-emerald-400" />
+        <Mic className="w-4 h-4 text-pink-400" />
         <span>Step 2: Voiceover / Music (Optional)</span>
       </div>
 
@@ -66,13 +66,13 @@ export function AudioUploader({
         }}
         className={`group flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center cursor-pointer transition-all duration-200 ${
           isDragOver
-            ? "border-emerald-500 bg-emerald-500/10 scale-[0.99]"
+            ? "border-pink-500 bg-pink-500/10 scale-[0.99]"
             : audioBuffer
-              ? "border-emerald-500/40 bg-emerald-500/5 hover:border-emerald-500/60"
-              : "border-white/15 hover:border-emerald-500/50 hover:bg-white/2"
+              ? "border-pink-500/40 bg-pink-500/5 hover:border-pink-500/60"
+              : "border-white/15 hover:border-pink-500/50 hover:bg-white/2"
         }`}
       >
-        <div className="text-3xl text-slate-400 group-hover:text-emerald-400 group-hover:scale-110 transition-all">
+        <div className="text-3xl text-slate-400 group-hover:text-pink-400 group-hover:scale-110 transition-all">
           <Music className="w-8 h-8" />
         </div>
         <div className="text-sm font-semibold text-slate-200">
@@ -95,9 +95,9 @@ export function AudioUploader({
       </div>
 
       {audioBuffer && (
-        <div className="flex items-center justify-between rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-300 shadow-inner">
+        <div className="flex items-center justify-between rounded-lg border border-pink-500/30 bg-pink-500/10 px-3 py-2 text-xs font-semibold text-pink-300 shadow-inner">
           <div className="flex items-center gap-1.5 truncate max-w-50">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-pink-400 shrink-0" />
             <span className="truncate">{audioFileName}</span>
           </div>
           <span className="font-mono text-slate-400">

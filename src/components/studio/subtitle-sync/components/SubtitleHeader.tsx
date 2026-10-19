@@ -19,8 +19,12 @@ export function SubtitleHeader({
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-3xl border border-white/10 bg-[#0e1018]/90 backdrop-blur-xl shadow-xl">
       <div className="flex items-center gap-3.5">
-        <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-emerald-400 to-teal-500 text-black flex items-center justify-center font-black text-lg shadow-lg shadow-emerald-500/20">
-          S
+        <div className="w-12 h-12 rounded-2xl bg-[#0e1019] border border-white/10 flex items-center justify-center p-1.5 shadow-lg shadow-cyan-500/15 shrink-0">
+          <img
+            src="/batch-studio-suit-logo.png"
+            alt="Batch Studio Suite"
+            className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(0,210,255,0.4)]"
+          />
         </div>
         <div>
           <div className="flex items-center gap-2">
@@ -29,7 +33,7 @@ export function SubtitleHeader({
                 ? audioFileName.replace(/\.[^.]+$/, "")
                 : "Untitled Session"}
             </h1>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 font-bold">
               v1.1.7 Precision
             </span>
           </div>
@@ -46,7 +50,7 @@ export function SubtitleHeader({
           <span className="text-slate-200 font-bold">{cuesCount}</span>
           <span>subtitles</span>
           <span className="text-slate-600">·</span>
-          <span className="text-emerald-400 font-bold">
+          <span className="text-cyan-400 font-bold">
             {formatDisplayTime(duration, false, true)}
           </span>
         </div>
@@ -55,7 +59,7 @@ export function SubtitleHeader({
           type="button"
           onClick={onExportSrt}
           disabled={cuesCount === 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-black font-extrabold text-xs shadow-lg shadow-emerald-500/25 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#ec4899] to-[#f97316] hover:opacity-95 text-black font-extrabold text-xs shadow-lg shadow-cyan-500/25 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Download className="w-4 h-4" />
           <span>Export SRT</span>

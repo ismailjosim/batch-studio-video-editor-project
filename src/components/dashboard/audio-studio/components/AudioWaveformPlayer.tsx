@@ -23,12 +23,12 @@ export function AudioWaveformPlayer({
     <div className="flex flex-col gap-3 p-5 bg-[#0e1018]/90 border border-white/10 rounded-3xl shadow-xl backdrop-blur-xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <AudioLines className="w-4 h-4 text-emerald-400" />
+          <AudioLines className="w-4 h-4 text-cyan-400" />
           <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
             Audio Output Monitor
           </span>
         </div>
-        <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+        <span className="text-[10px] font-mono text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">
           {audioBlob ? "WAV Ready" : "Standby"}
         </span>
       </div>
@@ -54,7 +54,7 @@ export function AudioWaveformPlayer({
           <button
             type="button"
             onClick={onTogglePlayAudio}
-            className="w-9 h-9 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black flex items-center justify-center font-bold transition-all cursor-pointer shrink-0"
+            className="w-9 h-9 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 text-black flex items-center justify-center font-bold transition-all cursor-pointer shrink-0 shadow-sm"
           >
             {isPlayingAudio ? (
               <Pause className="w-4 h-4" />

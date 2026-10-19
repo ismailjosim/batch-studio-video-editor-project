@@ -4,6 +4,7 @@ import {
   AudioLines,
   ChevronLeft,
   ChevronRight,
+  FileAudio,
   Film,
   FolderGit2,
   LayoutDashboard,
@@ -45,6 +46,14 @@ export function DashboardSidebar({
       icon: LayoutDashboard,
       badge: "Home",
       isActive: pathname === "/dashboard/overview" || pathname === "/dashboard",
+    },
+    {
+      href: "/dashboard/transcribe",
+      label: "AI Audio Transcriber",
+      sublabel: "Whisper Speech to SRT",
+      icon: FileAudio,
+      badge: "Whisper",
+      isActive: pathname.startsWith("/dashboard/transcribe"),
     },
     {
       href: "/dashboard/subtitle-sync-editor",
@@ -122,16 +131,26 @@ export function DashboardSidebar({
               onClick={onCloseMobile}
               className="flex items-center gap-3 overflow-hidden cursor-pointer group"
             >
-              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-400 via-teal-500 to-emerald-600 flex items-center justify-center text-black font-extrabold shadow-lg shadow-emerald-500/20 shrink-0 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-5 h-5 text-black" />
+              <div className="w-10 h-10 rounded-2xl bg-[#0e1019] border border-white/10 flex items-center justify-center p-1 shadow-lg shadow-cyan-500/15 shrink-0 group-hover:scale-105 group-hover:border-cyan-500/40 transition-all">
+                <img
+                  src="/batch-studio-suit-logo.png"
+                  alt="Batch Studio Suite by JC Design"
+                  className="w-8 h-8 object-contain drop-shadow-[0_0_8px_rgba(0,210,255,0.5)]"
+                />
               </div>
               {!collapsed && (
                 <div className="flex flex-col leading-tight animate-in fade-in duration-200">
-                  <span className="font-heading font-black text-white text-sm tracking-tight truncate">
-                    Studio Suite
+                  <span className="font-heading font-black text-white text-sm tracking-tight truncate flex items-center gap-1">
+                    Batch Studio{" "}
+                    <span className="text-transparent bg-clip-text bg-linear-to-r from-[#00d2ff] via-[#ec4899] to-[#f97316]">
+                      Suite
+                    </span>
                   </span>
-                  <span className="text-[10px] text-emerald-400 font-semibold tracking-wider uppercase">
-                    Dollar Doodles 2K
+                  <span className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase flex items-center gap-1">
+                    by{" "}
+                    <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-pink-400 font-bold">
+                      JC Design
+                    </span>
                   </span>
                 </div>
               )}
@@ -180,7 +199,7 @@ export function DashboardSidebar({
                     onClick={onCloseMobile}
                     className={`flex items-center gap-3 w-full p-2.5 rounded-xl transition-all cursor-pointer text-left ${
                       item.isActive
-                        ? "bg-linear-to-r from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 text-white shadow-lg shadow-emerald-500/10"
+                        ? "bg-linear-to-r from-cyan-500/20 via-pink-500/10 to-transparent border border-cyan-500/40 text-white shadow-lg shadow-cyan-500/10"
                         : "hover:bg-white/5 border border-transparent text-slate-400 hover:text-slate-200"
                     }`}
                     title={collapsed ? item.label : undefined}
@@ -188,7 +207,7 @@ export function DashboardSidebar({
                     <div
                       className={`p-2 rounded-lg shrink-0 transition-all ${
                         item.isActive
-                          ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/30"
+                          ? "bg-linear-to-br from-[#00d2ff] via-[#ec4899] to-[#f97316] text-black shadow-md shadow-cyan-500/30"
                           : "bg-white/5 text-slate-400 group-hover:text-white"
                       }`}
                     >
@@ -205,7 +224,7 @@ export function DashboardSidebar({
                             <span
                               className={`text-[9px] uppercase font-bold px-1.5 py-0.2 rounded ${
                                 item.isActive
-                                  ? "bg-emerald-500/30 text-emerald-300"
+                                  ? "bg-cyan-500/30 text-cyan-300 border border-cyan-500/40"
                                   : "bg-white/10 text-slate-400"
                               }`}
                             >
@@ -289,7 +308,7 @@ export function DashboardSidebar({
         <div className="p-3 border-t border-white/10 bg-black/40">
           <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-white/3 border border-white/5">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 flex items-center justify-center font-bold text-xs shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 flex items-center justify-center font-bold text-xs shrink-0">
                 <User className="w-4 h-4" />
               </div>
               {!collapsed && (
@@ -298,7 +317,7 @@ export function DashboardSidebar({
                     {session?.user?.name || "Studio User"}
                   </span>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="text-[9px] uppercase px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-bold">
+                    <span className="text-[9px] uppercase px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30">
                       {(session?.user as { role?: string })?.role || "CUSTOMER"}
                     </span>
                     <span className="text-[10px] text-slate-500 truncate max-w-24">

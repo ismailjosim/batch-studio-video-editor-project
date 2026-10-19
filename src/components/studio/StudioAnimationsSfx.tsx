@@ -53,7 +53,7 @@ export function StudioAnimationsSfx({
   return (
     <div className="flex flex-col gap-6 rounded-2xl border border-white/10 bg-[#10121a]/70 backdrop-blur-md p-5 shadow-xl">
       <div className="flex items-center gap-2 border-b border-white/5 pb-3 text-sm font-bold text-white tracking-wide">
-        <Wand2 className="w-4 h-4 text-emerald-400" />
+        <Wand2 className="w-4 h-4 text-cyan-400" />
         <span>Step 2: Animation & Sound Effects Studio</span>
       </div>
 
@@ -97,7 +97,7 @@ export function StudioAnimationsSfx({
                 }
                 className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${
                   settings.animMode === "random"
-                    ? "bg-emerald-500 text-black"
+                    ? "bg-cyan-400 text-black font-bold"
                     : "bg-white/5 text-slate-400 hover:text-white"
                 }`}
               >
@@ -109,7 +109,7 @@ export function StudioAnimationsSfx({
                 onClick={() => onChange({ animMode: "custom" })}
                 className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${
                   settings.animMode === "custom"
-                    ? "bg-emerald-500 text-black"
+                    ? "bg-cyan-400 text-black font-bold"
                     : "bg-white/5 text-slate-400 hover:text-white"
                 }`}
               >
@@ -151,7 +151,7 @@ export function StudioAnimationsSfx({
                 type="checkbox"
                 checked={settings.isSfxEnabled}
                 onChange={(e) => onChange({ isSfxEnabled: e.target.checked })}
-                className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 focus:ring-offset-black accent-emerald-500"
+                className="w-4 h-4 rounded text-cyan-400 focus:ring-cyan-500 focus:ring-offset-black accent-cyan-400"
               />
               <span>Enable Sound Effects</span>
             </label>
@@ -168,7 +168,7 @@ export function StudioAnimationsSfx({
                   }
                   className={`flex items-center gap-1 px-2 py-1 text-[11px] font-semibold transition-all cursor-pointer ${
                     settings.sfxMode === "random"
-                      ? "bg-emerald-500 text-black"
+                      ? "bg-pink-500 text-white font-bold"
                       : "bg-white/5 text-slate-400 hover:text-white"
                   }`}
                 >
@@ -179,7 +179,7 @@ export function StudioAnimationsSfx({
                   onClick={() => onChange({ sfxMode: "custom" })}
                   className={`flex items-center gap-1 px-2 py-1 text-[11px] font-semibold transition-all cursor-pointer ${
                     settings.sfxMode === "custom"
-                      ? "bg-emerald-500 text-black"
+                      ? "bg-pink-500 text-white font-bold"
                       : "bg-white/5 text-slate-400 hover:text-white"
                   }`}
                 >

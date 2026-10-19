@@ -28,16 +28,20 @@ export function Header({ onOpenProjects }: HeaderProps) {
   return (
     <header className="w-full flex flex-col md:flex-row items-center justify-between gap-4 py-4 px-6 bg-[#0f1016]/80 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-black font-extrabold shadow-lg shadow-emerald-500/20">
-          <Sparkles className="w-5 h-5" />
+        <div className="w-12 h-12 rounded-2xl bg-[#090a10] border border-white/10 flex items-center justify-center p-1 shadow-lg shadow-cyan-500/20 shrink-0">
+          <img
+            src="/batch-studio-suit-logo.png"
+            alt="Batch Studio Suite"
+            className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(0,210,255,0.4)]"
+          />
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-extrabold tracking-tight bg-linear-to-r from-white via-slate-200 to-emerald-400 bg-clip-text text-transparent">
-              Batch Studio Video Editor
+            <h1 className="text-xl font-extrabold tracking-tight bg-linear-to-r from-white via-slate-200 to-[#00d2ff] bg-clip-text text-transparent">
+              Batch Studio Suite
             </h1>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              WebCodecs 2K
+            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+              by JC Design
             </span>
           </div>
           <p className="text-xs text-slate-400">
@@ -50,9 +54,9 @@ export function Header({ onOpenProjects }: HeaderProps) {
         <button
           type="button"
           onClick={onOpenProjects}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-emerald-500/30 text-xs font-semibold text-slate-200 transition-all cursor-pointer shadow-sm"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-500/30 text-xs font-semibold text-slate-200 transition-all cursor-pointer shadow-sm"
         >
-          <FolderGit2 className="w-4 h-4 text-emerald-400" />
+          <FolderGit2 className="w-4 h-4 text-cyan-400" />
           <span>Cloud Projects</span>
         </button>
 
@@ -60,7 +64,7 @@ export function Header({ onOpenProjects }: HeaderProps) {
           <div className="text-xs text-slate-500">Checking auth...</div>
         ) : session?.user ? (
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs font-medium text-emerald-300">
+            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-xs font-medium text-cyan-300">
               <User className="w-3.5 h-3.5" />
               <span className="truncate max-w-30">
                 {session.user.name || session.user.email}

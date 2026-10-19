@@ -20,11 +20,11 @@ export function OverviewQuickTools() {
       icon: AudioLines,
       href: "/dashboard/subtitle-sync-editor",
       badge: "Sync Studio",
-      color: "lime",
-      bgGradient: "from-lime-500/10 via-lime-950/20 to-transparent",
-      borderColor: "border-lime-500/30 hover:border-lime-400/60",
-      accentBg: "bg-lime-500",
-      accentText: "text-lime-400",
+      color: "cyan",
+      bgGradient: "from-cyan-500/10 via-cyan-950/20 to-transparent",
+      borderColor: "border-cyan-500/30 hover:border-cyan-400/60",
+      accentBg: "bg-cyan-500",
+      accentText: "text-cyan-400",
       buttonText: "Open Subtitle Studio",
     },
     {
@@ -35,11 +35,11 @@ export function OverviewQuickTools() {
       icon: Film,
       href: "/dashboard/video-editor",
       badge: "2K GPU",
-      color: "emerald",
-      bgGradient: "from-emerald-500/10 via-emerald-950/20 to-transparent",
-      borderColor: "border-emerald-500/30 hover:border-emerald-400/60",
-      accentBg: "bg-emerald-500",
-      accentText: "text-emerald-400",
+      color: "orange",
+      bgGradient: "from-orange-500/10 via-orange-950/20 to-transparent",
+      borderColor: "border-orange-500/30 hover:border-orange-400/60",
+      accentBg: "bg-orange-500",
+      accentText: "text-orange-400",
       buttonText: "Open Video Editor",
     },
     {
@@ -50,11 +50,11 @@ export function OverviewQuickTools() {
       icon: Scissors,
       href: "/dashboard/subtitle-splitter",
       badge: "Batch ZIP",
-      color: "teal",
-      bgGradient: "from-teal-500/10 via-teal-950/20 to-transparent",
-      borderColor: "border-teal-500/30 hover:border-teal-400/60",
-      accentBg: "bg-teal-500",
-      accentText: "text-teal-400",
+      color: "pink",
+      bgGradient: "from-pink-500/10 via-pink-950/20 to-transparent",
+      borderColor: "border-pink-500/30 hover:border-pink-400/60",
+      accentBg: "bg-pink-500",
+      accentText: "text-pink-400",
       buttonText: "Open Batch Splitter",
     },
     {
@@ -78,7 +78,7 @@ export function OverviewQuickTools() {
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-emerald-400" />
+          <Sparkles className="w-4 h-4 text-cyan-400" />
           <span>Creative Studio Tools</span>
         </h3>
         <span className="text-xs text-slate-500">

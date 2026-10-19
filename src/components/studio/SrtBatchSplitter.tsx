@@ -151,7 +151,7 @@ export function SrtBatchSplitter({ onSendToGenerator }: SrtBatchSplitterProps) {
       {/* Tool Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 rounded-3xl border border-white/10 bg-[#0f111a]/80 backdrop-blur-xl shadow-xl">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-teal-400 to-emerald-600 flex items-center justify-center text-black font-extrabold shadow-lg shadow-teal-500/20">
+          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-[#00d2ff] via-[#38bdf8] to-[#0284c7] flex items-center justify-center text-black font-extrabold shadow-lg shadow-cyan-500/20">
             <Scissors className="w-6 h-6" />
           </div>
           <div>
@@ -159,7 +159,7 @@ export function SrtBatchSplitter({ onSendToGenerator }: SrtBatchSplitterProps) {
               <h2 className="text-xl font-black tracking-tight text-white font-heading">
                 SRT Batch Splitter
               </h2>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30">
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
                 Batch Mode
               </span>
             </div>
@@ -233,7 +233,7 @@ export function SrtBatchSplitter({ onSendToGenerator }: SrtBatchSplitterProps) {
                 onClick={() =>
                   setExpandedBatches(new Set(batches.map((b) => b.batchNumber)))
                 }
-                className="text-[11px] text-teal-400 hover:underline cursor-pointer"
+                className="text-[11px] text-cyan-400 hover:underline cursor-pointer"
               >
                 Expand All
               </button>

@@ -79,8 +79,8 @@ export function NanoBananaKeyModal({
         </div>
 
         {/* Free Engine Status */}
-        <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-teal-500/10 border border-teal-500/30 text-xs text-teal-300">
-          <Sparkles className="w-4 h-4 text-teal-400 shrink-0" />
+        <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-xs text-cyan-300">
+          <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
           <div className="flex flex-col">
             <span className="font-bold">FLUX.1 Schnell: Free & Active</span>
             <span className="text-[11px] text-slate-400">
@@ -90,8 +90,8 @@ export function NanoBananaKeyModal({
         </div>
 
         {hasServerKey && (
-          <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300">
-            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+          <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-pink-500/10 border border-pink-500/30 text-xs text-pink-300">
+            <Check className="w-4 h-4 text-pink-400 shrink-0" />
             <div className="flex flex-col">
               <span className="font-bold">GEMINI_API_KEY Connected</span>
               <span className="text-[11px] text-slate-400">

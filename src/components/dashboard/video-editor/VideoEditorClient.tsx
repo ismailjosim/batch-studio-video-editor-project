@@ -87,7 +87,7 @@ export function VideoEditorClient({ onOpenProjects }: VideoEditorClientProps) {
 
     // Check for transferred audio from Audio & Voice Studio
     consumeTransferAudio().then(async (transfer) => {
-      if (transfer && transfer.blob) {
+      if (transfer?.blob) {
         try {
           const buffer = await transfer.blob.arrayBuffer();
           const AudioContextClass =

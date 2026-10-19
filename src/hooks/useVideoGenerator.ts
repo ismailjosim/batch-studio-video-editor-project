@@ -5,13 +5,13 @@ import { useCallback, useRef, useState } from "react";
 import { ChunkedMemoryTarget } from "@/lib/video-generator/chunked-target";
 import { configureVideoEncoder } from "@/lib/video-generator/encoder-config";
 import { getOrLoadSfxBuffer } from "@/lib/video-generator/sfx-loader";
+import { drawSubtitleOverlay } from "@/lib/video-generator/subtitle-renderer";
 import {
   ANIMATIONS_LIST,
   drawFitImage,
   renderTransition,
   SFX_LIST,
 } from "@/lib/video-generator/transitions";
-import { drawSubtitleOverlay } from "@/lib/video-generator/subtitle-renderer";
 import type {
   RenderProgress,
   SRTData,

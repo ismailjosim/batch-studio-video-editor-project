@@ -47,10 +47,10 @@ export function InspectorTimingControls({
       <div className="flex flex-col gap-2.5 p-3.5 rounded-2xl bg-[#0a0b10]/90 border border-white/10">
         <div className="flex items-center justify-between">
           <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
-            <Clock className="w-3 h-3 text-emerald-400" />
+            <Clock className="w-3 h-3 text-cyan-400" />
             <span>Start Time</span>
           </span>
-          <span className="text-xs font-mono font-bold text-emerald-400">
+          <span className="text-xs font-mono font-bold text-cyan-400">
             {formatDisplayTime(cue.startMs / 1000, true)}
           </span>
         </div>
@@ -89,9 +89,9 @@ export function InspectorTimingControls({
         <button
           type="button"
           onClick={handleSnapStartToNeedle}
-          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] font-bold text-emerald-300 transition-all cursor-pointer mt-0.5"
+          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-[11px] font-bold text-cyan-300 transition-all cursor-pointer mt-0.5"
         >
-          <Pin className="w-3 h-3 text-emerald-400" />
+          <Pin className="w-3 h-3 text-cyan-400" />
           <span>Snap Start to Playhead Needle</span>
         </button>
       </div>
@@ -100,10 +100,10 @@ export function InspectorTimingControls({
       <div className="flex flex-col gap-2.5 p-3.5 rounded-2xl bg-[#0a0b10]/90 border border-white/10">
         <div className="flex items-center justify-between">
           <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
-            <Clock className="w-3 h-3 text-teal-400" />
+            <Clock className="w-3 h-3 text-pink-400" />
             <span>End Time</span>
           </span>
-          <span className="text-xs font-mono font-bold text-teal-400">
+          <span className="text-xs font-mono font-bold text-pink-400">
             {formatDisplayTime(cue.endMs / 1000, true)}
           </span>
         </div>
@@ -142,9 +142,9 @@ export function InspectorTimingControls({
         <button
           type="button"
           onClick={handleSnapEndToNeedle}
-          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-teal-500/30 bg-teal-500/10 hover:bg-teal-500/20 text-[11px] font-bold text-teal-300 transition-all cursor-pointer mt-0.5"
+          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-pink-500/30 bg-pink-500/10 hover:bg-pink-500/20 text-[11px] font-bold text-pink-300 transition-all cursor-pointer mt-0.5"
         >
-          <Pin className="w-3 h-3 text-teal-400" />
+          <Pin className="w-3 h-3 text-pink-400" />
           <span>Snap End to Playhead Needle</span>
         </button>
       </div>

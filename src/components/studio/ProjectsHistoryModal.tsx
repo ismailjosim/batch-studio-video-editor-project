@@ -67,7 +67,7 @@ export function ProjectsHistoryModal({
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/2">
           <div className="flex items-center gap-2">
-            <FolderGit2 className="w-5 h-5 text-emerald-400" />
+            <FolderGit2 className="w-5 h-5 text-cyan-400" />
             <h2 className="text-sm font-bold text-white">
               MongoDB Cloud Projects & History
             </h2>
@@ -100,7 +100,7 @@ export function ProjectsHistoryModal({
             onClick={() => setActiveTab("projects")}
             className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === "projects"
-                ? "border-emerald-500 text-emerald-400"
+                ? "border-cyan-400 text-cyan-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -112,7 +112,7 @@ export function ProjectsHistoryModal({
             onClick={() => setActiveTab("history")}
             className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === "history"
-                ? "border-emerald-500 text-emerald-400"
+                ? "border-pink-400 text-pink-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -144,7 +144,7 @@ export function ProjectsHistoryModal({
                       {proj.title}
                     </div>
                     <div className="flex items-center gap-2 text-[11px] text-slate-400 flex-wrap">
-                      <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-300 font-mono text-[10px]">
+                      <span className="px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 font-mono text-[10px]">
                         {proj.resolution === "1440"
                           ? "2K 1440p"
                           : proj.resolution === "1080"
@@ -161,7 +161,7 @@ export function ProjectsHistoryModal({
                   <button
                     type="button"
                     onClick={() => handleApplySettings(proj)}
-                    className="px-2.5 py-1 rounded-lg border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-semibold shrink-0 cursor-pointer transition-all ml-3"
+                    className="px-2.5 py-1 rounded-lg border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-semibold shrink-0 cursor-pointer transition-all ml-3"
                   >
                     Load Settings
                   </button>
@@ -179,7 +179,7 @@ export function ProjectsHistoryModal({
                 className="flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-white/2"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 shrink-0">
                     <Film className="w-4 h-4" />
                   </div>
                   <div className="flex flex-col gap-0.5 min-w-0">
@@ -196,7 +196,7 @@ export function ProjectsHistoryModal({
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold shrink-0">
+                <div className="flex items-center gap-1.5 text-xs text-cyan-400 font-semibold shrink-0">
                   <span>Completed</span>
                 </div>
               </div>

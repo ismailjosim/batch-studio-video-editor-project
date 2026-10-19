@@ -76,7 +76,7 @@ export function PresetSelector({
     <div className="flex flex-col gap-3 p-4 rounded-2xl border border-white/10 bg-[#10121a]/90 backdrop-blur-md shadow-xl">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
-          <Bookmark className="w-4 h-4 text-emerald-400" />
+          <Bookmark className="w-4 h-4 text-cyan-400" />
           <span className="text-xs font-bold uppercase tracking-wider text-white">
             Animation & SFX Presets
           </span>
@@ -88,7 +88,7 @@ export function PresetSelector({
         <button
           type="button"
           onClick={() => setSaveModalOpen(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 hover:bg-emerald-500 hover:text-black text-emerald-300 text-xs font-bold transition-all cursor-pointer shadow-sm"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 hover:bg-cyan-400 hover:text-black text-cyan-300 text-xs font-bold transition-all cursor-pointer shadow-sm"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Save Current as Preset</span>
@@ -96,8 +96,8 @@ export function PresetSelector({
       </div>
 
       {savedSuccessMsg && (
-        <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs text-emerald-300 animate-in fade-in">
-          <Check className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="flex items-center gap-2 p-2 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-xs text-cyan-300 animate-in fade-in">
+          <Check className="w-3.5 h-3.5 text-cyan-400" />
           <span>{savedSuccessMsg}</span>
         </div>
       )}
@@ -112,7 +112,7 @@ export function PresetSelector({
               onClick={() => handleSelectPreset(preset)}
               className={`group relative flex flex-col justify-between p-3 rounded-xl border transition-all cursor-pointer text-left ${
                 isActive
-                  ? "border-emerald-500 bg-emerald-500/15 shadow-md shadow-emerald-500/10"
+                  ? "border-cyan-400 bg-cyan-500/15 shadow-md shadow-cyan-500/10"
                   : "border-white/10 bg-white/2 hover:border-white/20 hover:bg-white/5"
               }`}
             >
@@ -120,7 +120,7 @@ export function PresetSelector({
                 <span className="text-xs font-extrabold text-white flex items-center gap-1.5">
                   <Sparkles
                     className={`w-3.5 h-3.5 ${
-                      isActive ? "text-emerald-400" : "text-slate-400"
+                      isActive ? "text-cyan-400" : "text-slate-400"
                     }`}
                   />
                   <span className="truncate">{preset.name}</span>
@@ -155,7 +155,7 @@ export function PresetSelector({
                     : "Muted"}
                 </span>
                 {preset.isBuiltIn && (
-                  <span className="ml-auto text-emerald-400 font-semibold uppercase text-[8px]">
+                  <span className="ml-auto text-cyan-400 font-semibold uppercase text-[8px]">
                     Built-in
                   </span>
                 )}
@@ -171,7 +171,7 @@ export function PresetSelector({
           <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-[#12131b] p-6 shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
-                <Bookmark className="w-4 h-4 text-emerald-400" />
+                <Bookmark className="w-4 h-4 text-cyan-400" />
                 <h3 className="text-sm font-bold text-white">
                   Save Current Preset
                 </h3>
@@ -203,7 +203,7 @@ export function PresetSelector({
                   value={newPresetName}
                   onChange={(e) => setNewPresetName(e.target.value)}
                   placeholder="e.g. My Fast YouTube Style"
-                  className="rounded-xl border border-white/15 bg-black/50 px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none"
+                  className="rounded-xl border border-white/15 bg-black/50 px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
                 />
               </div>
 
@@ -220,7 +220,7 @@ export function PresetSelector({
                   value={newPresetDesc}
                   onChange={(e) => setNewPresetDesc(e.target.value)}
                   placeholder="e.g. Glitch and zooms for high-paced shorts"
-                  className="rounded-xl border border-white/15 bg-black/50 px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none"
+                  className="rounded-xl border border-white/15 bg-black/50 px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
                 />
               </div>
 
@@ -247,7 +247,7 @@ export function PresetSelector({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-extrabold cursor-pointer shadow-md shadow-emerald-500/20"
+                  className="px-4 py-2 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 text-black text-xs font-extrabold cursor-pointer shadow-md shadow-cyan-500/20"
                 >
                   Save Preset
                 </button>

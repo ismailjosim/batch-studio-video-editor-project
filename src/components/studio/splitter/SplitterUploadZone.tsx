@@ -77,15 +77,15 @@ export function SplitterUploadZone({
           }}
           className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center gap-3 transition-all cursor-pointer ${
             parsedSubs.length > 0
-              ? "border-emerald-500/40 bg-emerald-500/5 hover:bg-emerald-500/10"
-              : "border-teal-500/30 bg-teal-500/5 hover:bg-teal-500/10 hover:border-teal-500/60"
+              ? "border-cyan-500/40 bg-cyan-500/5 hover:bg-cyan-500/10"
+              : "border-cyan-500/30 bg-cyan-500/5 hover:bg-cyan-500/10 hover:border-cyan-500/60"
           }`}
         >
-          <div className="w-12 h-12 rounded-2xl bg-teal-500/15 border border-teal-500/30 text-teal-400 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
             {parsedSubs.length > 0 ? (
-              <FileCheck className="w-6 h-6 text-emerald-400" />
+              <FileCheck className="w-6 h-6 text-cyan-400" />
             ) : (
-              <UploadCloud className="w-6 h-6 text-teal-400" />
+              <UploadCloud className="w-6 h-6 text-cyan-400" />
             )}
           </div>
           <div className="text-center">
@@ -107,7 +107,7 @@ export function SplitterUploadZone({
       <div className="rounded-3xl border border-white/10 bg-[#12131b]/80 backdrop-blur-md p-6 shadow-xl flex flex-col justify-between gap-4">
         <div className="flex flex-col gap-3">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-            <Layers className="w-4 h-4 text-teal-400" />
+            <Layers className="w-4 h-4 text-cyan-400" />
             <span>Batch Size (Subtitles/Batch)</span>
           </span>
 
@@ -124,8 +124,8 @@ export function SplitterUploadZone({
               }}
               className={`w-20 rounded-xl border bg-black/50 px-3 py-2 text-sm font-bold text-white text-center focus:outline-none transition-all ${
                 isCustom
-                  ? "border-teal-400 ring-2 ring-teal-500/20 shadow-md shadow-teal-500/10"
-                  : "border-white/20 focus:border-teal-400"
+                  ? "border-cyan-400 ring-2 ring-cyan-500/20 shadow-md shadow-cyan-500/10"
+                  : "border-white/20 focus:border-cyan-400"
               }`}
             />
             <span className="text-xs text-slate-400">subtitles per batch</span>
@@ -142,7 +142,7 @@ export function SplitterUploadZone({
                   onClick={() => onBatchSizeChange(preset.size)}
                   className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-teal-500 text-black shadow-md shadow-teal-500/25 ring-1 ring-teal-400"
+                      ? "bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] text-black shadow-md shadow-cyan-500/25 ring-1 ring-cyan-400"
                       : "bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:text-white"
                   }`}
                   title={preset.desc}
@@ -164,7 +164,7 @@ export function SplitterUploadZone({
               onClick={handleCustomClick}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 isCustom
-                  ? "bg-teal-500 text-black shadow-md shadow-teal-500/25 ring-1 ring-teal-400"
+                  ? "bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] text-black shadow-md shadow-cyan-500/25 ring-1 ring-cyan-400"
                   : "bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:text-white"
               }`}
               title="Enter any custom batch size"
@@ -178,28 +178,28 @@ export function SplitterUploadZone({
         <div className="rounded-xl border border-white/5 bg-black/30 p-2.5 text-[11px] text-slate-400 leading-relaxed">
           {batchSize === 9 ? (
             <>
-              <strong className="text-teal-300">Recommendation:</strong> 9
+              <strong className="text-cyan-300">Recommendation:</strong> 9
               subtitles (3×3) matches the standard Dollar Doodles 9-slide
               storyboard workflow!
             </>
           ) : batchSize === 4 ? (
             <>
-              <strong className="text-teal-300">2×2 Grid Ratio:</strong> 4
+              <strong className="text-cyan-300">2×2 Grid Ratio:</strong> 4
               subtitles per batch — ideal for high-impact 4-panel shorts.
             </>
           ) : batchSize === 12 ? (
             <>
-              <strong className="text-teal-300">3×4 Grid Ratio:</strong> 12
+              <strong className="text-cyan-300">3×4 Grid Ratio:</strong> 12
               subtitles per batch — standard for 12-slide extended scenes.
             </>
           ) : batchSize === 16 ? (
             <>
-              <strong className="text-teal-300">4×4 Grid Ratio:</strong> 16
+              <strong className="text-cyan-300">4×4 Grid Ratio:</strong> 16
               subtitles per batch — great for 16-panel storyboard contacts.
             </>
           ) : (
             <>
-              <strong className="text-teal-300">Custom Ratio:</strong>{" "}
+              <strong className="text-cyan-300">Custom Ratio:</strong>{" "}
               {batchSize} subtitles per batch script split.
             </>
           )}

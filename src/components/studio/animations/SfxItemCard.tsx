@@ -21,13 +21,13 @@ export function SfxItemCard({
       onClick={() => onToggle(sfx.id)}
       className={`group relative flex flex-col justify-between p-3 rounded-xl border transition-all cursor-pointer ${
         isSelected
-          ? "border-emerald-500/60 bg-emerald-500/10 shadow-md shadow-emerald-500/5"
+          ? "border-pink-500/60 bg-pink-500/10 shadow-md shadow-pink-500/10"
           : "border-white/5 bg-white/2 hover:border-white/15 hover:bg-white/5 opacity-70"
       }`}
     >
       <div className="flex items-start justify-between gap-1 mb-1">
-        <span className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors flex items-center gap-1.5">
-          <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+        <span className="text-xs font-bold text-white group-hover:text-pink-300 transition-colors flex items-center gap-1.5">
+          <Volume2 className="w-3.5 h-3.5 text-pink-400" />
           <span className="truncate">{sfx.name}</span>
         </span>
         <button
@@ -37,7 +37,7 @@ export function SfxItemCard({
             onPlayPreview(sfx.id);
           }}
           title="Play Sound Preview"
-          className="p-1 rounded-md text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all cursor-pointer"
+          className="p-1 rounded-md text-slate-400 hover:text-pink-400 hover:bg-pink-500/10 transition-all cursor-pointer"
         >
           <Play className="w-3 h-3 fill-current" />
         </button>
@@ -52,7 +52,7 @@ export function SfxItemCard({
         <div
           className={`w-4 h-4 rounded-full flex items-center justify-center border transition-all ${
             isSelected
-              ? "border-emerald-500 bg-emerald-500 text-black"
+              ? "border-pink-500 bg-pink-500 text-white"
               : "border-white/20 bg-transparent text-transparent"
           }`}
         >

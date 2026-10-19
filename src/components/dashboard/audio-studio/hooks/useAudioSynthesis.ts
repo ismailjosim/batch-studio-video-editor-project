@@ -301,6 +301,22 @@ export function useAudioSynthesis(scriptText: string) {
     }
   };
 
+  // Send to AI Transcriber
+  const handleSendToTranscriber = async () => {
+    if (!audioBlob) {
+      toast.warning("Please click 'Synthesize Audio' first");
+      return;
+    }
+    try {
+      await saveTransferAudio(audioBlob, "ai_voiceover.wav");
+      toast.success("Voiceover sent! Opening AI Transcriber...");
+      router.push("/dashboard/transcribe");
+    } catch (err) {
+      console.error("Transfer error:", err);
+      toast.error("Failed to transfer audio to AI Transcriber");
+    }
+  };
+
   const handleTogglePlayAudio = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -331,6 +347,7 @@ export function useAudioSynthesis(scriptText: string) {
     handleSynthesizeAudio,
     handleSendToSubtitleStudio,
     handleSendToVideoGenerator,
+    handleSendToTranscriber,
     handleTogglePlayAudio,
   };
 }

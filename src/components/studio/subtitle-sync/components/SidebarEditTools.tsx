@@ -40,14 +40,14 @@ export function SidebarEditTools({
         type="button"
         onClick={onAutoAlignToSpeech}
         disabled={!hasAudio || !hasSrt}
-        className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-emerald-500/30 hover:border-emerald-400 bg-linear-to-r from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 text-emerald-300 hover:text-white text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group shadow-sm"
+        className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-cyan-500/30 hover:border-cyan-400 bg-linear-to-r from-cyan-500/10 to-pink-500/10 hover:from-cyan-500/20 hover:to-pink-500/20 text-cyan-300 hover:text-white text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group shadow-sm"
         title="Auto-detect voice pauses & snap subtitles to active speech boundaries (VAD)"
       >
         <div className="flex items-center gap-2.5">
-          <Wand2 className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+          <Wand2 className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
           <span>Auto-Align to Voice</span>
         </div>
-        <span className="px-1.5 py-0.5 rounded-md bg-emerald-400/20 border border-emerald-400/30 text-[9px] font-mono text-emerald-300">
+        <span className="px-1.5 py-0.5 rounded-md bg-cyan-400/20 border border-cyan-400/30 text-[9px] font-mono text-cyan-300">
           AI VAD
         </span>
       </button>
@@ -56,11 +56,11 @@ export function SidebarEditTools({
       <button
         type="button"
         onClick={onSplitAtPlayhead}
-        className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-white/10 hover:border-emerald-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-slate-200 text-xs font-semibold transition-all cursor-pointer group"
+        className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-white/10 hover:border-cyan-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-slate-200 text-xs font-semibold transition-all cursor-pointer group"
         title="Split cue at current playback playhead (S)"
       >
         <div className="flex items-center gap-2.5">
-          <Scissors className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+          <Scissors className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
           <span>Split at playhead</span>
         </div>
         <kbd className="px-1.5 py-0.5 rounded-lg bg-black/40 border border-white/10 text-[10px] font-mono text-slate-400">
@@ -72,11 +72,11 @@ export function SidebarEditTools({
       <button
         type="button"
         onClick={onAddCue}
-        className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-white/10 hover:border-teal-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-slate-200 text-xs font-semibold transition-all cursor-pointer group"
+        className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-white/10 hover:border-pink-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-slate-200 text-xs font-semibold transition-all cursor-pointer group"
         title="Add new cue at playhead position (+)"
       >
         <div className="flex items-center gap-2.5">
-          <Plus className="w-4 h-4 text-teal-400 group-hover:scale-110 transition-transform" />
+          <Plus className="w-4 h-4 text-pink-400 group-hover:scale-110 transition-transform" />
           <span>Add cue on timeline</span>
         </div>
         <kbd className="px-1.5 py-0.5 rounded-lg bg-black/40 border border-white/10 text-[10px] font-mono text-slate-400">

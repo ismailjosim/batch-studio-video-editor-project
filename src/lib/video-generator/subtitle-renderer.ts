@@ -8,7 +8,12 @@ interface DrawSubtitleOptions {
   currentTimeMs: number;
   canvasWidth: number;
   canvasHeight: number;
-  preset?: "hormozi-pop" | "emerald-glow" | "classic-yellow" | "minimal-clean";
+  preset?:
+    | "hormozi-pop"
+    | "jc-cyan-glow"
+    | "emerald-glow"
+    | "classic-yellow"
+    | "minimal-clean";
   isPortrait?: boolean;
 }
 
@@ -127,7 +132,9 @@ export function drawSubtitleOverlay({
       // CapCut / Hormozi active word pop scale
       if (
         isCurrentlySpoken &&
-        (preset === "hormozi-pop" || preset === "emerald-glow")
+        (preset === "hormozi-pop" ||
+          preset === "jc-cyan-glow" ||
+          preset === "emerald-glow")
       ) {
         const wordCenterX = cursorX + width / 2;
         ctx.translate(wordCenterX, lineY);
@@ -155,18 +162,18 @@ export function drawSubtitleOverlay({
           ctx.shadowColor = "transparent";
         }
         ctx.fillText(displayWord, cursorX + width / 2, lineY);
-      } else if (preset === "emerald-glow") {
+      } else if (preset === "jc-cyan-glow" || preset === "emerald-glow") {
         ctx.lineWidth = Math.max(4, Math.round(fontSize * 0.16));
         ctx.strokeStyle = "rgba(10, 16, 20, 0.95)";
         ctx.lineJoin = "round";
         ctx.strokeText(displayWord, cursorX + width / 2, lineY);
 
         if (isCurrentlySpoken) {
-          ctx.fillStyle = "#34D399";
-          ctx.shadowColor = "rgba(52, 211, 153, 0.9)";
+          ctx.fillStyle = "#00D2FF"; // Electric Cyan
+          ctx.shadowColor = "rgba(0, 210, 255, 0.95)";
           ctx.shadowBlur = Math.round(fontSize * 0.35);
         } else if (isPast) {
-          ctx.fillStyle = "#E6FFFA";
+          ctx.fillStyle = "#E0F7FF";
         } else {
           ctx.fillStyle = "rgba(203, 213, 225, 0.75)";
         }

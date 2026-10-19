@@ -23,7 +23,8 @@ export async function GET(req: NextRequest) {
       },
       recentProjects: [],
       recentRenders: [],
-      message: "Database environment variable (DB_URL / MONGODB_URI) is not configured in Vercel.",
+      message:
+        "Database environment variable (DB_URL / MONGODB_URI) is not configured in Vercel.",
     });
   }
 

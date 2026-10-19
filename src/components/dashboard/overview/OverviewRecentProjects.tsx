@@ -26,14 +26,14 @@ export function OverviewRecentProjects({
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-          <FolderGit2 className="w-4 h-4 text-emerald-400" />
+          <FolderGit2 className="w-4 h-4 text-cyan-400" />
           <span>Recent Cloud Projects</span>
         </h3>
         {onOpenProjectsModal && (
           <button
             type="button"
             onClick={onOpenProjectsModal}
-            className="text-xs text-emerald-400 hover:underline font-semibold cursor-pointer"
+            className="text-xs text-cyan-400 hover:underline font-semibold cursor-pointer"
           >
             View All ({projects.length})
           </button>
@@ -56,7 +56,7 @@ export function OverviewRecentProjects({
           </div>
           <Link
             href="/dashboard/video-editor"
-            className="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs shadow-lg shadow-emerald-500/20 transition-all cursor-pointer"
+            className="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 text-black font-bold text-xs shadow-lg shadow-cyan-500/20 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Create New Video Project</span>
@@ -80,11 +80,11 @@ export function OverviewRecentProjects({
                 className="group p-4 rounded-2xl border border-white/10 bg-[#0e1018]/80 hover:bg-white/5 transition-all flex items-center justify-between gap-3 shadow-md"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
                     <Film className="w-5 h-5" />
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <span className="text-xs font-bold text-white truncate group-hover:text-emerald-300 transition-colors">
+                    <span className="text-xs font-bold text-white truncate group-hover:text-cyan-300 transition-colors">
                       {p.title}
                     </span>
                     <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-400">
@@ -104,7 +104,7 @@ export function OverviewRecentProjects({
                   </span>
                   <Link
                     href="/dashboard/video-editor"
-                    className="p-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 text-slate-300 border border-white/10 transition-all cursor-pointer"
+                    className="p-2 rounded-xl bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 text-slate-300 border border-white/10 transition-all cursor-pointer"
                     title="Open in Video Editor"
                   >
                     <ArrowRight className="w-4 h-4" />

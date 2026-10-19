@@ -66,7 +66,7 @@ export function SubtitleInspector({
       {/* Top Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="px-2.5 py-1 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold">
+          <div className="px-2.5 py-1 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 font-mono text-xs font-bold">
             #{cue.id}
           </div>
           <div className="flex flex-col">
@@ -119,7 +119,7 @@ export function SubtitleInspector({
           className="text-[10px] uppercase font-bold tracking-wider text-slate-400 flex items-center justify-between"
         >
           <span>Subtitle Text Content</span>
-          <span className="text-[9px] text-emerald-400 uppercase font-mono font-bold">
+          <span className="text-[9px] text-cyan-400 uppercase font-mono font-bold">
             live sync
           </span>
         </label>
@@ -129,7 +129,7 @@ export function SubtitleInspector({
           onChange={(e) => onUpdateText(e.target.value)}
           placeholder="Enter subtitle line here..."
           rows={3}
-          className="w-full p-3.5 rounded-2xl bg-[#0a0b10] border border-white/10 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 text-sm text-slate-100 placeholder-slate-600 outline-hidden transition-all resize-none leading-relaxed"
+          className="w-full p-3.5 rounded-2xl bg-[#0a0b10] border border-white/10 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 text-sm text-slate-100 placeholder-slate-600 outline-hidden transition-all resize-none leading-relaxed"
         />
         <span className="text-[10px] text-slate-500 italic">
           Changes are reflected on the timeline and SRT export immediately.

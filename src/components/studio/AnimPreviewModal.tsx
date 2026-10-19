@@ -76,7 +76,7 @@ export function AnimPreviewModal({
         {/* Top bar */}
         <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/3">
           <div className="flex items-center gap-3">
-            <span className="text-2xl text-emerald-400">
+            <span className="text-2xl text-cyan-400">
               <Film className="w-6 h-6" />
             </span>
             <div>
@@ -92,7 +92,7 @@ export function AnimPreviewModal({
                 type="checkbox"
                 checked={selectedAnims.has(currentAnimId)}
                 onChange={(e) => onToggleAnim(currentAnimId, e.target.checked)}
-                className="w-4 h-4 accent-emerald-500 rounded cursor-pointer"
+                className="w-4 h-4 accent-cyan-400 rounded cursor-pointer"
               />
               <span className="text-xs font-semibold text-slate-300">
                 Enable in Video
@@ -118,7 +118,7 @@ export function AnimPreviewModal({
           />
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
             <div
-              className="h-full bg-linear-to-r from-emerald-500 to-emerald-300 transition-all duration-75"
+              className="h-full bg-linear-to-r from-cyan-500 to-cyan-300 transition-all duration-75"
               style={{ width: `${progressWidth}%` }}
             />
           </div>
@@ -134,7 +134,7 @@ export function AnimPreviewModal({
             <button
               type="button"
               onClick={handleReplay}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/15 text-slate-200 hover:border-emerald-500 hover:text-emerald-400 text-xs font-semibold transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/15 text-slate-200 hover:border-cyan-500 hover:text-cyan-400 text-xs font-semibold transition-all cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Replay</span>
@@ -142,7 +142,7 @@ export function AnimPreviewModal({
             <button
               type="button"
               onClick={() => setIsPlaying(!isPlaying)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/15 text-slate-200 hover:border-emerald-500 hover:text-emerald-400 text-xs font-semibold transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/15 text-slate-200 hover:border-cyan-500 hover:text-cyan-400 text-xs font-semibold transition-all cursor-pointer"
             >
               {isPlaying ? (
                 <Pause className="w-3.5 h-3.5" />
@@ -156,9 +156,9 @@ export function AnimPreviewModal({
                 type="checkbox"
                 checked={isSfxEnabled}
                 onChange={(e) => setIsSfxEnabled(e.target.checked)}
-                className="w-3.5 h-3.5 accent-emerald-500 rounded cursor-pointer"
+                className="w-3.5 h-3.5 accent-pink-500 rounded cursor-pointer"
               />
-              <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+              <Volume2 className="w-3.5 h-3.5 text-pink-400" />
               <span>Sound Effect</span>
             </label>
           </div>
@@ -168,7 +168,7 @@ export function AnimPreviewModal({
               type="button"
               onClick={handlePrev}
               title="Previous Transition"
-              className="p-1 rounded-full border border-white/15 text-slate-300 hover:border-emerald-500 hover:text-emerald-400 transition-all cursor-pointer"
+              className="p-1 rounded-full border border-white/15 text-slate-300 hover:border-cyan-500 hover:text-cyan-400 transition-all cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -179,7 +179,7 @@ export function AnimPreviewModal({
               type="button"
               onClick={handleNext}
               title="Next Transition"
-              className="p-1 rounded-full border border-white/15 text-slate-300 hover:border-emerald-500 hover:text-emerald-400 transition-all cursor-pointer"
+              className="p-1 rounded-full border border-white/15 text-slate-300 hover:border-cyan-500 hover:text-cyan-400 transition-all cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -198,7 +198,7 @@ export function AnimPreviewModal({
               }}
               className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer border ${
                 anim.id === currentAnimId
-                  ? "bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-sm"
+                  ? "bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm"
                   : "bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10"
               }`}
             >

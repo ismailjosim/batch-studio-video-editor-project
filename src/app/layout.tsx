@@ -24,9 +24,19 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Batch Studio Video Editor — 2K SRT Video Generator",
+  title:
+    "Batch Studio Suite by JC Design — 2K Video, Whisper AI & Subtitle Studio",
   description:
-    "Transform split storyboard images and voiceover .srt files into hardware-accelerated 2K MP4 video with multi-animation transitions & sound effects directly in your browser with MongoDB project sync.",
+    "All-in-one AI creative suite: Hardware-accelerated 2K MP4 video generator, Whisper Large-v3 speech-to-text transcriber, waveform-precise subtitle synchronization, and voiceover studio.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -42,7 +52,7 @@ export default function RootLayout({
       <head>
         <Script src="/sfx-bundle.js" strategy="beforeInteractive" />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-[#0b0c10] text-slate-100 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-emerald-950/20 via-[#0c0d14] to-[#08080c] overflow-x-hidden">
+      <body className="min-h-full flex flex-col font-sans bg-[#090a10] text-slate-100 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-cyan-950/15 via-[#0a0b12] to-[#07080d] overflow-x-hidden">
         {children}
       </body>
     </html>

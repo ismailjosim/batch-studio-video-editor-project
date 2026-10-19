@@ -46,7 +46,7 @@ export function BatchItemCard({
           </button>
 
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-lg bg-teal-500/15 border border-teal-500/30 text-teal-300 font-mono font-bold text-xs">
+            <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 font-mono font-bold text-xs">
               Batch {batch.batchStr}
             </span>
             <span className="text-xs font-semibold text-slate-200">
@@ -58,7 +58,7 @@ export function BatchItemCard({
           </div>
 
           <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-400">
-            <Clock className="w-3.5 h-3.5 text-teal-400" />
+            <Clock className="w-3.5 h-3.5 text-cyan-400" />
             <span>{batch.timeRange}</span>
             <span className="text-slate-600">•</span>
             <span>({batch.durationFormatted})</span>
@@ -71,7 +71,7 @@ export function BatchItemCard({
             <button
               type="button"
               onClick={() => onSendToGenerator(batch)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 hover:bg-emerald-500 hover:text-black text-emerald-300 text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-pink-500/15 border border-pink-500/30 hover:bg-pink-500 hover:text-white text-pink-300 text-xs font-bold transition-all cursor-pointer shadow-sm"
               title="Load this batch directly into Video Generator"
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -91,7 +91,7 @@ export function BatchItemCard({
             className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-xs text-slate-300 hover:text-white transition-all cursor-pointer"
             title="Download .srt"
           >
-            <FileDown className="w-3.5 h-3.5 text-teal-400" />
+            <FileDown className="w-3.5 h-3.5 text-cyan-400" />
             <span>.SRT</span>
           </button>
 
@@ -121,7 +121,7 @@ export function BatchItemCard({
               key={sub.id}
               className="flex items-start gap-3 p-2 rounded-xl bg-white/2 hover:bg-white/5 border border-white/5 text-xs transition-all"
             >
-              <span className="font-mono text-teal-400 font-bold w-7 shrink-0 text-right">
+              <span className="font-mono text-cyan-400 font-bold w-7 shrink-0 text-right">
                 {sub.id}.
               </span>
               <span className="font-mono text-slate-400 text-[11px] shrink-0">

@@ -104,6 +104,7 @@ export function AudioStudioClient() {
             audioBlob={synth.audioBlob}
             onSendToSubtitleStudio={synth.handleSendToSubtitleStudio}
             onSendToVideoGenerator={synth.handleSendToVideoGenerator}
+            onSendToTranscriber={synth.handleSendToTranscriber}
           />
         </div>
       </div>

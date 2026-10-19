@@ -94,7 +94,7 @@ export function NanoBananaGallery({
             }
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-xs text-slate-300 hover:text-white transition-all cursor-pointer"
           >
-            <Wand2 className="w-3.5 h-3.5 text-teal-400" />
+            <Wand2 className="w-3.5 h-3.5 text-cyan-400" />
             <span>Generate Sticker Pack</span>
           </button>
         </div>
@@ -126,7 +126,7 @@ export function NanoBananaGallery({
                     {asset.aspectRatio}
                   </span>
                   {asset.isUpscaled2K && (
-                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/90 text-black shadow-md flex items-center gap-1">
+                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-cyan-400 text-black shadow-md flex items-center gap-1">
                       <Sparkles className="w-2.5 h-2.5" />
                       <span>2K ULTRA</span>
                     </span>
@@ -170,7 +170,7 @@ export function NanoBananaGallery({
                   <button
                     type="button"
                     onClick={() => onSendToGenerator(asset)}
-                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold font-heading shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 text-black text-xs font-bold font-heading shadow-md shadow-cyan-500/20 transition-all cursor-pointer"
                     title="Send image to 2K Video Generator as Storyboard Image"
                   >
                     <Film className="w-3.5 h-3.5" />
@@ -202,7 +202,7 @@ export function NanoBananaGallery({
                   <button
                     type="button"
                     onClick={() => onUseAsReference(asset)}
-                    className="p-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-teal-400 hover:text-teal-300 transition-all cursor-pointer"
+                    className="p-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-cyan-400 hover:text-cyan-300 transition-all cursor-pointer"
                     title="Use this image as reference for next generation"
                   >
                     <Plus className="w-3.5 h-3.5" />

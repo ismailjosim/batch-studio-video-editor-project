@@ -15,7 +15,7 @@ export function useSubtitlePlayback(
   const bgmAudioRef = useRef<HTMLAudioElement | null>(null);
   const animFrameRef = useRef<number | null>(null);
 
-  const [duration, setDuration] = useState<number>(25);
+  const [duration, setDuration] = useState<number>(15.5);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(190);
@@ -123,7 +123,7 @@ export function useSubtitlePlayback(
       if (audio) {
         audio.currentTime = safeTime;
       }
-      if (bgmAudioRef.current && bgmAudioRef.current.duration) {
+      if (bgmAudioRef.current?.duration) {
         bgmAudioRef.current.currentTime =
           safeTime % bgmAudioRef.current.duration;
       }

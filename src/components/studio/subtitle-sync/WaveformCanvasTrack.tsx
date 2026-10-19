@@ -167,8 +167,8 @@ const TileCanvas = React.memo(function TileCanvas({
 
     const centerY = height / 2;
 
-    // Draw center quiet baseline in subtle emerald tint
-    ctx.strokeStyle = "rgba(16, 185, 129, 0.25)";
+    // Draw center quiet baseline in subtle JC cyan tint
+    ctx.strokeStyle = "rgba(0, 210, 255, 0.25)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, centerY);
@@ -181,11 +181,11 @@ const TileCanvas = React.memo(function TileCanvas({
 
     const barWidth = Math.max(1, width / peaksCount);
 
-    // Modern studio gradient: emerald-400 to emerald-500 to teal-700
+    // Modern JC Design gradient: Electric Cyan (#00D2FF) to Sky Blue
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, "#34d399");
-    gradient.addColorStop(0.5, "#10b981");
-    gradient.addColorStop(1, "#047857");
+    gradient.addColorStop(0, "#00d2ff");
+    gradient.addColorStop(0.5, "#38bdf8");
+    gradient.addColorStop(1, "#0284c7");
     ctx.fillStyle = gradient;
 
     for (let i = 0; i < peaksCount; i++) {

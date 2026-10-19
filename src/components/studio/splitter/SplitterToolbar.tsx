@@ -30,7 +30,7 @@ export function SplitterToolbar({
           type="button"
           onClick={onDownloadZip}
           disabled={isZipping}
-          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-black font-extrabold text-xs font-heading shadow-lg shadow-teal-500/20 transition-all cursor-pointer disabled:opacity-50"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 text-black font-extrabold text-xs font-heading shadow-lg shadow-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
         >
           {isZipping ? (
             <>
@@ -57,7 +57,7 @@ export function SplitterToolbar({
         >
           {copiedSummary ? (
             <>
-              <Check className="w-4 h-4 text-teal-400" />
+              <Check className="w-4 h-4 text-cyan-400" />
               <span>Copied!</span>
             </>
           ) : (
@@ -76,7 +76,7 @@ export function SplitterToolbar({
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search subtitles..."
-          className="w-full rounded-xl border border-white/15 bg-black/40 pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:border-teal-400 focus:outline-none"
+          className="w-full rounded-xl border border-white/15 bg-black/40 pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
         />
       </div>
     </div>

@@ -62,9 +62,9 @@ export function Stepper({
               onClick={() => onStepClick(s.step)}
               className={`flex items-center gap-3 p-3 rounded-xl transition-all select-none text-left cursor-pointer ${
                 isActive
-                  ? "border border-emerald-500/50 bg-emerald-500/10 shadow-lg shadow-emerald-500/10"
+                  ? "border border-cyan-500/50 bg-cyan-500/10 shadow-lg shadow-cyan-500/15"
                   : isCompleted
-                    ? "border border-emerald-500/20 bg-white/2 hover:bg-white/5"
+                    ? "border border-pink-500/25 bg-white/2 hover:bg-white/5"
                     : accessible
                       ? "border border-white/5 bg-transparent hover:bg-white/2"
                       : "border border-transparent opacity-40 cursor-not-allowed"
@@ -73,14 +73,14 @@ export function Stepper({
               <div
                 className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 transition-all ${
                   isActive
-                    ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/30"
+                    ? "bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] text-black shadow-md shadow-cyan-500/30"
                     : isCompleted
-                      ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-300"
+                      ? "bg-pink-500/20 border border-pink-500/40 text-pink-300"
                       : "bg-white/5 border border-white/10 text-slate-400"
                 }`}
               >
                 {isCompleted ? (
-                  <Check className="w-4 h-4 text-emerald-400" />
+                  <Check className="w-4 h-4 text-pink-400" />
                 ) : (
                   <Icon className="w-4 h-4" />
                 )}
@@ -92,7 +92,7 @@ export function Stepper({
                     isActive
                       ? "text-white"
                       : isCompleted
-                        ? "text-emerald-300"
+                        ? "text-pink-300"
                         : "text-slate-300"
                   }`}
                 >

@@ -12,6 +12,7 @@ interface SubtitleToolsSidebarProps {
   hasAudio: boolean;
   hasSrt: boolean;
   hasBgm?: boolean;
+  isAudioLoading?: boolean;
   canUndo: boolean;
   selectedCue: SubtitleCue | null;
   onSelectAudioFile: (file: File) => void;
@@ -39,6 +40,7 @@ export function SubtitleToolsSidebar({
   hasAudio,
   hasSrt,
   hasBgm,
+  isAudioLoading = false,
   canUndo,
   selectedCue,
   onSelectAudioFile,
@@ -68,6 +70,7 @@ export function SubtitleToolsSidebar({
         hasAudio={hasAudio}
         hasSrt={hasSrt}
         hasBgm={hasBgm}
+        isAudioLoading={isAudioLoading}
         onSelectAudioFile={onSelectAudioFile}
         onSelectSrtFile={onSelectSrtFile}
         onSelectBgmFile={onSelectBgmFile}

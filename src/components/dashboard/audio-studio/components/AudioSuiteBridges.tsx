@@ -1,17 +1,19 @@
 "use client";
 
-import { ArrowRight, AudioLines, Film, Radio } from "lucide-react";
+import { ArrowRight, AudioLines, FileAudio, Film, Radio } from "lucide-react";
 
 interface AudioSuiteBridgesProps {
   audioBlob: Blob | null;
   onSendToSubtitleStudio: () => void;
   onSendToVideoGenerator: () => void;
+  onSendToTranscriber?: () => void;
 }
 
 export function AudioSuiteBridges({
   audioBlob,
   onSendToSubtitleStudio,
   onSendToVideoGenerator,
+  onSendToTranscriber,
 }: AudioSuiteBridgesProps) {
   return (
     <div className="flex flex-col gap-3 p-5 bg-[#0e1018]/90 border border-white/10 rounded-3xl shadow-xl backdrop-blur-xl">
@@ -27,17 +29,32 @@ export function AudioSuiteBridges({
       </p>
 
       <div className="flex flex-col gap-2 mt-1">
+        {onSendToTranscriber && (
+          <button
+            type="button"
+            onClick={onSendToTranscriber}
+            disabled={!audioBlob}
+            className="flex items-center justify-between w-full p-3 rounded-2xl border border-violet-500/30 hover:border-violet-400 bg-linear-to-r from-violet-500/15 to-indigo-500/15 hover:from-violet-500/25 hover:to-indigo-500/25 text-violet-200 text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group shadow-sm"
+          >
+            <div className="flex items-center gap-2.5">
+              <FileAudio className="w-4 h-4 text-violet-400 group-hover:scale-110 transition-transform" />
+              <span>Transcribe to SRT (Whisper)</span>
+            </div>
+            <ArrowRight className="w-4 h-4 text-violet-400 group-hover:translate-x-1 transition-transform" />
+          </button>
+        )}
+
         <button
           type="button"
           onClick={onSendToSubtitleStudio}
           disabled={!audioBlob}
-          className="flex items-center justify-between w-full p-3 rounded-2xl border border-emerald-500/30 hover:border-emerald-400 bg-linear-to-r from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 text-slate-100 text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group shadow-sm"
+          className="flex items-center justify-between w-full p-3 rounded-2xl border border-cyan-500/30 hover:border-cyan-400 bg-linear-to-r from-cyan-500/10 to-pink-500/10 hover:from-cyan-500/20 hover:to-pink-500/20 text-slate-100 text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group shadow-sm"
         >
           <div className="flex items-center gap-2.5">
-            <AudioLines className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+            <AudioLines className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
             <span>Send to Subtitle Studio</span>
           </div>
-          <ArrowRight className="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
+          <ArrowRight className="w-4 h-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
         </button>
 
         <button

@@ -76,7 +76,7 @@ export function ImagesUploader({
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-[#10121a]/70 backdrop-blur-md p-5 shadow-xl">
       <div className="flex items-center gap-2 border-b border-white/5 pb-3 text-sm font-bold text-white tracking-wide">
-        <Images className="w-4 h-4 text-emerald-400" />
+        <Images className="w-4 h-4 text-orange-400" />
         <span>Step 3: Storyboard Images</span>
       </div>
 
@@ -96,13 +96,13 @@ export function ImagesUploader({
         }}
         className={`group flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center cursor-pointer transition-all duration-200 ${
           isDragOver
-            ? "border-emerald-500 bg-emerald-500/10 scale-[0.99]"
+            ? "border-orange-500 bg-orange-500/10 scale-[0.99]"
             : loadedImages.length > 0
-              ? "border-emerald-500/40 bg-emerald-500/5 hover:border-emerald-500/60"
-              : "border-white/15 hover:border-emerald-500/50 hover:bg-white/2"
+              ? "border-orange-500/40 bg-orange-500/5 hover:border-orange-500/60"
+              : "border-white/15 hover:border-orange-500/50 hover:bg-white/2"
         }`}
       >
-        <div className="text-3xl text-slate-400 group-hover:text-emerald-400 group-hover:scale-110 transition-all">
+        <div className="text-3xl text-slate-400 group-hover:text-orange-400 group-hover:scale-110 transition-all">
           <Images className="w-8 h-8" />
         </div>
         <div className="text-sm font-semibold text-slate-200">
@@ -132,14 +132,14 @@ export function ImagesUploader({
 
       {loadedImages.length > 0 && (
         <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold shadow-inner">
-            <span className="text-emerald-300">
+          <div className="flex items-center justify-between rounded-lg border border-orange-500/30 bg-orange-500/10 px-3 py-2 text-xs font-semibold shadow-inner">
+            <span className="text-orange-300">
               {loadedImages.length} images loaded
             </span>
             {cueCount > 0 && (
               <span
                 className={`flex items-center gap-1 ${
-                  isMatch ? "text-emerald-400" : "text-amber-400"
+                  isMatch ? "text-cyan-400" : "text-amber-400"
                 }`}
               >
                 {isMatch ? (

@@ -96,7 +96,7 @@ export async function consumeTransferAudio(): Promise<{
       const getReq = store.get(AUDIO_RECORD_KEY);
       getReq.onsuccess = () => {
         const result = getReq.result;
-        if (result && result.blob) {
+        if (result?.blob) {
           store.delete(AUDIO_RECORD_KEY);
           resolve(result);
         } else {
@@ -108,4 +108,3 @@ export async function consumeTransferAudio(): Promise<{
     request.onerror = () => resolve(null);
   });
 }
-

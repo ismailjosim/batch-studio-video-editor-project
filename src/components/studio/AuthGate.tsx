@@ -1,6 +1,13 @@
 "use client";
 
-import { CheckCircle2, Film, Loader2, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import {
+  CheckCircle2,
+  Film,
+  Loader2,
+  ShieldCheck,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 
@@ -18,7 +25,9 @@ export function AuthGate() {
       });
     } catch (err: unknown) {
       const error = err as Error;
-      setGoogleError(error.message || "Google sign in failed. Please try again.");
+      setGoogleError(
+        error.message || "Google sign in failed. Please try again.",
+      );
       setIsGoogleLoading(false);
     }
   };
@@ -26,24 +35,30 @@ export function AuthGate() {
   return (
     <div className="w-full min-h-[85vh] flex flex-col items-center justify-center p-4">
       {/* Background Radial Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative w-full max-w-md flex flex-col gap-6">
         {/* Branding Banner */}
         <div className="flex flex-col items-center text-center gap-2">
-          <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-emerald-400 via-emerald-500 to-teal-600 flex items-center justify-center text-black shadow-xl shadow-emerald-500/25 border border-emerald-300/30">
-            <Sparkles className="w-7 h-7 text-black" />
+          <div className="w-20 h-20 rounded-3xl bg-[#090a10] border border-white/10 flex items-center justify-center p-2.5 shadow-2xl shadow-cyan-500/25">
+            <img
+              src="/batch-studio-suit-logo.png"
+              alt="Batch Studio Suite"
+              className="w-full h-full object-contain drop-shadow-[0_0_18px_rgba(0,210,255,0.6)]"
+            />
           </div>
           <div className="flex items-center gap-2 mt-1">
             <h1 className="text-2xl font-black tracking-tight text-white font-heading">
-              Batch Studio Video Editor
+              Batch Studio Suite
             </h1>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-              2K QHD
+            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+              by JC Design
             </span>
           </div>
           <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-            Welcome to Dollar Doodles Studio Suite. Sign in with your Google account to access hardware-accelerated video rendering, AI generation, and cloud projects.
+            Welcome to Batch Studio Suite. Sign in with your Google account to
+            access 2K video rendering, Whisper AI transcription, and subtitle
+            tools.
           </p>
         </div>
 
@@ -94,7 +109,9 @@ export function AuthGate() {
               </svg>
             )}
             <span>
-              {isGoogleLoading ? "Connecting to Google..." : "Continue with Google"}
+              {isGoogleLoading
+                ? "Connecting to Google..."
+                : "Continue with Google"}
             </span>
           </button>
 
@@ -108,11 +125,11 @@ export function AuthGate() {
           {/* Security & Access Features */}
           <div className="pt-2 border-t border-white/5 flex flex-col gap-2">
             <div className="flex items-center gap-2 text-[11px] text-slate-400">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
               <span>No password required • Automatic account setup</span>
             </div>
             <div className="flex items-center gap-2 text-[11px] text-slate-400">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
               <span>Direct access to cloud saves and batch export</span>
             </div>
           </div>
@@ -121,21 +138,21 @@ export function AuthGate() {
         {/* Studio Highlights Footer */}
         <div className="grid grid-cols-3 gap-3 px-2 text-center">
           <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl border border-white/5 bg-white/2">
-            <Zap className="w-4 h-4 text-emerald-400" />
+            <Zap className="w-4 h-4 text-cyan-400" />
             <span className="text-[11px] font-bold text-white">
               2K Hardware
             </span>
             <span className="text-[9px] text-slate-400">WebCodecs GPU</span>
           </div>
           <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl border border-white/5 bg-white/2">
-            <Film className="w-4 h-4 text-emerald-400" />
+            <Film className="w-4 h-4 text-pink-400" />
             <span className="text-[11px] font-bold text-white">
               10 Transitions
             </span>
             <span className="text-[9px] text-slate-400">Dynamic Motion</span>
           </div>
           <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl border border-white/5 bg-white/2">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <ShieldCheck className="w-4 h-4 text-orange-400" />
             <span className="text-[11px] font-bold text-white">Cloud Sync</span>
             <span className="text-[9px] text-slate-400">Database History</span>
           </div>

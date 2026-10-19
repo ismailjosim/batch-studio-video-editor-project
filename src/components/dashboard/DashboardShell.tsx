@@ -2,6 +2,7 @@
 
 import {
   AudioLines,
+  FileAudio,
   Film,
   FolderGit2,
   LayoutDashboard,
@@ -34,8 +35,12 @@ export function DashboardShell({ children }: DashboardShellProps) {
     return (
       <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 bg-[#0a0b10]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-xl shadow-emerald-500/25 animate-pulse">
-            <Sparkles className="w-6 h-6 text-black" />
+          <div className="w-16 h-16 rounded-2xl bg-[#090a10] border border-white/10 flex items-center justify-center p-2 shadow-2xl shadow-cyan-500/25 animate-pulse shrink-0">
+            <img
+              src="/batch-studio-suit-logo.png"
+              alt="Batch Studio Suite"
+              className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(0,210,255,0.5)]"
+            />
           </div>
           <span className="text-xs font-semibold text-slate-300">
             Checking studio access...
@@ -51,6 +56,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
 
   const isOverview =
     pathname === "/dashboard/overview" || pathname === "/dashboard";
+  const isTranscribe = pathname.startsWith("/dashboard/transcribe");
   const isSubtitleSync = pathname.startsWith("/dashboard/subtitle-sync-editor");
   const isVideoEditor = pathname.startsWith("/dashboard/video-editor");
   const isSplitter = pathname.startsWith("/dashboard/subtitle-splitter");
@@ -80,7 +86,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
             <button
               type="button"
               onClick={() => setMobileSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl border border-white/10 hover:border-emerald-500/40 text-slate-300 hover:text-white transition-all cursor-pointer"
+              className="lg:hidden p-2 rounded-xl border border-white/10 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all cursor-pointer"
               title="Open Navigation Menu"
             >
               <Menu className="w-5 h-5" />
@@ -92,25 +98,31 @@ export function DashboardShell({ children }: DashboardShellProps) {
               <span className="font-bold text-white flex items-center gap-1.5">
                 {isOverview && (
                   <>
-                    <LayoutDashboard className="w-3.5 h-3.5 text-emerald-400" />
+                    <LayoutDashboard className="w-3.5 h-3.5 text-cyan-400" />
                     <span>Studio Overview & Metrics</span>
+                  </>
+                )}
+                {isTranscribe && (
+                  <>
+                    <FileAudio className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>AI Audio Transcriber (Whisper Speech-to-SRT)</span>
                   </>
                 )}
                 {isSubtitleSync && (
                   <>
-                    <AudioLines className="w-3.5 h-3.5 text-emerald-400" />
+                    <AudioLines className="w-3.5 h-3.5 text-pink-400" />
                     <span>Subtitle Studio (Waveform & Timing Sync)</span>
                   </>
                 )}
                 {isVideoEditor && (
                   <>
-                    <Film className="w-3.5 h-3.5 text-emerald-400" />
+                    <Film className="w-3.5 h-3.5 text-orange-400" />
                     <span>SRT Video Generator</span>
                   </>
                 )}
                 {isSplitter && (
                   <>
-                    <Scissors className="w-3.5 h-3.5 text-teal-400" />
+                    <Scissors className="w-3.5 h-3.5 text-cyan-400" />
                     <span>SRT Batch Splitter</span>
                   </>
                 )}
@@ -136,7 +148,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
               onClick={() => setProjectsModalOpen(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-200 transition-all cursor-pointer"
             >
-              <FolderGit2 className="w-3.5 h-3.5 text-emerald-400" />
+              <FolderGit2 className="w-3.5 h-3.5 text-cyan-400" />
               <span className="hidden sm:inline">Cloud Projects</span>
             </button>
           </div>
@@ -147,8 +159,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
           {children}
 
           <footer className="text-center text-slate-500 text-xs py-4 mt-auto border-t border-white/5">
-            Dollar Doodles Studio Suite • Hardware WebCodecs Video, SRT Batch
-            Splitter & Gemini Pro Nano Banana
+            Batch Studio Suite (by JC Design) • Hardware WebCodecs 2K Video,
+            Whisper AI Transcriber & Subtitle Precision Studio
           </footer>
         </main>
       </div>

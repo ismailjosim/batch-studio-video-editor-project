@@ -62,12 +62,12 @@ export function SubtitleLivePreview({
       {/* Header bar */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-[#0a0b10]/60 border-b border-white/10 text-xs">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="font-heading font-bold text-white text-xs tracking-tight flex items-center gap-1.5">
-            <Monitor className="w-3.5 h-3.5 text-emerald-400" />
+            <Monitor className="w-3.5 h-3.5 text-cyan-400" />
             <span>Live Typography Preview</span>
           </span>
-          <span className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+          <span className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
             Realtime
           </span>
         </div>
@@ -80,7 +80,7 @@ export function SubtitleLivePreview({
               onClick={() => setAspectRatio("9:16")}
               className={`flex items-center gap-1 px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                 aspectRatio === "9:16"
-                  ? "bg-emerald-400 text-black font-bold"
+                  ? "bg-cyan-400 text-black font-bold"
                   : "text-slate-400 hover:text-white"
               }`}
               title="Vertical 9:16 (Shorts / Reels / TikTok)"
@@ -93,7 +93,7 @@ export function SubtitleLivePreview({
               onClick={() => setAspectRatio("16:9")}
               className={`flex items-center gap-1 px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                 aspectRatio === "16:9"
-                  ? "bg-emerald-400 text-black font-bold"
+                  ? "bg-cyan-400 text-black font-bold"
                   : "text-slate-400 hover:text-white"
               }`}
               title="Widescreen 16:9 (YouTube)"
@@ -106,7 +106,7 @@ export function SubtitleLivePreview({
               onClick={() => setAspectRatio("1:1")}
               className={`flex items-center gap-1 px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                 aspectRatio === "1:1"
-                  ? "bg-emerald-400 text-black font-bold"
+                  ? "bg-cyan-400 text-black font-bold"
                   : "text-slate-400 hover:text-white"
               }`}
               title="Square 1:1 (Feed)"
@@ -126,7 +126,7 @@ export function SubtitleLivePreview({
             title="Subtitle Typography Style"
           >
             <option value="hormozi-pop">⚡ Hormozi Pop</option>
-            <option value="emerald-glow">💎 Emerald Glow</option>
+            <option value="jc-cyan-glow">💎 JC Cyan Glow</option>
             <option value="classic-yellow">🎬 Classic Cinema</option>
             <option value="minimal-clean">✨ Minimal Clean</option>
           </select>

@@ -21,12 +21,12 @@ export function AnimationItemCard({
       onClick={() => onToggle(anim.id)}
       className={`group relative flex flex-col justify-between p-3 rounded-xl border transition-all cursor-pointer ${
         isSelected
-          ? "border-emerald-500/60 bg-emerald-500/10 shadow-md shadow-emerald-500/5"
+          ? "border-cyan-500/60 bg-cyan-500/10 shadow-md shadow-cyan-500/10"
           : "border-white/5 bg-white/2 hover:border-white/15 hover:bg-white/5 opacity-70"
       }`}
     >
       <div className="flex items-start justify-between gap-1 mb-1">
-        <span className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
+        <span className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">
           {anim.name}
         </span>
         <button
@@ -36,7 +36,7 @@ export function AnimationItemCard({
             onPreview(anim.id);
           }}
           title="Preview this animation"
-          className="p-1 rounded-md text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all cursor-pointer"
+          className="p-1 rounded-md text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-all cursor-pointer"
         >
           <Eye className="w-3.5 h-3.5" />
         </button>
@@ -51,7 +51,7 @@ export function AnimationItemCard({
         <div
           className={`w-4 h-4 rounded-full flex items-center justify-center border transition-all ${
             isSelected
-              ? "border-emerald-500 bg-emerald-500 text-black"
+              ? "border-cyan-400 bg-cyan-400 text-black"
               : "border-white/20 bg-transparent text-transparent"
           }`}
         >

@@ -31,11 +31,11 @@ export function SplitterStatsGrid({
         </span>
       </div>
 
-      <div className="rounded-2xl border border-teal-500/25 bg-[#12131b]/80 p-4 shadow-lg flex flex-col gap-1">
-        <span className="text-[11px] uppercase font-bold text-teal-400">
+      <div className="rounded-2xl border border-cyan-500/25 bg-[#12131b]/80 p-4 shadow-lg flex flex-col gap-1">
+        <span className="text-[11px] uppercase font-bold text-cyan-400">
           Total Batches
         </span>
-        <span className="text-2xl font-black text-teal-400 font-heading">
+        <span className="text-2xl font-black text-cyan-400 font-heading">
           {batches.length}
         </span>
       </div>
@@ -53,7 +53,7 @@ export function SplitterStatsGrid({
         <span className="text-[11px] uppercase font-bold text-slate-400">
           Full Duration
         </span>
-        <span className="text-2xl font-black text-emerald-400 font-heading">
+        <span className="text-2xl font-black text-pink-400 font-heading">
           {fullDuration}
         </span>
       </div>

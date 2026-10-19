@@ -71,8 +71,8 @@ export function Step1MediaSetup({
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-white/10 bg-[#10121a]/80 backdrop-blur-md shadow-xl mt-2">
         <div className="flex items-center gap-2 text-xs">
           {hasSrt && hasImages ? (
-            <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span className="flex items-center gap-1.5 text-cyan-400 font-semibold">
+              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
               <span>
                 Ready: {srtData?.cues.length} subtitle cues and{" "}
                 {loadedImages.length} images loaded
@@ -93,7 +93,7 @@ export function Step1MediaSetup({
           type="button"
           disabled={!canGoToStep2}
           onClick={onContinue}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs font-heading shadow-lg shadow-emerald-500/20 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 text-black font-extrabold text-xs font-heading shadow-lg shadow-cyan-500/25 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
         >
           <span>Continue to Step 2: Animations & SFX</span>
           <ArrowRight className="w-4 h-4" />

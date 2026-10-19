@@ -167,21 +167,21 @@ export function OutputVideoCard({
   };
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-emerald-500/30 bg-[#10121a]/80 backdrop-blur-md p-6 shadow-2xl animate-in slide-in-from-bottom duration-300">
+    <div className="flex flex-col gap-4 rounded-2xl border border-cyan-500/30 bg-[#10121a]/80 backdrop-blur-md p-6 shadow-2xl animate-in slide-in-from-bottom duration-300">
       <div className="flex items-center justify-between border-b border-white/5 pb-3">
-        <div className="flex items-center gap-2 text-base font-bold text-emerald-400">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+        <div className="flex items-center gap-2 text-base font-bold text-cyan-400">
+          <CheckCircle2 className="w-5 h-5 text-cyan-400" />
           <span>Video Generated Successfully!</span>
         </div>
         <button
           type="button"
           onClick={handleSaveProject}
           disabled={isSaving || isSaved}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-semibold transition-all cursor-pointer disabled:opacity-60"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-pink-500/30 bg-pink-500/10 hover:bg-pink-500/20 text-pink-300 text-xs font-semibold transition-all cursor-pointer disabled:opacity-60"
         >
           {isSaved ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <Check className="w-3.5 h-3.5 text-pink-400" />
               <span>Project Saved in DB</span>
             </>
           ) : (
@@ -211,21 +211,21 @@ export function OutputVideoCard({
           type="button"
           onClick={handleSaveAs}
           disabled={isExporting}
-          className="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3.5 px-6 font-extrabold text-sm text-black shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 hover:shadow-emerald-500/40 transition-all cursor-pointer disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] py-3.5 px-6 font-extrabold text-sm text-black shadow-lg shadow-cyan-500/25 hover:brightness-110 transition-all cursor-pointer disabled:opacity-60"
         >
           {isExporting ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-4 h-4 animate-spin text-black" />
               <span>Saving Video to PC...</span>
             </>
           ) : exportSuccess ? (
             <>
-              <Check className="w-4 h-4" />
+              <Check className="w-4 h-4 text-black" />
               <span>Video Saved Successfully as .MP4!</span>
             </>
           ) : (
             <>
-              <HardDriveDownload className="w-4 h-4" />
+              <HardDriveDownload className="w-4 h-4 text-black" />
               <span>Download MP4 Video ({downloadFileName})</span>
             </>
           )}
@@ -233,13 +233,13 @@ export function OutputVideoCard({
       </div>
 
       <div className="flex items-start gap-2.5 rounded-xl border border-white/10 bg-black/40 p-3 text-xs text-slate-300">
-        <FileVideo className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+        <FileVideo className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
         <div className="flex flex-col gap-0.5 leading-relaxed">
           <span className="font-semibold text-white">Save Note:</span>
           <span className="text-slate-400">
             Clicking <strong className="text-white">Download MP4 Video</strong>{" "}
             above uses the Windows File System dialog to guarantee your video is
-            saved with the proper <code className="text-emerald-300">.mp4</code>{" "}
+            saved with the proper <code className="text-cyan-300">.mp4</code>{" "}
             format and can be opened in any media player.
           </span>
         </div>

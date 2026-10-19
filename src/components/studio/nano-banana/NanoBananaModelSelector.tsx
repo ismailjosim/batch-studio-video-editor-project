@@ -94,11 +94,11 @@ export function NanoBananaModelSelector({
         onClick={() => onToggleUpscale2K(!upscale2K)}
         className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer border ${
           upscale2K
-            ? "bg-emerald-500/20 border-emerald-400/40 text-emerald-300 shadow-xs shadow-emerald-500/20"
+            ? "bg-cyan-500/20 border-cyan-400/40 text-cyan-300 shadow-xs shadow-cyan-500/20"
             : "bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10"
         }`}
       >
-        <Sparkles className="w-3 h-3 text-emerald-400" />
+        <Sparkles className="w-3 h-3 text-cyan-400" />
         <span>2K Ultra</span>
       </button>
 
@@ -141,7 +141,7 @@ export function NanoBananaModelSelector({
                   <span className="text-[11px] text-slate-400 mt-0.5 leading-snug">
                     {m.description}
                   </span>
-                  <span className="text-[10px] text-teal-400 mt-1">
+                  <span className="text-[10px] text-cyan-400 mt-1">
                     Max: {m.maxResolution} • {m.recommendedFor}
                   </span>
                 </button>

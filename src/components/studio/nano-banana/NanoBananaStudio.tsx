@@ -231,7 +231,7 @@ export function NanoBananaStudio({
             onClick={() => setIsKeyModalOpen(true)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
               hasApiKey
-                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
                 : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
             }`}
           >
@@ -310,7 +310,7 @@ export function NanoBananaStudio({
                 });
               }}
               disabled={isGenerating}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-extrabold text-xs shadow-lg shadow-emerald-500/20 transition-all cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#38bdf8] to-[#0284c7] hover:brightness-110 text-black font-extrabold text-xs shadow-lg shadow-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Switch to FLUX.1 (Free Unlimited AI)</span>

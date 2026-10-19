@@ -1,6 +1,6 @@
 "use client";
 
-import { RefreshCw, Sparkles } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { getLocalStats } from "@/lib/stats-tracker";
 import { OverviewQuickTools } from "./OverviewQuickTools";
@@ -73,21 +73,28 @@ export function DashboardOverview({
       {/* Welcome Banner */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 rounded-3xl border border-white/10 bg-[#0f111a]/80 backdrop-blur-xl shadow-xl">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-emerald-400 via-teal-500 to-emerald-600 flex items-center justify-center text-black font-extrabold shadow-lg shadow-emerald-500/20">
-            <Sparkles className="w-6 h-6 text-black" />
+          <div className="w-14 h-14 rounded-2xl bg-[#090a10] border border-white/10 flex items-center justify-center p-1.5 shadow-lg shadow-cyan-500/15 shrink-0">
+            <img
+              src="/batch-studio-suit-logo.png"
+              alt="Batch Studio Suite"
+              className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(0,210,255,0.4)]"
+            />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black tracking-tight text-white font-heading">
-                Dollar Doodles Studio Suite
+              <h2 className="text-xl font-black tracking-tight text-white font-heading flex items-center gap-1.5">
+                Batch Studio{" "}
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-[#00d2ff] via-[#ec4899] to-[#f97316]">
+                  Suite
+                </span>
               </h2>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                Live Overview
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                by JC Design
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Production dashboard for 2K SRT Video Generation, Batch Subtitle
-              Splitting, and Nano Banana AI.
+              Production dashboard for 2K SRT Video Generation, Whisper AI
+              Transcription, and Subtitle Timing Sync.
             </p>
           </div>
         </div>
