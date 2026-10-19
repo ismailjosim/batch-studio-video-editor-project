@@ -52,3 +52,60 @@ export function consumeTransferImages(): string[] | null {
   }
   return null;
 }
+
+const AUDIO_DB_NAME = "dollar_doodles_transfer_db";
+const AUDIO_STORE_NAME = "audio_store";
+const AUDIO_RECORD_KEY = "transfer_audio";
+
+export async function saveTransferAudio(
+  blob: Blob,
+  fileName: string,
+): Promise<void> {
+  if (typeof window === "undefined" || !window.indexedDB) return;
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(AUDIO_DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      request.result.createObjectStore(AUDIO_STORE_NAME);
+    };
+    request.onsuccess = () => {
+      const db = request.result;
+      const tx = db.transaction(AUDIO_STORE_NAME, "readwrite");
+      const store = tx.objectStore(AUDIO_STORE_NAME);
+      store.put({ blob, fileName }, AUDIO_RECORD_KEY);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    };
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function consumeTransferAudio(): Promise<{
+  blob: Blob;
+  fileName: string;
+} | null> {
+  if (typeof window === "undefined" || !window.indexedDB) return null;
+  return new Promise((resolve) => {
+    const request = indexedDB.open(AUDIO_DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      request.result.createObjectStore(AUDIO_STORE_NAME);
+    };
+    request.onsuccess = () => {
+      const db = request.result;
+      const tx = db.transaction(AUDIO_STORE_NAME, "readwrite");
+      const store = tx.objectStore(AUDIO_STORE_NAME);
+      const getReq = store.get(AUDIO_RECORD_KEY);
+      getReq.onsuccess = () => {
+        const result = getReq.result;
+        if (result && result.blob) {
+          store.delete(AUDIO_RECORD_KEY);
+          resolve(result);
+        } else {
+          resolve(null);
+        }
+      };
+      getReq.onerror = () => resolve(null);
+    };
+    request.onerror = () => resolve(null);
+  });
+}
+

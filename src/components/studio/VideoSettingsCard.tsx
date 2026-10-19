@@ -1,6 +1,6 @@
 "use client";
 
-import { Film, Gauge, Monitor, Sliders, Sparkles } from "lucide-react";
+import { Film, Gauge, Monitor, Sliders, Sparkles, Type } from "lucide-react";
 import type {
   AspectRatioOption,
   ResolutionOption,
@@ -33,11 +33,19 @@ export function VideoSettingsCard({
     onChange({ resolution: newRes, bitrate: newBitrate });
   };
 
+  const isSubEnabled = settings.isSubtitleBurnInEnabled !== false;
+  const subPreset = settings.subtitlePreset || "hormozi-pop";
+
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-[#10121a]/70 backdrop-blur-md p-5 shadow-xl">
-      <div className="flex items-center gap-2 border-b border-white/5 pb-3 text-sm font-bold text-white tracking-wide">
-        <Sliders className="w-4 h-4 text-emerald-400" />
-        <span>Step 4: Resolution & Video Settings</span>
+    <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-[#10121a]/70 backdrop-blur-md p-5 shadow-xl">
+      <div className="flex items-center justify-between border-b border-white/5 pb-3">
+        <div className="flex items-center gap-2 text-sm font-bold text-white tracking-wide">
+          <Sliders className="w-4 h-4 text-emerald-400" />
+          <span>Step 4: Resolution & Video Settings</span>
+        </div>
+        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+          Hardware WebCodecs
+        </span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-1">
@@ -134,6 +142,62 @@ export function VideoSettingsCard({
               Fast (4 Mbps — Best for 720p)
             </option>
           </select>
+        </div>
+      </div>
+
+      {/* Subtitle Burn-In Row */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-3 border-t border-white/5 bg-[#0a0b12]/60 p-3.5 rounded-xl border">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+            <Type className="w-4 h-4" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-100">
+                Burn-In Animated Subtitles
+              </span>
+              <span className="text-[9px] font-mono uppercase bg-emerald-500/15 text-emerald-400 px-1.5 py-0.5 rounded font-bold">
+                Karaoke Glow
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400">
+              Burns synchronized typography directly onto the video canvas with
+              Hormozi word-pop highlights.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+          {/* Preset Selector */}
+          <select
+            disabled={!isSubEnabled}
+            value={subPreset}
+            onChange={(e) =>
+              onChange({
+                subtitlePreset: e.target
+                  .value as VideoSettings["subtitlePreset"],
+              })
+            }
+            className="rounded-lg border border-white/20 bg-[#13141f] px-3 py-1.5 text-xs font-semibold text-slate-100 shadow-sm focus:border-emerald-500 focus:outline-none cursor-pointer disabled:opacity-40"
+          >
+            <option value="hormozi-pop">Hormozi Pop (High-Energy Bold)</option>
+            <option value="emerald-glow">Emerald Glow (Mint Glow)</option>
+            <option value="classic-yellow">Classic Yellow (Cinema)</option>
+            <option value="minimal-clean">Minimal Clean (Pill)</option>
+          </select>
+
+          {/* Toggle */}
+          <button
+            type="button"
+            onClick={() => onChange({ isSubtitleBurnInEnabled: !isSubEnabled })}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all cursor-pointer ${
+              isSubEnabled
+                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shadow-sm"
+                : "bg-white/5 text-slate-500 border border-white/10"
+            }`}
+          >
+            {isSubEnabled ? "Burn-In ON" : "Burn-In OFF"}
+          </button>
         </div>
       </div>
     </div>

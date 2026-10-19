@@ -1,10 +1,32 @@
 "use client";
 
-import { ArrowRight, Film, Scissors, Sparkles, Wand2 } from "lucide-react";
+import {
+  ArrowRight,
+  AudioLines,
+  Film,
+  Scissors,
+  Sparkles,
+  Wand2,
+} from "lucide-react";
 import Link from "next/link";
 
 export function OverviewQuickTools() {
   const tools = [
+    {
+      title: "Subtitle Studio",
+      tagline: "Waveform & Timing Sync",
+      description:
+        "Precision timeline subtitle editor with decoded audio waveform, cue edge resizing, needle splitting, playhead snapping, and instant SRT export.",
+      icon: AudioLines,
+      href: "/dashboard/subtitle-sync-editor",
+      badge: "Sync Studio",
+      color: "lime",
+      bgGradient: "from-lime-500/10 via-lime-950/20 to-transparent",
+      borderColor: "border-lime-500/30 hover:border-lime-400/60",
+      accentBg: "bg-lime-500",
+      accentText: "text-lime-400",
+      buttonText: "Open Subtitle Studio",
+    },
     {
       title: "SRT Video Generator",
       tagline: "2K Hardware GPU Renderer",
@@ -64,7 +86,7 @@ export function OverviewQuickTools() {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {tools.map((tool) => {
           const Icon = tool.icon;
           return (

@@ -11,6 +11,7 @@ import {
   renderTransition,
   SFX_LIST,
 } from "@/lib/video-generator/transitions";
+import { drawSubtitleOverlay } from "@/lib/video-generator/subtitle-renderer";
 import type {
   RenderProgress,
   SRTData,
@@ -440,6 +441,19 @@ export function useVideoGenerator() {
               ? 1.0 + 0.04 * driftProgress
               : 1.04 - 0.04 * driftProgress;
             drawFitImage(ctx, currImg, aspectW, aspectH, zoom, 0, 0);
+          }
+
+          // Burn-In Animated Subtitles
+          if (settings.isSubtitleBurnInEnabled !== false && cue) {
+            drawSubtitleOverlay({
+              ctx,
+              cue,
+              currentTimeMs,
+              canvasWidth: aspectW,
+              canvasHeight: aspectH,
+              preset: settings.subtitlePreset || "hormozi-pop",
+              isPortrait: !isLandscape,
+            });
           }
 
           const timestampUs = Math.round((frameIdx / fps) * 1_000_000);

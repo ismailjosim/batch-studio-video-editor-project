@@ -36,6 +36,12 @@ export interface VideoSettings {
   selectedAnims: Set<string>;
   sfxMode: "random" | "custom";
   selectedSfx: Set<string>;
+  isSubtitleBurnInEnabled?: boolean;
+  subtitlePreset?:
+    | "hormozi-pop"
+    | "emerald-glow"
+    | "classic-yellow"
+    | "minimal-clean";
 }
 
 export interface RenderProgress {

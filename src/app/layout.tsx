@@ -37,12 +37,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jakartaSans.variable} ${outfitHeading.variable} ${monoFont.variable} dark h-full antialiased`}
+      className={`${jakartaSans.variable} ${outfitHeading.variable} ${monoFont.variable} dark h-full antialiased overflow-x-hidden`}
     >
       <head>
         <Script src="/sfx-bundle.js" strategy="beforeInteractive" />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-[#0b0c10] text-slate-100 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-emerald-950/20 via-[#0c0d14] to-[#08080c]">
+      <body className="min-h-full flex flex-col font-sans bg-[#0b0c10] text-slate-100 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-emerald-950/20 via-[#0c0d14] to-[#08080c] overflow-x-hidden">
         {children}
       </body>
     </html>

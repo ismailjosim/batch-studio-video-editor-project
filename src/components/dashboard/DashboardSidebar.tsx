@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AudioLines,
   ChevronLeft,
   ChevronRight,
   Film,
@@ -46,6 +47,14 @@ export function DashboardSidebar({
       isActive: pathname === "/dashboard/overview" || pathname === "/dashboard",
     },
     {
+      href: "/dashboard/subtitle-sync-editor",
+      label: "Subtitle Studio",
+      sublabel: "Waveform & Timing Sync",
+      icon: AudioLines,
+      badge: "Sync",
+      isActive: pathname.startsWith("/dashboard/subtitle-sync-editor"),
+    },
+    {
       href: "/dashboard/video-editor",
       label: "SRT Video Generator",
       sublabel: "2K Hardware GPU MP4",
@@ -62,6 +71,14 @@ export function DashboardSidebar({
       isActive: pathname.startsWith("/dashboard/subtitle-splitter"),
     },
     {
+      href: "/dashboard/audio-studio",
+      label: "Audio & Voice Studio",
+      sublabel: "AI Voiceover & TTS",
+      icon: Mic,
+      badge: "AI TTS",
+      isActive: pathname.startsWith("/dashboard/audio-studio"),
+    },
+    {
       href: "/dashboard/image-generator",
       label: "AI Image Generator",
       sublabel: "FLUX.1 • Gemini • 2K",
@@ -73,8 +90,8 @@ export function DashboardSidebar({
 
   const comingSoonItems = [
     {
-      label: "Audio & Voice Studio",
-      icon: Mic,
+      label: "AI Avatar Video",
+      icon: Sparkles,
       badge: "Soon",
     },
   ];

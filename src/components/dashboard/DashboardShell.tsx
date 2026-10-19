@@ -1,10 +1,12 @@
 "use client";
 
 import {
+  AudioLines,
   Film,
   FolderGit2,
   LayoutDashboard,
   Menu,
+  Mic,
   Scissors,
   Sparkles,
   Wand2,
@@ -49,12 +51,14 @@ export function DashboardShell({ children }: DashboardShellProps) {
 
   const isOverview =
     pathname === "/dashboard/overview" || pathname === "/dashboard";
+  const isSubtitleSync = pathname.startsWith("/dashboard/subtitle-sync-editor");
   const isVideoEditor = pathname.startsWith("/dashboard/video-editor");
   const isSplitter = pathname.startsWith("/dashboard/subtitle-splitter");
+  const isAudioStudio = pathname.startsWith("/dashboard/audio-studio");
   const isImageGen = pathname.startsWith("/dashboard/image-generator");
 
   return (
-    <div className="min-h-screen bg-[#0a0b10] text-slate-100 flex">
+    <div className="min-h-screen bg-[#0a0b10] text-slate-100 flex w-full max-w-full overflow-x-hidden">
       {/* 1. Dashboard Sidebar */}
       <DashboardSidebar
         collapsed={sidebarCollapsed}
@@ -66,7 +70,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
 
       {/* 2. Main Right Content Area */}
       <div
-        className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${
+        className={`flex-1 flex flex-col min-h-screen min-w-0 w-full max-w-full overflow-x-hidden transition-all duration-300 ${
           sidebarCollapsed ? "lg:pl-20" : "lg:pl-72"
         }`}
       >
@@ -92,6 +96,12 @@ export function DashboardShell({ children }: DashboardShellProps) {
                     <span>Studio Overview & Metrics</span>
                   </>
                 )}
+                {isSubtitleSync && (
+                  <>
+                    <AudioLines className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Subtitle Studio (Waveform & Timing Sync)</span>
+                  </>
+                )}
                 {isVideoEditor && (
                   <>
                     <Film className="w-3.5 h-3.5 text-emerald-400" />
@@ -102,6 +112,12 @@ export function DashboardShell({ children }: DashboardShellProps) {
                   <>
                     <Scissors className="w-3.5 h-3.5 text-teal-400" />
                     <span>SRT Batch Splitter</span>
+                  </>
+                )}
+                {isAudioStudio && (
+                  <>
+                    <Mic className="w-3.5 h-3.5 text-violet-400" />
+                    <span>Audio & Voice Studio (AI TTS)</span>
                   </>
                 )}
                 {isImageGen && (
@@ -127,7 +143,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
         </header>
 
         {/* Main Content Body */}
-        <main className="flex-1 w-full max-w-6xl mx-auto p-4 md:p-8 flex flex-col gap-6">
+        <main className="flex-1 w-full min-w-0 max-w-full p-4 md:p-6 lg:p-8 flex flex-col gap-6 overflow-x-hidden">
           {children}
 
           <footer className="text-center text-slate-500 text-xs py-4 mt-auto border-t border-white/5">

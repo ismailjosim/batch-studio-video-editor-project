@@ -10,6 +10,7 @@ import { ProjectsHistoryModal } from "@/components/studio/ProjectsHistoryModal";
 import { Stepper, type StudioStep } from "@/components/studio/Stepper";
 import { useVideoGenerator } from "@/hooks/useVideoGenerator";
 import {
+  consumeTransferAudio,
   consumeTransferCues,
   consumeTransferImages,
 } from "@/lib/studio-transfer";
@@ -83,6 +84,28 @@ export function VideoEditorClient({ onOpenProjects }: VideoEditorClientProps) {
         }
       });
     }
+
+    // Check for transferred audio from Audio & Voice Studio
+    consumeTransferAudio().then(async (transfer) => {
+      if (transfer && transfer.blob) {
+        try {
+          const buffer = await transfer.blob.arrayBuffer();
+          const AudioContextClass =
+            window.AudioContext ||
+            // @ts-expect-error fallback
+            window.webkitAudioContext;
+          if (AudioContextClass) {
+            const ctx = new AudioContextClass();
+            const decoded = await ctx.decodeAudioData(buffer);
+            setAudioBuffer(decoded);
+            setAudioFileName(transfer.fileName);
+            setCurrentStep(1);
+          }
+        } catch (err) {
+          console.warn("Error decoding transferred audio:", err);
+        }
+      }
+    });
   }, []);
 
   const handleSettingsChange = (updated: Partial<VideoSettings>) => {

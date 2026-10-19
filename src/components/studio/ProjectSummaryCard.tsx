@@ -88,7 +88,10 @@ export function ProjectSummaryCard({
             {srtData ? `${srtData.fileName}.srt` : "Not loaded"}
           </div>
           <div className="text-[11px] text-slate-400">
-            {cuesCount} subtitle cues
+            {cuesCount} cues •{" "}
+            {settings.isSubtitleBurnInEnabled !== false
+              ? `Burn-In (${settings.subtitlePreset || "hormozi-pop"})`
+              : "Burn-In disabled"}
           </div>
         </div>
 
