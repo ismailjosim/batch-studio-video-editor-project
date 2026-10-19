@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Bookmark,
-  Check,
-  Plus,
-  Sparkles,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Bookmark, Check, Plus, Sparkles, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   type AnimSfxPreset,
@@ -157,7 +150,9 @@ export function PresetSelector({
                   {preset.selectedAnims.length} Anims
                 </span>
                 <span className="px-1.5 py-0.5 rounded bg-white/5 font-mono">
-                  {preset.isSfxEnabled ? `${preset.selectedSfx.length} SFX` : "Muted"}
+                  {preset.isSfxEnabled
+                    ? `${preset.selectedSfx.length} SFX`
+                    : "Muted"}
                 </span>
                 {preset.isBuiltIn && (
                   <span className="ml-auto text-emerald-400 font-semibold uppercase text-[8px]">
@@ -177,7 +172,9 @@ export function PresetSelector({
             <div className="flex justify-between items-center border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <Bookmark className="w-4 h-4 text-emerald-400" />
-                <h3 className="text-sm font-bold text-white">Save Current Preset</h3>
+                <h3 className="text-sm font-bold text-white">
+                  Save Current Preset
+                </h3>
               </div>
               <button
                 type="button"
@@ -188,7 +185,10 @@ export function PresetSelector({
               </button>
             </div>
 
-            <form onSubmit={handleSaveNewPreset} className="flex flex-col gap-3">
+            <form
+              onSubmit={handleSaveNewPreset}
+              className="flex flex-col gap-3"
+            >
               <div className="flex flex-col gap-1">
                 <label
                   htmlFor="preset-name"
@@ -225,9 +225,16 @@ export function PresetSelector({
               </div>
 
               <div className="rounded-xl border border-white/5 bg-black/30 p-2.5 text-[11px] text-slate-400 flex flex-col gap-1">
-                <span className="font-semibold text-slate-300">Current settings captured:</span>
+                <span className="font-semibold text-slate-300">
+                  Current settings captured:
+                </span>
                 <span>• {selectedAnims.size} active animation transitions</span>
-                <span>• {isSfxEnabled ? `${selectedSfx.size} active SFX sounds` : "Sound effects muted"}</span>
+                <span>
+                  •{" "}
+                  {isSfxEnabled
+                    ? `${selectedSfx.size} active SFX sounds`
+                    : "Sound effects muted"}
+                </span>
               </div>
 
               <div className="flex items-center justify-end gap-2 mt-2">

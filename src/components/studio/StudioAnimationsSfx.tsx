@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, Shuffle, SlidersHorizontal, Volume2, Wand2 } from "lucide-react";
+import { Eye, Shuffle, SlidersHorizontal, Wand2 } from "lucide-react";
 import type { AnimSfxPreset } from "@/lib/video-generator/presets";
 import { playSfxPreview } from "@/lib/video-generator/sfx-loader";
 import { ANIMATIONS_LIST, SFX_LIST } from "@/lib/video-generator/transitions";
@@ -204,7 +204,8 @@ export function StudioAnimationsSfx({
           </div>
         ) : (
           <div className="p-4 rounded-xl border border-white/5 bg-white/2 text-center text-xs text-slate-500 mt-3">
-            SFX sound effects are currently muted. Check "Enable Sound Effects" above to activate.
+            SFX sound effects are currently muted. Check "Enable Sound Effects"
+            above to activate.
           </div>
         )}
       </div>

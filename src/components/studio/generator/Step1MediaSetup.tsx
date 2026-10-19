@@ -1,0 +1,104 @@
+"use client";
+
+import { AlertTriangle, ArrowRight, CheckCircle2 } from "lucide-react";
+import { AudioUploader } from "@/components/studio/AudioUploader";
+import { ImagesUploader } from "@/components/studio/ImagesUploader";
+import { SrtUploader } from "@/components/studio/SrtUploader";
+import { VideoSettingsCard } from "@/components/studio/VideoSettingsCard";
+import type { SRTData, VideoSettings } from "@/lib/video-generator/types";
+
+interface Step1MediaSetupProps {
+  srtData: SRTData | null;
+  onSrtLoaded: (data: SRTData | null) => void;
+  audioBuffer: AudioBuffer | null;
+  audioFileName: string;
+  onAudioLoaded: (buf: AudioBuffer | null, name: string) => void;
+  loadedImages: HTMLImageElement[];
+  onImagesLoaded: (imgs: HTMLImageElement[]) => void;
+  settings: VideoSettings;
+  onSettingsChange: (updated: Partial<VideoSettings>) => void;
+  canGoToStep2: boolean;
+  onContinue: () => void;
+}
+
+export function Step1MediaSetup({
+  srtData,
+  onSrtLoaded,
+  audioBuffer,
+  audioFileName,
+  onAudioLoaded,
+  loadedImages,
+  onImagesLoaded,
+  settings,
+  onSettingsChange,
+  canGoToStep2,
+  onContinue,
+}: Step1MediaSetupProps) {
+  const hasSrt = Boolean(srtData && srtData.cues.length > 0);
+  const hasImages = loadedImages.length > 0;
+
+  return (
+    <div className="flex flex-col gap-5 animate-in fade-in duration-300">
+      <div className="flex items-center justify-between px-1">
+        <div>
+          <h2 className="text-lg font-extrabold text-white font-heading tracking-tight">
+            1. Media Uploads & Format Setup
+          </h2>
+          <p className="text-xs text-slate-400">
+            Upload your voiceover .srt subtitles, storyboard image batch,
+            optional background audio, and video resolution.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <SrtUploader srtData={srtData} onSrtLoaded={onSrtLoaded} />
+        <AudioUploader
+          audioBuffer={audioBuffer}
+          audioFileName={audioFileName}
+          onAudioLoaded={onAudioLoaded}
+        />
+      </div>
+
+      <ImagesUploader
+        srtData={srtData}
+        loadedImages={loadedImages}
+        onImagesLoaded={onImagesLoaded}
+      />
+
+      <VideoSettingsCard settings={settings} onChange={onSettingsChange} />
+
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl border border-white/10 bg-[#10121a]/80 backdrop-blur-md shadow-xl mt-2">
+        <div className="flex items-center gap-2 text-xs">
+          {hasSrt && hasImages ? (
+            <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>
+                Ready: {srtData?.cues.length} subtitle cues and{" "}
+                {loadedImages.length} images loaded
+              </span>
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5 text-slate-400 font-medium">
+              <AlertTriangle className="w-4 h-4 text-amber-400/80" />
+              <span>
+                Upload your files here, or jump into Step 2 to preview and save
+                animation presets.
+              </span>
+            </span>
+          )}
+        </div>
+
+        <button
+          type="button"
+          disabled={!canGoToStep2}
+          onClick={onContinue}
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs font-heading shadow-lg shadow-emerald-500/20 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+        >
+          <span>Continue to Step 2: Animations & SFX</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}

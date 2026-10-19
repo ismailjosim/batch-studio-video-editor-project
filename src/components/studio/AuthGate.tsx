@@ -1,115 +1,19 @@
 "use client";
 
-import {
-  AlertCircle,
-  ArrowRight,
-  CheckCircle2,
-  Film,
-  KeyRound,
-  Loader2,
-  Lock,
-  Mail,
-  Phone,
-  ShieldCheck,
-  Sparkles,
-  User,
-  Zap,
-} from "lucide-react";
+import { Film, Loader2, ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
-import { signIn, signUp } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
+import { SignInForm } from "./auth/SignInForm";
+import { SignUpForm } from "./auth/SignUpForm";
 
 export function AuthGate() {
   const [tab, setTab] = useState<"signin" | "signup">("signin");
-
-  // Sign In Form State
-  const [signInEmail, setSignInEmail] = useState("");
-  const [signInPassword, setSignInPassword] = useState("");
-  const [isSigningIn, setIsSigningIn] = useState(false);
-  const [signInError, setSignInError] = useState("");
-
-  // Sign Up Form State
-  const [signUpName, setSignUpName] = useState("");
-  const [signUpEmail, setSignUpEmail] = useState("");
-  const [signUpPhone, setSignUpPhone] = useState("");
-  const [signUpPassword, setSignUpPassword] = useState("");
-  const [isSigningUp, setIsSigningUp] = useState(false);
-  const [signUpError, setSignUpError] = useState("");
-  const [signUpSuccess, setSignUpSuccess] = useState("");
-
-  // Google OAuth
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSigningIn(true);
-    setSignInError("");
-    try {
-      await signIn.email(
-        { email: signInEmail, password: signInPassword },
-        {
-          onError: (ctx) => {
-            setSignInError(
-              ctx.error.message ||
-                "Invalid email or password. Please try again.",
-            );
-          },
-          onSuccess: () => {
-            window.location.reload();
-          },
-        },
-      );
-    } catch (err: unknown) {
-      const error = err as Error;
-      setSignInError(error.message || "Failed to sign in");
-    } finally {
-      setIsSigningIn(false);
-    }
-  };
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (signUpPassword.length < 8) {
-      setSignUpError("Password must be at least 8 characters long");
-      return;
-    }
-    setIsSigningUp(true);
-    setSignUpError("");
-    setSignUpSuccess("");
-    try {
-      await signUp.email(
-        {
-          email: signUpEmail,
-          password: signUpPassword,
-          name: signUpName,
-          phone: signUpPhone || undefined,
-        },
-        {
-          onError: (ctx) => {
-            setSignUpError(
-              ctx.error.message ||
-                "Failed to create account. Please try again.",
-            );
-          },
-          onSuccess: () => {
-            setSignUpSuccess(
-              "Account created successfully! Loading your studio...",
-            );
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          },
-        },
-      );
-    } catch (err: unknown) {
-      const error = err as Error;
-      setSignUpError(error.message || "Sign up failed");
-    } finally {
-      setIsSigningUp(false);
-    }
-  };
+  const [googleError, setGoogleError] = useState("");
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
+    setGoogleError("");
     try {
       await signIn.social({
         provider: "google",
@@ -117,7 +21,7 @@ export function AuthGate() {
       });
     } catch (err: unknown) {
       const error = err as Error;
-      setSignInError(error.message || "Google sign in failed");
+      setGoogleError(error.message || "Google sign in failed");
       setIsGoogleLoading(false);
     }
   };
@@ -153,10 +57,7 @@ export function AuthGate() {
           <div className="grid grid-cols-2 p-1 rounded-xl bg-black/50 border border-white/10">
             <button
               type="button"
-              onClick={() => {
-                setTab("signin");
-                setSignInError("");
-              }}
+              onClick={() => setTab("signin")}
               className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 tab === "signin"
                   ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/20"
@@ -167,11 +68,7 @@ export function AuthGate() {
             </button>
             <button
               type="button"
-              onClick={() => {
-                setTab("signup");
-                setSignUpError("");
-                setSignUpSuccess("");
-              }}
+              onClick={() => setTab("signup")}
               className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 tab === "signup"
                   ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/20"
@@ -220,6 +117,12 @@ export function AuthGate() {
             <span>Continue with Google</span>
           </button>
 
+          {googleError && (
+            <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/25 text-xs text-rose-300 text-center">
+              {googleError}
+            </div>
+          )}
+
           <div className="flex items-center gap-3">
             <div className="h-px bg-white/10 flex-1" />
             <span className="text-[11px] text-slate-500 uppercase tracking-widest font-semibold">
@@ -228,186 +131,8 @@ export function AuthGate() {
             <div className="h-px bg-white/10 flex-1" />
           </div>
 
-          {/* TAB 1: SIGN IN */}
-          {tab === "signin" && (
-            <form onSubmit={handleSignIn} className="flex flex-col gap-3.5">
-              {signInError && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 text-xs text-rose-300">
-                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
-                  <span>{signInError}</span>
-                </div>
-              )}
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="signin-email"
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-300"
-                >
-                  <Mail className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Email Address</span>
-                </label>
-                <input
-                  id="signin-email"
-                  type="email"
-                  required
-                  value={signInEmail}
-                  onChange={(e) => setSignInEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition-all shadow-inner"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="signin-password"
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-300"
-                >
-                  <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Password</span>
-                </label>
-                <input
-                  id="signin-password"
-                  type="password"
-                  required
-                  value={signInPassword}
-                  onChange={(e) => setSignInPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition-all shadow-inner"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSigningIn}
-                className="mt-2 w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3 text-xs font-extrabold text-black hover:bg-emerald-400 disabled:opacity-50 transition-all cursor-pointer shadow-lg shadow-emerald-500/20"
-              >
-                {isSigningIn ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin text-black" />
-                    <span>Signing in...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Sign In to Studio</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </form>
-          )}
-
-          {/* TAB 2: SIGN UP */}
-          {tab === "signup" && (
-            <form onSubmit={handleSignUp} className="flex flex-col gap-3.5">
-              {signUpError && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 text-xs text-rose-300">
-                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
-                  <span>{signUpError}</span>
-                </div>
-              )}
-              {signUpSuccess && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-xs text-emerald-300">
-                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
-                  <span>{signUpSuccess}</span>
-                </div>
-              )}
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="signup-name"
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-300"
-                >
-                  <User className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Full Name</span>
-                </label>
-                <input
-                  id="signup-name"
-                  type="text"
-                  required
-                  value={signUpName}
-                  onChange={(e) => setSignUpName(e.target.value)}
-                  placeholder="Alex Creator"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition-all shadow-inner"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="signup-email"
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-300"
-                >
-                  <Mail className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Email Address</span>
-                </label>
-                <input
-                  id="signup-email"
-                  type="email"
-                  required
-                  value={signUpEmail}
-                  onChange={(e) => setSignUpEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition-all shadow-inner"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="signup-phone"
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-300"
-                >
-                  <Phone className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Phone Number (Optional)</span>
-                </label>
-                <input
-                  id="signup-phone"
-                  type="tel"
-                  value={signUpPhone}
-                  onChange={(e) => setSignUpPhone(e.target.value)}
-                  placeholder="+1 (555) 000-0000"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition-all shadow-inner"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="signup-password"
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-300"
-                >
-                  <KeyRound className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Password (Min. 8 characters)</span>
-                </label>
-                <input
-                  id="signup-password"
-                  type="password"
-                  required
-                  minLength={8}
-                  maxLength={128}
-                  value={signUpPassword}
-                  onChange={(e) => setSignUpPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition-all shadow-inner"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSigningUp}
-                className="mt-2 w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3 text-xs font-extrabold text-black hover:bg-emerald-400 disabled:opacity-50 transition-all cursor-pointer shadow-lg shadow-emerald-500/20"
-              >
-                {isSigningUp ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin text-black" />
-                    <span>Creating account...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Create Account & Enter Studio</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </form>
-          )}
+          {/* Form Tabs */}
+          {tab === "signin" ? <SignInForm /> : <SignUpForm />}
         </div>
 
         {/* Studio Highlights Footer */}

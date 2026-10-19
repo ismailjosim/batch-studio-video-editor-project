@@ -73,7 +73,9 @@ export function saveCustomPreset(
   const newPreset: AnimSfxPreset = {
     id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     name: name.trim() || "Custom Preset",
-    desc: desc.trim() || `${selectedAnims.length} animations, ${selectedSfx.length} SFX`,
+    desc:
+      desc.trim() ||
+      `${selectedAnims.length} animations, ${selectedSfx.length} SFX`,
     isBuiltIn: false,
     selectedAnims,
     selectedSfx,
