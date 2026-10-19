@@ -7,6 +7,7 @@ import {
   Key,
   Sparkles,
   Trash2,
+  Wand2,
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -201,21 +202,25 @@ export function NanoBananaStudio({
       {/* Studio Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 rounded-3xl border border-white/10 bg-[#0f111a]/80 backdrop-blur-xl shadow-xl">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-amber-400 to-amber-600 flex items-center justify-center text-2xl shadow-lg shadow-amber-500/20">
-            🍌
+          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-amber-400 via-orange-500 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-amber-500/20">
+            <Wand2 className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl font-black tracking-tight text-white font-heading">
-                Nano Banana AI Studio
+                AI Image Generator Studio
               </h2>
               <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
-                Gemini Pro 2K
+                {selectedModel === "flux-schnell"
+                  ? "FLUX.1 Schnell • Free"
+                  : selectedModel.startsWith("nano-banana")
+                    ? "Gemini Pro 2K"
+                    : "Multi-Model 2K"}
               </span>
             </div>
             <p className="text-xs text-slate-400">
               Generate consistent Dollar Doodles character sheets, 2K storyboard
-              frames & turnaround stickers with multi-reference conditioning.
+              frames & turnaround stickers with multi-model AI.
             </p>
           </div>
         </div>
@@ -227,12 +232,12 @@ export function NanoBananaStudio({
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
               hasApiKey
                 ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                : "border-amber-500/30 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20"
+                : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10"
             }`}
           >
             <Key className="w-3.5 h-3.5" />
             <span>
-              {hasApiKey ? "Gemini Key Active" : "Add Gemini API Key"}
+              {hasApiKey ? "Gemini Key Active" : "Provider Keys (Optional)"}
             </span>
           </button>
 

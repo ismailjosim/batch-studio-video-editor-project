@@ -57,16 +57,17 @@ export function NanoBananaGallery({
   if (assets.length === 0) {
     return (
       <div className="w-full flex flex-col items-center justify-center p-12 rounded-3xl border-2 border-dashed border-white/10 bg-[#0d0e14]/60 text-center gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-3xl shadow-lg shadow-amber-500/10">
-          🍌
+        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shadow-lg shadow-amber-500/10">
+          <Wand2 className="w-8 h-8 text-amber-400" />
         </div>
         <div>
           <h3 className="text-base font-bold text-white font-heading">
-            Nano Banana Studio Workspace
+            AI Image Studio Workspace
           </h3>
           <p className="text-xs text-slate-400 max-w-md mx-auto mt-1">
             Generate consistent Dollar Doodles character turnarounds, sticker
-            packs, and 2K storyboard scenes using Gemini Pro.
+            packs, and 2K storyboard scenes using FLUX.1, Gemini Pro & diffusion
+            models.
           </p>
         </div>
 

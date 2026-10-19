@@ -36,19 +36,19 @@ export function OverviewQuickTools() {
       buttonText: "Open Batch Splitter",
     },
     {
-      title: "Nano Banana AI Studio",
-      tagline: "Gemini Pro Character Engine",
+      title: "AI Image Generator",
+      tagline: "FLUX.1 & Gemini Pro Studio",
       description:
-        "Generate multi-view character designs, turnarounds, and 2K storyboards using Google Gemini Pro with reference image conditioning.",
+        "Generate multi-view character designs, turnarounds, and 2K storyboards using FLUX.1 (Free Unlimited) and Google Gemini Pro.",
       icon: Wand2,
       href: "/dashboard/image-generator",
-      badge: "Gemini 2K",
+      badge: "Multi-AI 2K",
       color: "amber",
       bgGradient: "from-amber-500/10 via-amber-950/20 to-transparent",
       borderColor: "border-amber-500/30 hover:border-amber-400/60",
       accentBg: "bg-amber-500",
       accentText: "text-amber-400",
-      buttonText: "Open AI Studio",
+      buttonText: "Open Image Generator",
     },
   ];
 

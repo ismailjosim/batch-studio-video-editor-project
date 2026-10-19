@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ExternalLink, Key, Trash2, X } from "lucide-react";
+import { Check, ExternalLink, Key, Sparkles, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   checkServerGeminiKey,
@@ -62,10 +62,10 @@ export function NanoBananaKeyModal({
             </div>
             <div>
               <h3 className="text-sm font-bold text-white font-heading">
-                Gemini Pro API Key
+                AI Provider & API Key Settings
               </h3>
               <p className="text-[11px] text-slate-400">
-                Powers Nano Banana Pro, 2.1 & 2 Lite image generation
+                FLUX.1 is free; Google Gemini key is optional
               </p>
             </div>
           </div>
@@ -78,13 +78,24 @@ export function NanoBananaKeyModal({
           </button>
         </div>
 
+        {/* Free Engine Status */}
+        <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-teal-500/10 border border-teal-500/30 text-xs text-teal-300">
+          <Sparkles className="w-4 h-4 text-teal-400 shrink-0" />
+          <div className="flex flex-col">
+            <span className="font-bold">FLUX.1 Schnell: Free & Active</span>
+            <span className="text-[11px] text-slate-400">
+              Unlimited generation is enabled with zero key or billing needed!
+            </span>
+          </div>
+        </div>
+
         {hasServerKey && (
           <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300">
             <Check className="w-4 h-4 text-emerald-400 shrink-0" />
             <div className="flex flex-col">
               <span className="font-bold">GEMINI_API_KEY Connected</span>
               <span className="text-[11px] text-slate-400">
-                Loaded directly from .env.local — Nano Banana is ready!
+                Loaded directly from .env.local for Gemini Pro models
               </span>
             </div>
           </div>

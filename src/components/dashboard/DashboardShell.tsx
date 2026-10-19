@@ -107,7 +107,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 {isImageGen && (
                   <>
                     <Wand2 className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Nano Banana AI Studio</span>
+                    <span>AI Image Generator Studio</span>
                   </>
                 )}
               </span>

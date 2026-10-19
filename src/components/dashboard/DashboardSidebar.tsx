@@ -63,10 +63,10 @@ export function DashboardSidebar({
     },
     {
       href: "/dashboard/image-generator",
-      label: "Nano Banana AI",
-      sublabel: "Character & 2K Storyboard",
+      label: "AI Image Generator",
+      sublabel: "FLUX.1 • Gemini • 2K",
       icon: Wand2,
-      badge: "Gemini",
+      badge: "Multi-AI",
       isActive: pathname.startsWith("/dashboard/image-generator"),
     },
   ];

@@ -42,13 +42,13 @@ export function OverviewStatCards({
     {
       title: "AI Images Generated",
       value: totalImages,
-      description: "Gemini Pro 2K character assets",
+      description: "FLUX.1 & Gemini 2K character assets",
       icon: Wand2,
       gradient: "from-amber-500/15 via-amber-500/5 to-transparent",
       borderColor: "border-amber-500/30",
       iconColor: "text-amber-400 bg-amber-500/10",
       href: "/dashboard/image-generator",
-      badgeText: "Gemini Pro",
+      badgeText: "Multi-AI",
     },
     {
       title: "Subtitle Batches",
