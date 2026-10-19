@@ -8,6 +8,7 @@ import { Step1MediaSetup } from "@/components/studio/generator/Step1MediaSetup";
 import { Step2AnimationsSfx } from "@/components/studio/generator/Step2AnimationsSfx";
 import { Step3RenderReview } from "@/components/studio/generator/Step3RenderReview";
 import { Header } from "@/components/studio/Header";
+import { NanoBananaStudio } from "@/components/studio/nano-banana/NanoBananaStudio";
 import { ProjectsHistoryModal } from "@/components/studio/ProjectsHistoryModal";
 import { SrtBatchSplitter } from "@/components/studio/SrtBatchSplitter";
 import { Stepper, type StudioStep } from "@/components/studio/Stepper";
@@ -179,6 +180,12 @@ export function StudioDashboard() {
                     <span>SRT Batch Splitter</span>
                   </>
                 )}
+                {activeTab === "nano-banana" && (
+                  <>
+                    <span className="text-sm">🍌</span>
+                    <span>Nano Banana AI Studio</span>
+                  </>
+                )}
                 {activeTab === "projects" && (
                   <>
                     <FolderGit2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -206,6 +213,16 @@ export function StudioDashboard() {
           {activeTab === "splitter" && (
             <SrtBatchSplitter
               onSendToGenerator={handleLoadBatchIntoGenerator}
+            />
+          )}
+
+          {activeTab === "nano-banana" && (
+            <NanoBananaStudio
+              onSendToVideoGenerator={(imgs) => {
+                setLoadedImages((prev) => [...prev, ...imgs]);
+                setActiveTab("generator");
+                setCurrentStep(1);
+              }}
             />
           )}
 

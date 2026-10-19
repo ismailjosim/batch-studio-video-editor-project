@@ -15,7 +15,11 @@ import {
 } from "lucide-react";
 import { signOut, useSession } from "@/lib/auth-client";
 
-export type DashboardToolTab = "generator" | "splitter" | "projects";
+export type DashboardToolTab =
+  | "generator"
+  | "splitter"
+  | "nano-banana"
+  | "projects";
 
 interface DashboardSidebarProps {
   activeTab: DashboardToolTab;
@@ -63,6 +67,13 @@ export function DashboardSidebar({
       badge: "Batch",
     },
     {
+      id: "nano-banana",
+      label: "Nano Banana AI",
+      sublabel: "Character & 2K Storyboard",
+      icon: Wand2,
+      badge: "Gemini",
+    },
+    {
       id: "projects",
       label: "Cloud Projects & History",
       sublabel: "Database Backed",
@@ -74,11 +85,6 @@ export function DashboardSidebar({
     {
       label: "Audio & Voice Studio",
       icon: Mic,
-      badge: "Soon",
-    },
-    {
-      label: "Storyboard AI Suite",
-      icon: Wand2,
       badge: "Soon",
     },
   ];
