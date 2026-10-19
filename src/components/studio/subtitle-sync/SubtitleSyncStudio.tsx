@@ -213,6 +213,7 @@ export function SubtitleSyncStudio() {
           hasAudio={Boolean(session.audioUrl)}
           hasSrt={cueEngine.cues.length > 0}
           hasBgm={Boolean(playback.bgmTrack.url)}
+          isAudioLoading={session.isAudioLoading}
           canUndo={cueEngine.history.length > 0}
           selectedCue={selectedCue}
           onSelectAudioFile={session.handleSelectAudioFile}
@@ -254,6 +255,7 @@ export function SubtitleSyncStudio() {
             waveformPeaks={session.waveformPeaks}
             isPlaying={playback.isPlaying}
             isAutoScrollEnabled={playback.isAutoScrollEnabled}
+            isAudioLoading={session.isAudioLoading}
             onSelectCue={cueEngine.setSelectedId}
             onUpdateCueTiming={cueEngine.handleUpdateCueTiming}
             onSeek={playback.seekTo}
@@ -315,7 +317,11 @@ export function SubtitleSyncStudio() {
       </div>
 
       {/* Bottom Status Bar */}
-      <SubtitleStatusBar statusText={session.statusText} zoom={playback.zoom} />
+      <SubtitleStatusBar
+        statusText={session.statusText}
+        zoom={playback.zoom}
+        isAudioLoading={session.isAudioLoading}
+      />
     </div>
   );
 }

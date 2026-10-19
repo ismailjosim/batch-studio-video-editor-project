@@ -19,6 +19,7 @@ interface SubtitleTimelineProps {
   waveformPeaks: number[];
   isPlaying?: boolean;
   isAutoScrollEnabled?: boolean;
+  isAudioLoading?: boolean;
   onSelectCue: (id: number | null) => void;
   onUpdateCueTiming: (
     id: number,
@@ -38,6 +39,7 @@ export function SubtitleTimeline({
   waveformPeaks,
   isPlaying = false,
   isAutoScrollEnabled = true,
+  isAudioLoading = false,
   onSelectCue,
   onUpdateCueTiming,
   onSeek,
@@ -238,6 +240,7 @@ export function SubtitleTimeline({
             safeDuration={safeDuration}
             scrollLeft={scrollState.scrollLeft}
             visibleWidth={scrollState.visibleWidth}
+            isAudioLoading={isAudioLoading}
             onSeek={onSeek}
           />
 

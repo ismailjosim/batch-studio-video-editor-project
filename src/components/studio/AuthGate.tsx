@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  CheckCircle2,
-  Film,
-  Loader2,
-  ShieldCheck,
-  Sparkles,
-  Zap,
-} from "lucide-react";
+import { CheckCircle2, Film, Loader2, ShieldCheck, Zap } from "lucide-react";
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 

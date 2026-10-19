@@ -9,7 +9,6 @@ import {
   Menu,
   Mic,
   Scissors,
-  Sparkles,
   Wand2,
 } from "lucide-react";
 import { usePathname } from "next/navigation";

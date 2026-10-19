@@ -1,6 +1,6 @@
 "use client";
 
-import { FolderGit2, Loader2, LogOut, Sparkles, User } from "lucide-react";
+import { FolderGit2, Loader2, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { signIn, signOut, useSession } from "@/lib/auth-client";
 

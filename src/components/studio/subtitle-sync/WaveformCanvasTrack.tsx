@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import React, {
   type PointerEvent as ReactPointerEvent,
   useEffect,
@@ -13,6 +14,7 @@ interface WaveformCanvasTrackProps {
   safeDuration: number;
   scrollLeft: number;
   visibleWidth: number;
+  isAudioLoading?: boolean;
   onSeek: (timeInSeconds: number) => void;
 }
 
@@ -33,6 +35,7 @@ export function WaveformCanvasTrack({
   safeDuration,
   scrollLeft,
   visibleWidth,
+  isAudioLoading = false,
   onSeek,
 }: WaveformCanvasTrackProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -117,7 +120,36 @@ export function WaveformCanvasTrack({
       style={{ height: `${TRACK_HEIGHT}px`, width: `${timelineWidth}px` }}
       title="Click or drag anywhere on waveform to seek"
     >
-      {waveformPeaks.length === 0 ? (
+      {isAudioLoading ? (
+        <div
+          className="sticky left-0 h-full flex flex-col items-center justify-center gap-2 bg-[#090a10]/95 backdrop-blur-md z-20 pointer-events-none px-4"
+          style={{
+            width: `${Math.min(timelineWidth, Math.max(400, visibleWidth))}px`,
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <Loader2 className="w-5 h-5 animate-spin text-cyan-400" />
+            <div className="flex items-center gap-1 h-6">
+              {[
+                35, 70, 95, 55, 85, 40, 75, 50, 90, 65, 80, 45, 60, 95, 70, 40,
+              ].map((h, i) => (
+                <div
+                  key={i}
+                  className="w-1 bg-linear-to-t from-cyan-500 to-[#38bdf8] rounded-full animate-pulse"
+                  style={{
+                    height: `${h}%`,
+                    animationDelay: `${i * 50}ms`,
+                    animationDuration: "750ms",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-xs font-mono font-semibold text-cyan-300">
+            <span>Decoding Web Audio API Waveform Peaks...</span>
+          </div>
+        </div>
+      ) : waveformPeaks.length === 0 ? (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-xs text-slate-500 font-medium">
           Load audio to generate waveform
         </div>
