@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Film,
   FolderGit2,
+  LayoutDashboard,
   LogOut,
   Mic,
   Scissors,
@@ -13,71 +14,60 @@ import {
   Wand2,
   X,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { signOut, useSession } from "@/lib/auth-client";
 
-export type DashboardToolTab =
-  | "generator"
-  | "splitter"
-  | "nano-banana"
-  | "projects";
-
 interface DashboardSidebarProps {
-  activeTab: DashboardToolTab;
-  onSelectTab: (tab: DashboardToolTab) => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
   mobileOpen: boolean;
   onCloseMobile: () => void;
+  onOpenProjectsModal: () => void;
 }
 
 export function DashboardSidebar({
-  activeTab,
-  onSelectTab,
   collapsed,
   onToggleCollapse,
   mobileOpen,
   onCloseMobile,
+  onOpenProjectsModal,
 }: DashboardSidebarProps) {
+  const pathname = usePathname();
   const { data: session } = useSession();
 
-  const handleNavClick = (tab: DashboardToolTab) => {
-    onSelectTab(tab);
-    onCloseMobile();
-  };
-
-  const navItems: Array<{
-    id: DashboardToolTab;
-    label: string;
-    sublabel: string;
-    icon: typeof Film;
-    badge?: string;
-  }> = [
+  const navItems = [
     {
-      id: "generator",
+      href: "/dashboard/overview",
+      label: "Studio Overview",
+      sublabel: "App Metrics & Health",
+      icon: LayoutDashboard,
+      badge: "Home",
+      isActive: pathname === "/dashboard/overview" || pathname === "/dashboard",
+    },
+    {
+      href: "/dashboard/video-editor",
       label: "SRT Video Generator",
       sublabel: "2K Hardware GPU MP4",
       icon: Film,
       badge: "2K",
+      isActive: pathname.startsWith("/dashboard/video-editor"),
     },
     {
-      id: "splitter",
+      href: "/dashboard/subtitle-splitter",
       label: "SRT Batch Splitter",
       sublabel: "Split & ZIP Subtitles",
       icon: Scissors,
       badge: "Batch",
+      isActive: pathname.startsWith("/dashboard/subtitle-splitter"),
     },
     {
-      id: "nano-banana",
+      href: "/dashboard/image-generator",
       label: "Nano Banana AI",
       sublabel: "Character & 2K Storyboard",
       icon: Wand2,
       badge: "Gemini",
-    },
-    {
-      id: "projects",
-      label: "Cloud Projects & History",
-      sublabel: "Database Backed",
-      icon: FolderGit2,
+      isActive: pathname.startsWith("/dashboard/image-generator"),
     },
   ];
 
@@ -110,8 +100,12 @@ export function DashboardSidebar({
         {/* Top: Logo & Branding */}
         <div className="flex flex-col">
           <div className="flex items-center justify-between p-4 border-b border-white/10">
-            <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-400 via-teal-500 to-emerald-600 flex items-center justify-center text-black font-extrabold shadow-lg shadow-emerald-500/20 shrink-0">
+            <Link
+              href="/dashboard/overview"
+              onClick={onCloseMobile}
+              className="flex items-center gap-3 overflow-hidden cursor-pointer group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-400 via-teal-500 to-emerald-600 flex items-center justify-center text-black font-extrabold shadow-lg shadow-emerald-500/20 shrink-0 group-hover:scale-105 transition-transform">
                 <Sparkles className="w-5 h-5 text-black" />
               </div>
               {!collapsed && (
@@ -124,7 +118,7 @@ export function DashboardSidebar({
                   </span>
                 </div>
               )}
-            </div>
+            </Link>
 
             {/* Desktop Collapse Toggle */}
             <button
@@ -159,16 +153,16 @@ export function DashboardSidebar({
                   Creative Tools
                 </span>
               )}
+
               {navItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = activeTab === item.id;
                 return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => handleNavClick(item.id)}
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onCloseMobile}
                     className={`flex items-center gap-3 w-full p-2.5 rounded-xl transition-all cursor-pointer text-left ${
-                      isActive
+                      item.isActive
                         ? "bg-linear-to-r from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 text-white shadow-lg shadow-emerald-500/10"
                         : "hover:bg-white/5 border border-transparent text-slate-400 hover:text-slate-200"
                     }`}
@@ -176,7 +170,7 @@ export function DashboardSidebar({
                   >
                     <div
                       className={`p-2 rounded-lg shrink-0 transition-all ${
-                        isActive
+                        item.isActive
                           ? "bg-emerald-500 text-black shadow-md shadow-emerald-500/30"
                           : "bg-white/5 text-slate-400 group-hover:text-white"
                       }`}
@@ -193,7 +187,7 @@ export function DashboardSidebar({
                           {item.badge && (
                             <span
                               className={`text-[9px] uppercase font-bold px-1.5 py-0.2 rounded ${
-                                isActive
+                                item.isActive
                                   ? "bg-emerald-500/30 text-emerald-300"
                                   : "bg-white/10 text-slate-400"
                               }`}
@@ -207,9 +201,39 @@ export function DashboardSidebar({
                         </span>
                       </div>
                     )}
-                  </button>
+                  </Link>
                 );
               })}
+
+              {/* Cloud Projects Modal Trigger */}
+              <button
+                type="button"
+                onClick={() => {
+                  onCloseMobile();
+                  onOpenProjectsModal();
+                }}
+                className="flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-white/5 border border-transparent text-slate-400 hover:text-slate-200 transition-all cursor-pointer text-left"
+                title={collapsed ? "Cloud Projects & History" : undefined}
+              >
+                <div className="p-2 rounded-lg shrink-0 bg-white/5 text-slate-400">
+                  <FolderGit2 className="w-4 h-4" />
+                </div>
+                {!collapsed && (
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-xs font-bold truncate">
+                        Cloud Projects
+                      </span>
+                      <span className="text-[9px] uppercase font-bold px-1.5 py-0.2 rounded bg-white/10 text-slate-400">
+                        Cloud
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-slate-400 block truncate">
+                      Database History
+                    </span>
+                  </div>
+                )}
+              </button>
             </div>
 
             {/* Coming Soon Section */}

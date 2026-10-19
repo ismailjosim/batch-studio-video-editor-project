@@ -2,6 +2,7 @@
 
 import { AlertCircle, RotateCcw, Scissors } from "lucide-react";
 import { useState } from "react";
+import { recordSubtitleSplit } from "@/lib/stats-tracker";
 import type { Cue } from "@/lib/video-generator/types";
 import { BatchItemCard } from "./splitter/BatchItemCard";
 import { SplitterStatsGrid } from "./splitter/SplitterStatsGrid";
@@ -92,6 +93,7 @@ export function SrtBatchSplitter({ onSendToGenerator }: SrtBatchSplitterProps) {
       );
       setIsZipping(false);
       if (saved) {
+        recordSubtitleSplit(batches.length, parsedSubs.length);
         setZipSuccess(true);
         setTimeout(() => setZipSuccess(false), 4000);
       }

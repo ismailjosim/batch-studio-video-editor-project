@@ -1,11 +1,21 @@
 "use client";
 
-import { AlertCircle, Key, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  ExternalLink,
+  Key,
+  Sparkles,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+import { recordImageGeneration } from "@/lib/stats-tracker";
 import { NanoBananaGallery } from "./NanoBananaGallery";
 import { NanoBananaKeyModal } from "./NanoBananaKeyModal";
 import { NanoBananaPromptBar } from "./NanoBananaPromptBar";
 import {
+  checkServerGeminiKey,
   generateNanoBananaImages,
   getStoredGeminiKey,
 } from "./nano-banana-api";
@@ -25,14 +35,27 @@ export function NanoBananaStudio({
 }: NanoBananaStudioProps) {
   const [assets, setAssets] = useState<GeneratedAsset[]>([]);
   const [selectedModel, setSelectedModel] =
-    useState<NanoBananaModel>("nano-banana-2.1");
+    useState<NanoBananaModel>("flux-schnell");
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [quotaInfo, setQuotaInfo] = useState<{
+    isQuotaError: boolean;
+    message: string;
+    billingUrl: string;
+    projectNumber?: string;
+    lastPrompt?: string;
+  } | null>(null);
   const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
 
   useEffect(() => {
-    setHasApiKey(Boolean(getStoredGeminiKey()));
+    if (getStoredGeminiKey()) {
+      setHasApiKey(true);
+    } else {
+      checkServerGeminiKey().then((has) => {
+        if (has) setHasApiKey(true);
+      });
+    }
   }, []);
 
   const handleGenerate = async (params: {
@@ -45,6 +68,7 @@ export function NanoBananaStudio({
   }) => {
     setIsGenerating(true);
     setErrorMsg("");
+    setQuotaInfo(null);
 
     try {
       const response = await generateNanoBananaImages({
@@ -59,7 +83,20 @@ export function NanoBananaStudio({
         })),
       });
 
-      if (!response.success || !response.images.length) {
+      if (!response.success) {
+        if (response.isQuotaError) {
+          setQuotaInfo({
+            isQuotaError: true,
+            message:
+              response.error ||
+              "Google Gemini Image Quota Limit: 0 (Billing Required).",
+            billingUrl:
+              response.billingUrl || "https://console.cloud.google.com/billing",
+            projectNumber: response.projectNumber || "349945349831",
+            lastPrompt: params.prompt,
+          });
+          return;
+        }
         throw new Error(response.error || "No images returned by generator");
       }
 
@@ -77,9 +114,53 @@ export function NanoBananaStudio({
       }));
 
       setAssets((prev) => [...newAssets, ...prev]);
+      recordImageGeneration(newAssets.length);
     } catch (err: unknown) {
       const error = err as Error;
       setErrorMsg(error.message || "Failed to generate images");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleGenerateDemo = async (promptToUse?: string) => {
+    setIsGenerating(true);
+    setErrorMsg("");
+    setQuotaInfo(null);
+
+    try {
+      const p =
+        promptToUse ||
+        "Dollar Doodles minimalist stickman character with red cap and red shirt";
+      const response = await generateNanoBananaImages({
+        prompt: p,
+        model: selectedModel,
+        aspectRatio: "1:1",
+        sampleCount: 1,
+        upscale2K: true,
+        useDemoFallback: true,
+      });
+
+      if (response.success && response.images.length > 0) {
+        const newAssets: GeneratedAsset[] = response.images.map((img) => ({
+          id: `nb-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          url: img.url,
+          prompt: p,
+          model: selectedModel,
+          aspectRatio: "1:1",
+          isUpscaled2K: img.isUpscaled2K,
+          width: img.width,
+          height: img.height,
+          createdAt: Date.now(),
+          referenceImageCount: 0,
+        }));
+
+        setAssets((prev) => [...newAssets, ...prev]);
+        recordImageGeneration(newAssets.length);
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      setErrorMsg(error.message || "Failed to generate demo doodle");
     } finally {
       setIsGenerating(false);
     }
@@ -167,6 +248,90 @@ export function NanoBananaStudio({
           )}
         </div>
       </div>
+
+      {quotaInfo && (
+        <div className="flex flex-col gap-3.5 p-5 rounded-3xl bg-amber-500/10 border border-amber-500/30 text-amber-200 shadow-2xl backdrop-blur-xl animate-in fade-in duration-200">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 shrink-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-white font-heading">
+                    Gemini Image Quota: Free Tier Limit is 0 (Billing Required)
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+                    HTTP 429
+                  </span>
+                </div>
+                <p className="text-xs text-amber-200/90 leading-relaxed max-w-3xl">
+                  Your Gemini API key is connected and verified. However, Google
+                  assigns <strong>0 free requests (limit: 0)</strong> for Gemini
+                  Image Generation models (<code>gemini-nano-banana-2.1</code>,{" "}
+                  <code>gemini-3-pro-image</code>). To generate live images
+                  using Gemini AI, link a{" "}
+                  <strong>Billing Account (Pay-As-You-Go)</strong> on Google
+                  Cloud Project{" "}
+                  <strong>#{quotaInfo.projectNumber || "349945349831"}</strong>.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setQuotaInfo(null)}
+              className="p-1.5 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer"
+              title="Dismiss Warning"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5 pt-3 border-t border-amber-500/20">
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedModel("flux-schnell");
+                setQuotaInfo(null);
+                handleGenerate({
+                  prompt:
+                    quotaInfo.lastPrompt ||
+                    "Dollar Doodles minimalist stickman character with red cap and red shirt, character sheet turnaround",
+                  model: "flux-schnell",
+                  aspectRatio: "1:1",
+                  sampleCount: 1,
+                  upscale2K: true,
+                  referenceImages: [],
+                });
+              }}
+              disabled={isGenerating}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-extrabold text-xs shadow-lg shadow-emerald-500/20 transition-all cursor-pointer disabled:opacity-50"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Switch to FLUX.1 (Free Unlimited AI)</span>
+            </button>
+
+            <a
+              href={quotaInfo.billingUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/10 transition-all cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Link Google Billing</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={() => handleGenerateDemo(quotaInfo.lastPrompt)}
+              disabled={isGenerating}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all cursor-pointer disabled:opacity-50"
+            >
+              <span>Studio Doodle (Offline SVG)</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {errorMsg && (
         <div className="flex items-center gap-2 p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/25 text-xs text-rose-300">

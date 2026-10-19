@@ -1,8 +1,12 @@
 "use client";
 
 import { Check, ExternalLink, Key, Trash2, X } from "lucide-react";
-import { useState } from "react";
-import { getStoredGeminiKey, setStoredGeminiKey } from "./nano-banana-api";
+import { useEffect, useState } from "react";
+import {
+  checkServerGeminiKey,
+  getStoredGeminiKey,
+  setStoredGeminiKey,
+} from "./nano-banana-api";
 
 interface NanoBananaKeyModalProps {
   isOpen: boolean;
@@ -17,6 +21,11 @@ export function NanoBananaKeyModal({
 }: NanoBananaKeyModalProps) {
   const [keyInput, setKeyInput] = useState(() => getStoredGeminiKey());
   const [isSaved, setIsSaved] = useState(false);
+  const [hasServerKey, setHasServerKey] = useState(false);
+
+  useEffect(() => {
+    checkServerGeminiKey().then((has) => setHasServerKey(has));
+  }, []);
 
   if (!isOpen) return null;
 
@@ -69,6 +78,18 @@ export function NanoBananaKeyModal({
           </button>
         </div>
 
+        {hasServerKey && (
+          <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300">
+            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+            <div className="flex flex-col">
+              <span className="font-bold">GEMINI_API_KEY Connected</span>
+              <span className="text-[11px] text-slate-400">
+                Loaded directly from .env.local — Nano Banana is ready!
+              </span>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleSave} className="flex flex-col gap-3.5">
           <div className="flex flex-col gap-1.5">
             <label
@@ -82,11 +103,14 @@ export function NanoBananaKeyModal({
               type="password"
               value={keyInput}
               onChange={(e) => setKeyInput(e.target.value)}
-              placeholder="AIzaSy..."
+              placeholder="Paste Gemini API key (AQ... or AIza...)"
               className="w-full rounded-xl border border-white/15 bg-black/50 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-amber-400 focus:outline-none"
             />
-            <span className="text-[10px] text-slate-500">
-              Saved securely in your browser's local storage. Never shared.
+            <span className="text-[10px] text-slate-400">
+              Supports all Gemini API keys (including keys starting with{" "}
+              <strong className="text-amber-300">AQ...</strong> or{" "}
+              <strong className="text-amber-300">AIza...</strong>). Saved
+              securely in your browser's local storage.
             </span>
           </div>
 

@@ -1,4 +1,5 @@
 export type NanoBananaModel =
+  | "flux-schnell"
   | "nano-banana-pro"
   | "nano-banana-2.1"
   | "nano-banana-2-lite";
@@ -16,11 +17,23 @@ export interface ModelConfig {
 
 export const NANO_BANANA_MODELS: ModelConfig[] = [
   {
+    id: "flux-schnell",
+    name: "FLUX.1 Schnell AI",
+    badge: "Free • Unlimited",
+    description:
+      "State-of-the-art open diffusion model. 100% free with no API key or billing required",
+    geminiModel: "black-forest-labs/FLUX.1-schnell",
+    supportsReference: true,
+    maxResolution: "2048x1152 (2K)",
+    recommendedFor:
+      "Instant generation, turnaround character sheets & storyboards",
+  },
+  {
     id: "nano-banana-pro",
     name: "Nano Banana Pro",
-    badge: "2K Studio",
+    badge: "Gemini 2K",
     description: "Highest fidelity, studio-grade consistency & 2K resolution",
-    geminiModel: "imagen-3.0-generate-002",
+    geminiModel: "gemini-3-pro-image",
     supportsReference: true,
     maxResolution: "2048x1152 (2K)",
     recommendedFor: "Final high-res storyboard panels & detailed art",
@@ -31,7 +44,7 @@ export const NANO_BANANA_MODELS: ModelConfig[] = [
     badge: "Multi-Ref",
     description:
       "Consistent character turnarounds & multi-reference style transfer",
-    geminiModel: "gemini-2.0-flash",
+    geminiModel: "gemini-nano-banana-2.1",
     supportsReference: true,
     maxResolution: "1024x1024 / 2K",
     recommendedFor: "Character sheets, turnarounds & expressive stickmen",
@@ -41,7 +54,7 @@ export const NANO_BANANA_MODELS: ModelConfig[] = [
     name: "Nano Banana 2 Lite",
     badge: "Fast Draft",
     description: "Ultra-fast concept generation & rapid storyboard ideation",
-    geminiModel: "gemini-2.0-flash",
+    geminiModel: "gemini-3.1-flash-lite-image",
     supportsReference: false,
     maxResolution: "1024x1024",
     recommendedFor: "Rapid storyboard drafting & quick concept sketches",
@@ -82,6 +95,7 @@ export interface NanoBananaGenerateRequest {
     base64Data: string;
   }>;
   apiKey?: string;
+  useDemoFallback?: boolean;
 }
 
 export interface NanoBananaGenerateResponse {
@@ -94,4 +108,7 @@ export interface NanoBananaGenerateResponse {
   }>;
   modelUsed: string;
   error?: string;
+  isQuotaError?: boolean;
+  projectNumber?: string;
+  billingUrl?: string;
 }

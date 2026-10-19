@@ -7,7 +7,7 @@ import type { VideoSettings } from "@/lib/video-generator/types";
 
 interface ProjectsHistoryModalProps {
   onClose: () => void;
-  onLoadProjectSettings: (settings: Partial<VideoSettings>) => void;
+  onLoadProjectSettings?: (settings: Partial<VideoSettings>) => void;
 }
 
 export function ProjectsHistoryModal({
@@ -45,17 +45,19 @@ export function ProjectsHistoryModal({
   }, [fetchData]);
 
   const handleApplySettings = (proj: IVideoProject) => {
-    onLoadProjectSettings({
-      resolution: proj.resolution,
-      aspectRatio: proj.aspectRatio,
-      fps: proj.fps,
-      bitrate: proj.bitrate,
-      animMode: proj.animMode,
-      selectedAnims: new Set(proj.selectedAnims),
-      sfxMode: proj.sfxMode,
-      selectedSfx: new Set(proj.selectedSfx),
-      isSfxEnabled: proj.isSfxEnabled,
-    });
+    if (onLoadProjectSettings) {
+      onLoadProjectSettings({
+        resolution: proj.resolution,
+        aspectRatio: proj.aspectRatio,
+        fps: proj.fps,
+        bitrate: proj.bitrate,
+        animMode: proj.animMode,
+        selectedAnims: new Set(proj.selectedAnims),
+        sfxMode: proj.sfxMode,
+        selectedSfx: new Set(proj.selectedSfx),
+        isSfxEnabled: proj.isSfxEnabled,
+      });
+    }
     onClose();
   };
 

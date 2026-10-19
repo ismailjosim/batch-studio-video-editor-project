@@ -21,6 +21,17 @@ export function setStoredGeminiKey(key: string): void {
   }
 }
 
+export async function checkServerGeminiKey(): Promise<boolean> {
+  try {
+    const res = await fetch("/api/nano-banana/generate");
+    if (!res.ok) return false;
+    const data = await res.json();
+    return Boolean(data.hasServerKey);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Call Nano Banana generation API or fallback to vector doodle generator
  */
@@ -28,9 +39,14 @@ export async function generateNanoBananaImages(
   req: NanoBananaGenerateRequest,
 ): Promise<NanoBananaGenerateResponse> {
   const activeKey = req.apiKey?.trim() || getStoredGeminiKey();
+  const hasServerKey = await checkServerGeminiKey();
 
-  // If user has Gemini API key, try the live Gemini API endpoint
-  if (activeKey) {
+  if (req.useDemoFallback) {
+    return generateStudioDoodleDemo(req);
+  }
+
+  // If user has Gemini API key (client or in .env.local), try the live Gemini API endpoint
+  if (activeKey || hasServerKey) {
     try {
       const res = await fetch("/api/nano-banana/generate", {
         method: "POST",
@@ -63,12 +79,24 @@ export async function generateNanoBananaImages(
         }
         return data;
       }
+
+      if (data.isQuotaError || res.status === 429) {
+        return {
+          success: false,
+          images: [],
+          modelUsed: req.model,
+          isQuotaError: true,
+          error: data.error,
+          projectNumber: data.projectNumber,
+          billingUrl: data.billingUrl,
+        };
+      }
+
       if (data.error) {
         throw new Error(data.error);
       }
     } catch (err: unknown) {
       console.warn("Live Gemini API call error:", err);
-      // If error is about API quota or network, inform user or provide doodle generator
       throw err;
     }
   }

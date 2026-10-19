@@ -1,8 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { generateStudioDoodleSvg } from "@/lib/studio-doodle-generator";
 
 interface GeneratePayload {
   prompt: string;
-  model: "nano-banana-pro" | "nano-banana-2.1" | "nano-banana-2-lite";
+  model:
+    | "flux-schnell"
+    | "nano-banana-pro"
+    | "nano-banana-2.1"
+    | "nano-banana-2-lite";
   aspectRatio?: "1:1" | "16:9" | "9:16" | "4:3";
   sampleCount?: number;
   referenceImages?: Array<{
@@ -10,6 +15,22 @@ interface GeneratePayload {
     base64Data: string;
   }>;
   apiKey?: string;
+  useDemoFallback?: boolean;
+}
+
+const MODEL_NAME_MAP: Record<string, string> = {
+  "nano-banana-2.1": "gemini-nano-banana-2.1",
+  "nano-banana-pro": "gemini-3-pro-image",
+  "nano-banana-2-lite": "gemini-3.1-flash-lite-image",
+};
+
+export async function GET() {
+  const hasServerKey = Boolean(
+    process.env.GEMINI_API_KEY ||
+      process.env.GOOGLE_AI_API_KEY ||
+      process.env.GOOGLE_API_KEY,
+  );
+  return NextResponse.json({ hasServerKey });
 }
 
 export async function POST(req: NextRequest) {
@@ -19,10 +40,79 @@ export async function POST(req: NextRequest) {
       prompt,
       model,
       aspectRatio = "1:1",
-      sampleCount = 1,
+      sampleCount: _sampleCount = 1,
       referenceImages = [],
       apiKey,
+      useDemoFallback = false,
     } = body;
+
+    if (!prompt?.trim()) {
+      return NextResponse.json(
+        { success: false, error: "Prompt cannot be empty" },
+        { status: 400 },
+      );
+    }
+
+    // If client requested demo mode directly
+    if (useDemoFallback) {
+      const doodleUrl = generateStudioDoodleSvg(prompt);
+      return NextResponse.json({
+        success: true,
+        images: [
+          {
+            url: doodleUrl,
+            width: 1024,
+            height: 1024,
+            isUpscaled2K: false,
+          },
+        ],
+        modelUsed: "Studio Doodle Engine (Demo Mode)",
+      });
+    }
+
+    // Free AI Generation via FLUX.1 Schnell (No API key or billing required!)
+    if (model === "flux-schnell") {
+      const width = aspectRatio === "16:9" ? 1280 : 1024;
+      const height = aspectRatio === "16:9" ? 720 : 1024;
+      const seed = Math.floor(Math.random() * 1000000);
+      const encodedPrompt = encodeURIComponent(
+        `Dollar Doodles style character, minimalist stickman, thick black ink line art, signature red cap, red shirt, cartoon vector illustration, clean white background: ${prompt.trim()}`,
+      );
+      const fluxUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&model=flux&nologo=true&seed=${seed}`;
+
+      try {
+        const fluxRes = await fetch(fluxUrl, {
+          signal: AbortSignal.timeout(25000),
+        });
+        if (fluxRes.ok) {
+          const buffer = await fluxRes.arrayBuffer();
+          const base64 = Buffer.from(buffer).toString("base64");
+          return NextResponse.json({
+            success: true,
+            images: [
+              {
+                url: `data:image/jpeg;base64,${base64}`,
+                width,
+                height,
+                isUpscaled2K: false,
+              },
+            ],
+            modelUsed: "FLUX.1 Schnell (Free Unlimited AI)",
+          });
+        }
+      } catch (fluxErr) {
+        console.warn(
+          "Pollinations FLUX request failed, using studio doodle fallback:",
+          fluxErr,
+        );
+        const doodleUrl = generateStudioDoodleSvg(prompt);
+        return NextResponse.json({
+          success: true,
+          images: [{ url: doodleUrl, width, height, isUpscaled2K: false }],
+          modelUsed: "Studio Doodle Engine (Fallback)",
+        });
+      }
+    }
 
     const activeKey =
       apiKey?.trim() ||
@@ -35,74 +125,18 @@ export async function POST(req: NextRequest) {
         {
           success: false,
           error:
-            "No Gemini API Key found. Please add your Gemini Pro API Key in the Nano Banana Studio settings or set GEMINI_API_KEY in your .env.local file.",
+            "No Gemini API Key found. Please add your Gemini API Key in the Nano Banana Studio settings or set GEMINI_API_KEY in your .env.local file.",
         },
         { status: 401 },
       );
     }
 
-    if (!prompt?.trim()) {
-      return NextResponse.json(
-        { success: false, error: "Prompt cannot be empty" },
-        { status: 400 },
-      );
-    }
+    const targetModel = MODEL_NAME_MAP[model] || "gemini-nano-banana-2.1";
+    const fullPrompt = `Dollar Doodles style character, minimalist stickman, thick black ink line art, signature red cap, red shirt, clean cartoon vector storyboard: ${prompt.trim()}`;
 
-    // Dollar Doodles style enhancement prompt to ensure consistent character stickman aesthetic
-    const styleKeywords =
-      "Dollar Doodles style, minimalist stickman character, clean thick black ink strokes, white background or sticker cut-out border, red cap, red shirt, expressive doodle animation style, vector storyboard art";
-    const fullPrompt = `${prompt.trim()}, ${styleKeywords}`;
-
-    // 1. If Nano Banana Pro or Imagen-3 dedicated generation (without reference images)
-    if (model === "nano-banana-pro" && referenceImages.length === 0) {
-      const imagenUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${activeKey}`;
-
-      const imagenRes = await fetch(imagenUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          instances: [{ prompt: fullPrompt }],
-          parameters: {
-            sampleCount: Math.min(sampleCount, 4),
-            aspectRatio: aspectRatio,
-            personGeneration: "ALLOW_ADULT",
-            outputMimeType: "image/png",
-          },
-        }),
-      });
-
-      if (!imagenRes.ok) {
-        const errorText = await imagenRes.text();
-        console.error("Imagen 3 API Error:", errorText);
-        // If Imagen fails or requires different permission, fall through to multimodal Gemini
-      } else {
-        const data = await imagenRes.json();
-        const predictions = data.predictions || [];
-        if (predictions.length > 0) {
-          const images = predictions.map(
-            (p: { bytesBase64Encoded: string }) => ({
-              url: `data:image/png;base64,${p.bytesBase64Encoded}`,
-              width: aspectRatio === "16:9" ? 2048 : 1024,
-              height: aspectRatio === "16:9" ? 1152 : 1024,
-              isUpscaled2K: false,
-            }),
-          );
-
-          return NextResponse.json({
-            success: true,
-            images,
-            modelUsed: "imagen-3.0-generate-002 (Nano Banana Pro)",
-          });
-        }
-      }
-    }
-
-    // 2. Multimodal Generation (Nano Banana 2.1 / Nano Banana Pro with Reference Images)
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${activeKey}`;
-
+    // Prepare contents array for Gemini generateContent
     const parts: Array<Record<string, unknown>> = [];
 
-    // Attach reference images for character turnaround / style conditioning
     if (referenceImages && referenceImages.length > 0) {
       for (const ref of referenceImages) {
         const cleanBase64 = ref.base64Data.includes(",")
@@ -118,12 +152,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    parts.push({
-      text:
-        referenceImages.length > 0
-          ? `Using the character design, red cap, red shirt, and line style from the attached reference image(s), generate a new storyboard illustration: ${prompt}. Maintain strict character consistency and doodle art style.`
-          : fullPrompt,
-    });
+    parts.push({ text: fullPrompt });
+
+    // Official Gemini API generateContent endpoint with responseModalities IMAGE
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${activeKey}`;
 
     const geminiRes = await fetch(geminiUrl, {
       method: "POST",
@@ -131,72 +163,80 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         contents: [{ parts }],
         generationConfig: {
-          responseModalities: ["IMAGE", "TEXT"],
+          responseModalities: ["IMAGE"],
         },
       }),
     });
 
-    if (!geminiRes.ok) {
-      const errBody = await geminiRes.text();
-      console.error("Gemini Multimodal API Error:", errBody);
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Gemini API returned status ${geminiRes.status}: ${errBody.slice(0, 300)}`,
-        },
-        { status: geminiRes.status },
-      );
-    }
+    if (geminiRes.ok) {
+      const geminiData = await geminiRes.json();
+      const candidateParts = geminiData?.candidates?.[0]?.content?.parts || [];
 
-    const geminiData = await geminiRes.json();
-    const candidateParts = geminiData?.candidates?.[0]?.content?.parts || [];
+      const generatedImages: Array<{
+        url: string;
+        width: number;
+        height: number;
+        isUpscaled2K: boolean;
+      }> = [];
 
-    const generatedImages: Array<{
-      url: string;
-      width: number;
-      height: number;
-      isUpscaled2K: boolean;
-    }> = [];
+      for (const part of candidateParts) {
+        if (part.inlineData?.data) {
+          const mime = part.inlineData.mimeType || "image/png";
+          generatedImages.push({
+            url: `data:${mime};base64,${part.inlineData.data}`,
+            width: aspectRatio === "16:9" ? 2048 : 1024,
+            height: aspectRatio === "16:9" ? 1152 : 1024,
+            isUpscaled2K: false,
+          });
+        }
+      }
 
-    for (const part of candidateParts) {
-      if (part.inlineData) {
-        generatedImages.push({
-          url: `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`,
-          width: 1024,
-          height: 1024,
-          isUpscaled2K: false,
+      if (generatedImages.length > 0) {
+        return NextResponse.json({
+          success: true,
+          images: generatedImages,
+          modelUsed: `${targetModel} (Live Gemini Pro)`,
         });
       }
     }
 
-    if (generatedImages.length > 0) {
-      return NextResponse.json({
-        success: true,
-        images: generatedImages,
-        modelUsed:
-          model === "nano-banana-2.1"
-            ? "gemini-2.0-flash (Nano Banana 2.1 Multi-Ref)"
-            : "gemini-2.0-flash (Nano Banana)",
-      });
-    }
+    // Handle Google API errors with specific diagnosis
+    const errorData = await geminiRes.json().catch(() => null);
+    const googleMsg = errorData?.error?.message || "";
+    const isQuotaLimitZero =
+      geminiRes.status === 429 ||
+      googleMsg.includes("limit: 0") ||
+      googleMsg.includes("Quota exceeded") ||
+      googleMsg.includes("quota");
 
-    // If Gemini model only returned text (e.g. if image modalities are restricted on this key)
-    const textPart = candidateParts.find(
-      (p: { text?: string }) => p.text,
-    )?.text;
+    if (isQuotaLimitZero) {
+      return NextResponse.json(
+        {
+          success: false,
+          isQuotaError: true,
+          error:
+            "Google Gemini Quota Limit: 0 (Billing Required). Google requires a linked Google Cloud Billing Account (Pay-As-You-Go) for image generation models like Gemini Nano Banana & Gemini 3 Pro. Free tier accounts have a limit of 0 image requests per day.",
+          projectNumber: process.env.GEMINI_PROJECT_NUMBER || "349945349831",
+          billingUrl: "https://console.cloud.google.com/billing",
+          studioUrl: "https://aistudio.google.com/",
+          demoAvailable: true,
+        },
+        { status: 429 },
+      );
+    }
 
     return NextResponse.json(
       {
         success: false,
         error:
-          textPart ||
-          "Gemini generated text instead of an image. Ensure your Gemini Pro API key has image generation enabled.",
+          googleMsg ||
+          "Gemini API did not return image data. Verify your Gemini Pro API key has Generative Image access enabled.",
       },
-      { status: 422 },
+      { status: geminiRes.status || 500 },
     );
   } catch (err: unknown) {
     const error = err as Error;
-    console.error("Nano Banana generation route exception:", error);
+    console.error("Nano Banana generation error:", error);
     return NextResponse.json(
       { success: false, error: error.message || "Failed to generate image" },
       { status: 500 },
