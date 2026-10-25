@@ -1,6 +1,6 @@
 "use client";
 
-import { Cpu, Loader2, Rocket, Square } from "lucide-react";
+import { AlertCircle, Cpu, Loader2, Rocket, Square } from "lucide-react";
 import type { RenderProgress } from "@/lib/video-generator/types";
 
 interface RenderProgressCardProps {
@@ -56,6 +56,40 @@ export function RenderProgressCard({
         </button>
       )}
 
+      {/* Error Feedback Display */}
+      {progress.status === "error" && !isRendering && (
+        <div className="flex flex-col gap-2 rounded-xl border border-rose-500/30 bg-rose-950/20 p-4 mt-2 animate-in fade-in duration-300">
+          <div className="flex items-center gap-2 text-rose-400 font-bold text-xs">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>Video Generation Interrupted</span>
+          </div>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            {progress.errorMessage ||
+              "Hardware GPU encoder encountered an unexpected issue."}
+          </p>
+          <div className="text-[11px] text-slate-400 bg-white/5 p-2.5 rounded-lg border border-white/5 flex flex-col gap-1 mt-1">
+            <span className="font-semibold text-slate-300">
+              💡 Recommended Solution:
+            </span>
+            <span>
+              If 2K (1440p) resolution is too intensive for your GPU hardware
+              encoder, switch to <strong>1080p Full HD</strong> in Step 1. It
+              provides crisp quality and 100% universal stability across all
+              browsers and devices.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Canceled Notification */}
+      {progress.status === "canceled" && !isRendering && (
+        <div className="flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-950/20 px-4 py-2.5 mt-2 text-amber-300 text-xs animate-in fade-in duration-300">
+          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+          <span>Rendering was canceled by user.</span>
+        </div>
+      )}
+
+      {/* Active Rendering Progress Card */}
       {isRendering && (
         <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-black/50 p-5 shadow-2xl mt-2 animate-in fade-in duration-300">
           <div className="flex justify-between items-center text-xs font-semibold text-slate-300">

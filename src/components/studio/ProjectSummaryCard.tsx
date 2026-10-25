@@ -67,6 +67,20 @@ export function ProjectSummaryCard({
             {settings.aspectRatio} • {settings.fps} FPS •{" "}
             {(settings.bitrate / 1000000).toFixed(0)} Mbps
           </div>
+          {settings.watermarkImage ? (
+            <div className="text-[11px] text-cyan-400 font-medium flex items-center gap-1">
+              <span>
+                Watermark:{" "}
+                {(settings.watermarkPosition || "bottom-right").replace(
+                  "-",
+                  " ",
+                )}{" "}
+                ({Math.round((settings.watermarkOpacity ?? 0.8) * 100)}%)
+              </span>
+            </div>
+          ) : (
+            <div className="text-[11px] text-slate-500">No watermark</div>
+          )}
         </div>
 
         {/* Subtitles */}
@@ -118,6 +132,16 @@ export function ProjectSummaryCard({
               ? `${audioFileName} (${formatDuration(audioBuffer.duration)})`
               : "No background audio track"}
           </div>
+          {Object.keys(settings.cueAssetMap || {}).length > 0 ? (
+            <div className="text-[11px] text-emerald-400 font-medium">
+              {Object.keys(settings.cueAssetMap || {}).length} scenes
+              custom-mapped
+            </div>
+          ) : (
+            <div className="text-[11px] text-slate-500">
+              Sequential cue sync
+            </div>
+          )}
         </div>
 
         {/* Animations & SFX */}

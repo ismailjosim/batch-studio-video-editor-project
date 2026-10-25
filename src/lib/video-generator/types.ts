@@ -26,6 +26,13 @@ export interface SfxItem {
 export type ResolutionOption = "1440" | "1080" | "720";
 export type AspectRatioOption = "16:9" | "9:16";
 
+export type WatermarkPosition =
+  | "top-right"
+  | "top-left"
+  | "bottom-right"
+  | "bottom-left"
+  | "center";
+
 export interface VideoSettings {
   resolution: ResolutionOption;
   aspectRatio: AspectRatioOption;
@@ -43,6 +50,14 @@ export interface VideoSettings {
     | "emerald-glow"
     | "classic-yellow"
     | "minimal-clean";
+  // Brand Watermark Overlay
+  isWatermarkEnabled?: boolean;
+  watermarkImage?: HTMLImageElement | null;
+  watermarkPosition?: WatermarkPosition;
+  watermarkOpacity?: number; // 0.1 to 1.0
+  watermarkScale?: number; // 0.05 to 0.30
+  // Visual Storyboard Cue Mapping: maps cue index -> image index
+  cueAssetMap?: Record<number, number>;
 }
 
 export interface RenderProgress {

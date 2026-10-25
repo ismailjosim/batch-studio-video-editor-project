@@ -4,6 +4,7 @@ import { AlertTriangle, ArrowRight, CheckCircle2 } from "lucide-react";
 import { AudioUploader } from "@/components/studio/AudioUploader";
 import { ImagesUploader } from "@/components/studio/ImagesUploader";
 import { SrtUploader } from "@/components/studio/SrtUploader";
+import { StoryboardCueMapper } from "@/components/studio/StoryboardCueMapper";
 import { VideoSettingsCard } from "@/components/studio/VideoSettingsCard";
 import type { SRTData, VideoSettings } from "@/lib/video-generator/types";
 
@@ -65,6 +66,15 @@ export function Step1MediaSetup({
         loadedImages={loadedImages}
         onImagesLoaded={onImagesLoaded}
       />
+
+      {hasSrt && hasImages && (
+        <StoryboardCueMapper
+          srtData={srtData}
+          loadedImages={loadedImages}
+          cueAssetMap={settings.cueAssetMap}
+          onChange={(cueAssetMap) => onSettingsChange({ cueAssetMap })}
+        />
+      )}
 
       <VideoSettingsCard settings={settings} onChange={onSettingsChange} />
 

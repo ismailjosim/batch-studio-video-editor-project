@@ -40,9 +40,10 @@ export class ChunkedMemoryTarget {
   toBlob(type = "video/mp4"): Blob {
     const finalBlobs: BlobPart[] = [];
     let remaining = this.totalSize;
+    const totalChunks = Math.ceil(this.totalSize / this.chunkSize);
 
-    for (let i = 0; i < this.chunks.length && remaining > 0; i++) {
-      const chunk = this.chunks[i];
+    for (let i = 0; i < totalChunks && remaining > 0; i++) {
+      const chunk = this.chunks[i] || new Uint8Array(this.chunkSize);
       const take = Math.min(remaining, this.chunkSize);
       if (take === this.chunkSize) {
         finalBlobs.push(chunk as BlobPart);

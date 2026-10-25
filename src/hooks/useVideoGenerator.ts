@@ -17,6 +17,7 @@ import type {
   SRTData,
   VideoSettings,
 } from "@/lib/video-generator/types";
+import { drawWatermarkOverlay } from "@/lib/video-generator/watermark-renderer";
 
 export function useVideoGenerator() {
   const [progress, setProgress] = useState<RenderProgress>({
@@ -58,14 +59,8 @@ export function useVideoGenerator() {
       setIsRendering(true);
       cancelRequestedRef.current = false;
 
-      let fileHandle: FileSystemFileHandle | null = null;
-      let writableStream: FileSystemWritableFileStream | null = null;
       let chunkedStore: ChunkedMemoryTarget | null = null;
-      let muxerTarget:
-        | Mp4Muxer.FileSystemWritableFileStreamTarget
-        | Mp4Muxer.StreamTarget
-        | null = null;
-      let targetMode: "opfs" | "chunked" = "chunked";
+      let videoEncoderInstance: VideoEncoder | null = null;
 
       try {
         const cues = srtData.cues;
@@ -82,7 +77,7 @@ export function useVideoGenerator() {
         }
 
         const fps = settings.fps;
-        const bitrate = settings.bitrate;
+        let bitrate = settings.bitrate;
         const isSfxEnabled = settings.isSfxEnabled;
 
         // Active Animation & SFX pool
@@ -115,45 +110,6 @@ export function useVideoGenerator() {
           );
           await Promise.all(usedSfxIds.map((id) => getOrLoadSfxBuffer(id)));
         }
-
-        // Setup encoding canvas (OffscreenCanvas if supported, decoupled from DOM)
-        const encodeCanvas: HTMLCanvasElement | OffscreenCanvas =
-          typeof OffscreenCanvas !== "undefined"
-            ? new OffscreenCanvas(aspectW, aspectH)
-            : document.createElement("canvas");
-        encodeCanvas.width = aspectW;
-        encodeCanvas.height = aspectH;
-        const ctx = encodeCanvas.getContext("2d", {
-          alpha: false,
-          desynchronized: true,
-        }) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "medium";
-
-        // DOM Preview Canvas setup
-        const previewW = isLandscape ? 640 : 360;
-        const previewH = isLandscape ? 360 : 640;
-        let previewCtx: CanvasRenderingContext2D | null = null;
-        let previewTargetCanvas: HTMLCanvasElement | null = previewCanvas;
-
-        const getPreviewCtx = (): CanvasRenderingContext2D | null => {
-          if (previewCtx && previewTargetCanvas?.isConnected) return previewCtx;
-          const canvas =
-            previewTargetCanvas ||
-            previewCanvas ||
-            (typeof document !== "undefined"
-              ? (document.getElementById(
-                  "renderPreviewCanvas",
-                ) as HTMLCanvasElement | null)
-              : null);
-          if (canvas) {
-            previewTargetCanvas = canvas;
-            if (canvas.width !== previewW) canvas.width = previewW;
-            if (canvas.height !== previewH) canvas.height = previewH;
-            previewCtx = canvas.getContext("2d", { alpha: false });
-          }
-          return previewCtx;
-        };
 
         const lastCue = cues[cues.length - 1];
         const totalDurationMs = Math.max(lastCue.endMs, lastCue.startMs + 1000);
@@ -188,7 +144,7 @@ export function useVideoGenerator() {
 
           if (isSfxEnabled) {
             for (let idx = 0; idx < cues.length; idx++) {
-              if (idx === 0) continue; // Skip very first opening
+              if (idx === 0) continue;
               const cue = cues[idx];
               const timeSec = cue.startMs / 1000;
               const assignedSfxId = cueTransitions[idx].sfxId;
@@ -212,53 +168,66 @@ export function useVideoGenerator() {
           mixedAudioBuffer = await offlineCtx.startRendering();
         }
 
-        // 2. Initialize MP4 Target
-        // Strategy A: OPFS
-        if (
-          typeof navigator !== "undefined" &&
-          navigator.storage &&
-          navigator.storage.getDirectory
-        ) {
-          try {
-            const opfsRoot = await navigator.storage.getDirectory();
-            fileHandle = await opfsRoot.getFileHandle(
-              "dollar_doodles_render.mp4",
-              { create: true },
-            );
-            writableStream = await fileHandle.createWritable();
-            muxerTarget = new Mp4Muxer.FileSystemWritableFileStreamTarget(
-              writableStream,
-            );
-            targetMode = "opfs";
-            console.log(
-              "Using OPFS direct-to-disk streaming for zero-RAM generation.",
-            );
-          } catch (opfsErr) {
-            console.warn(
-              "OPFS not accessible, falling back to ChunkedMemoryTarget:",
-              opfsErr,
-            );
-            fileHandle = null;
-            writableStream = null;
-          }
+        // 2. Initialize Memory-Safe Chunked MP4 Target
+        chunkedStore = new ChunkedMemoryTarget(16 * 1024 * 1024);
+        const muxerTarget = new Mp4Muxer.StreamTarget({
+          chunked: true,
+          chunkSize: 16 * 1024 * 1024,
+          onData: (data: Uint8Array, position: number) => {
+            chunkedStore?.write(data, position);
+          },
+        });
+
+        // 3. Initialize & Configure VideoEncoder with live hardware probe
+        let encoderError: Error | null = null;
+        const videoEncoder = new VideoEncoder({
+          output: (chunk, meta) => {
+            try {
+              muxer.addVideoChunk(chunk, meta);
+            } catch (muxErr) {
+              console.error("Muxer addVideoChunk error:", muxErr);
+              encoderError =
+                muxErr instanceof Error ? muxErr : new Error(String(muxErr));
+            }
+          },
+          error: (e) => {
+            console.error("VideoEncoder error callback:", e);
+            const msg =
+              e instanceof Error
+                ? e.message
+                : (e as { message?: string })?.message || String(e);
+            encoderError = new Error(`VideoEncoder hardware error: ${msg}`);
+          },
+        });
+        videoEncoderInstance = videoEncoder;
+
+        setProgress((prev) => ({
+          ...prev,
+          status: "preparing",
+          statusText: "Validating GPU encoder hardware compatibility...",
+        }));
+
+        const encoderSetup = await configureVideoEncoder(
+          videoEncoder,
+          aspectW,
+          aspectH,
+          bitrate,
+          fps,
+        );
+
+        aspectW = encoderSetup.width;
+        aspectH = encoderSetup.height;
+        bitrate = encoderSetup.bitrate;
+
+        if (encoderSetup.wasScaledDown && encoderSetup.notice) {
+          setProgress((prev) => ({
+            ...prev,
+            statusText: encoderSetup.notice!,
+          }));
+          await new Promise((r) => setTimeout(r, 600));
         }
 
-        // Strategy B: 16MB ChunkedMemoryTarget
-        if (!muxerTarget) {
-          chunkedStore = new ChunkedMemoryTarget(16 * 1024 * 1024);
-          muxerTarget = new Mp4Muxer.StreamTarget({
-            chunked: true,
-            chunkSize: 16 * 1024 * 1024,
-            onData: (data: Uint8Array, position: number) => {
-              chunkedStore?.write(data, position);
-            },
-          });
-          targetMode = "chunked";
-          console.log(
-            "Using 16MB ChunkedMemoryTarget for memory-safe generation.",
-          );
-        }
-
+        // Initialize Muxer matching verified dimensions
         const muxer = new Mp4Muxer.Muxer({
           target: muxerTarget,
           video: {
@@ -276,21 +245,7 @@ export function useVideoGenerator() {
           fastStart: false,
         });
 
-        // 3. Initialize VideoEncoder
-        const videoEncoder = new VideoEncoder({
-          output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
-          error: (e) => console.error("VideoEncoder error:", e),
-        });
-
-        await configureVideoEncoder(
-          videoEncoder,
-          aspectW,
-          aspectH,
-          bitrate,
-          fps,
-        );
-
-        // 4. Encode Audio
+        // 4. Encode Audio Stream
         if (mixedAudioBuffer) {
           setProgress((prev) => ({
             ...prev,
@@ -298,9 +253,16 @@ export function useVideoGenerator() {
             statusText: "Encoding audio stream...",
           }));
 
+          let audioEncoder: AudioEncoder | null = null;
           try {
-            const audioEncoder = new AudioEncoder({
-              output: (chunk, meta) => muxer.addAudioChunk(chunk, meta),
+            audioEncoder = new AudioEncoder({
+              output: (chunk, meta) => {
+                try {
+                  muxer.addAudioChunk(chunk, meta);
+                } catch (aMuxErr) {
+                  console.warn("Muxer addAudioChunk warning:", aMuxErr);
+                }
+              },
               error: (e) => console.error("AudioEncoder error:", e),
             });
 
@@ -347,21 +309,68 @@ export function useVideoGenerator() {
             }
 
             await audioEncoder.flush();
+            if (audioEncoder.state !== "closed") {
+              try {
+                audioEncoder.close();
+              } catch {}
+            }
           } catch (aErr) {
             console.warn(
               "AudioEncoder not supported or failed, proceeding video-only:",
               aErr,
             );
           } finally {
+            if (audioEncoder && audioEncoder.state !== "closed") {
+              try {
+                audioEncoder.close();
+              } catch {}
+            }
             mixedAudioBuffer = null;
           }
         }
 
-        // 5. Render Video Frames with 10 Dynamic Animations
-        const modeLabel = targetMode === "opfs" ? "OPFS Disk" : "Chunked RAM";
+        // 5. Setup Encoding & Preview Canvases
+        const encodeCanvas: HTMLCanvasElement | OffscreenCanvas =
+          typeof OffscreenCanvas !== "undefined"
+            ? new OffscreenCanvas(aspectW, aspectH)
+            : document.createElement("canvas");
+        encodeCanvas.width = aspectW;
+        encodeCanvas.height = aspectH;
+
+        const ctx = encodeCanvas.getContext("2d", {
+          alpha: false,
+        }) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "medium";
+
+        const previewW = isLandscape ? 640 : 360;
+        const previewH = isLandscape ? 360 : 640;
+        let previewCtx: CanvasRenderingContext2D | null = null;
+        let previewTargetCanvas: HTMLCanvasElement | null = previewCanvas;
+
+        const getPreviewCtx = (): CanvasRenderingContext2D | null => {
+          if (previewCtx && previewTargetCanvas?.isConnected) return previewCtx;
+          const canvas =
+            previewTargetCanvas ||
+            previewCanvas ||
+            (typeof document !== "undefined"
+              ? (document.getElementById(
+                  "renderPreviewCanvas",
+                ) as HTMLCanvasElement | null)
+              : null);
+          if (canvas) {
+            previewTargetCanvas = canvas;
+            if (canvas.width !== previewW) canvas.width = previewW;
+            if (canvas.height !== previewH) canvas.height = previewH;
+            previewCtx = canvas.getContext("2d", { alpha: false });
+          }
+          return previewCtx;
+        };
+
+        // 6. Render Video Frames with Dynamic Animations & Subtitles
         setProgress({
           status: "encoding_video",
-          statusText: `Encoding ${totalFrames} frames in ${aspectW}×${aspectH} (${modeLabel})...`,
+          statusText: `Encoding ${totalFrames} frames in ${aspectW}×${aspectH}...`,
           percent: 0,
           currentFrame: 0,
           totalFrames,
@@ -377,10 +386,9 @@ export function useVideoGenerator() {
 
         for (let frameIdx = 0; frameIdx < totalFrames; frameIdx++) {
           if (cancelRequestedRef.current) {
-            videoEncoder.close();
-            if (writableStream) {
+            if (videoEncoder.state !== "closed") {
               try {
-                await writableStream.abort();
+                videoEncoder.close();
               } catch {}
             }
             if (chunkedStore) {
@@ -393,6 +401,13 @@ export function useVideoGenerator() {
             }));
             setIsRendering(false);
             return null;
+          }
+
+          if (encoderError || videoEncoder.state === "closed") {
+            throw (
+              encoderError ||
+              new Error("VideoEncoder stopped unexpectedly during rendering.")
+            );
           }
 
           const currentTimeMs = (frameIdx / fps) * 1000;
@@ -410,11 +425,20 @@ export function useVideoGenerator() {
             (currentTimeMs - cue.startMs) / 1000,
           );
 
-          const currImg = loadedImages[currentCueIdx % loadedImages.length];
+          const getCueImage = (idx: number): HTMLImageElement => {
+            if (
+              settings.cueAssetMap &&
+              settings.cueAssetMap[idx] !== undefined
+            ) {
+              const mappedIdx = settings.cueAssetMap[idx];
+              if (loadedImages[mappedIdx]) return loadedImages[mappedIdx];
+            }
+            return loadedImages[idx % loadedImages.length];
+          };
+
+          const currImg = getCueImage(currentCueIdx);
           const prevImg =
-            currentCueIdx > 0
-              ? loadedImages[(currentCueIdx - 1) % loadedImages.length]
-              : currImg;
+            currentCueIdx > 0 ? getCueImage(currentCueIdx - 1) : currImg;
           const assignedAnim = cueTransitions[currentCueIdx].anim;
 
           ctx.fillStyle = "#0c0c10";
@@ -456,6 +480,19 @@ export function useVideoGenerator() {
             });
           }
 
+          // Brand Watermark / Logo Overlay
+          if (settings.isWatermarkEnabled && settings.watermarkImage) {
+            drawWatermarkOverlay({
+              ctx,
+              image: settings.watermarkImage,
+              canvasW: aspectW,
+              canvasH: aspectH,
+              position: settings.watermarkPosition || "top-right",
+              opacity: settings.watermarkOpacity ?? 0.85,
+              scale: settings.watermarkScale ?? 0.14,
+            });
+          }
+
           const timestampUs = Math.round((frameIdx / fps) * 1_000_000);
           const videoFrame = new VideoFrame(encodeCanvas as CanvasImageSource, {
             timestamp: timestampUs,
@@ -466,7 +503,21 @@ export function useVideoGenerator() {
           videoFrame.close();
 
           while (videoEncoder.encodeQueueSize >= 3) {
+            if (
+              encoderError ||
+              (videoEncoder.state as string) === "closed" ||
+              cancelRequestedRef.current
+            ) {
+              break;
+            }
             await new Promise((r) => setTimeout(r, 4));
+          }
+
+          if (encoderError || (videoEncoder.state as string) === "closed") {
+            throw (
+              encoderError ||
+              new Error("VideoEncoder stopped unexpectedly during rendering.")
+            );
           }
 
           if (frameIdx % 4 === 0 || frameIdx === totalFrames - 1) {
@@ -514,16 +565,16 @@ export function useVideoGenerator() {
           percent: 100,
         }));
 
-        await videoEncoder.flush();
+        if (videoEncoder.state !== "closed") {
+          await videoEncoder.flush();
+          try {
+            videoEncoder.close();
+          } catch {}
+        }
         muxer.finalize();
 
         let mp4Blob: Blob;
-        if (targetMode === "opfs" && writableStream && fileHandle) {
-          await writableStream.close();
-          const rawFile = await fileHandle.getFile();
-          // Ensure explicit video/mp4 MIME type so downloads have .mp4 extension
-          mp4Blob = new Blob([rawFile], { type: "video/mp4" });
-        } else if (chunkedStore) {
+        if (chunkedStore) {
           mp4Blob = chunkedStore.toBlob("video/mp4");
           chunkedStore.clear();
         } else {
@@ -582,19 +633,21 @@ export function useVideoGenerator() {
       } catch (err: unknown) {
         const error = err as Error;
         console.error("Video generation error:", error);
-        if (writableStream) {
-          try {
-            await writableStream.abort();
-          } catch {}
-        }
         if (chunkedStore) {
           chunkedStore.clear();
+        }
+        if (videoEncoderInstance && videoEncoderInstance.state !== "closed") {
+          try {
+            videoEncoderInstance.close();
+          } catch {}
         }
         setProgress((prev) => ({
           ...prev,
           status: "error",
           statusText: "Error during video generation",
-          errorMessage: error.message || "Unknown encoding error",
+          errorMessage:
+            error.message ||
+            "Hardware video encoder error. Switch to 1080p Full HD resolution for guaranteed stability.",
         }));
         setIsRendering(false);
         return null;
