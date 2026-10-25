@@ -1,8 +1,15 @@
 "use client";
 
-import { AlertTriangle, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowRight,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
+import { useState } from "react";
 import { AudioUploader } from "@/components/studio/AudioUploader";
 import { ImagesUploader } from "@/components/studio/ImagesUploader";
+import { OneClickVideoWizard } from "@/components/studio/OneClickVideoWizard";
 import { SrtUploader } from "@/components/studio/SrtUploader";
 import { StoryboardCueMapper } from "@/components/studio/StoryboardCueMapper";
 import { VideoSettingsCard } from "@/components/studio/VideoSettingsCard";
@@ -37,19 +44,30 @@ export function Step1MediaSetup({
 }: Step1MediaSetupProps) {
   const hasSrt = Boolean(srtData && srtData.cues.length > 0);
   const hasImages = loadedImages.length > 0;
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-5 animate-in fade-in duration-300">
-      <div className="flex items-center justify-between px-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
         <div>
           <h2 className="text-lg font-extrabold text-white font-heading tracking-tight">
             1. Media Uploads & Format Setup
           </h2>
           <p className="text-xs text-slate-400">
-            Upload your voiceover .srt subtitles, storyboard image batch,
-            optional background audio, and video resolution.
+            Upload your voiceover .srt subtitles, storyboard image batch or
+            video clips, optional background audio, and video resolution.
           </p>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsWizardOpen(true)}
+          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-linear-to-r from-cyan-400 via-pink-500 to-orange-500 hover:brightness-110 text-black font-black text-xs shadow-lg shadow-cyan-500/20 transition-all cursor-pointer shrink-0"
+          title="Automate entire video generation from a single topic prompt"
+        >
+          <Sparkles className="w-4 h-4 text-black" />
+          <span>1-Click AI Video Wizard</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -109,6 +127,17 @@ export function Step1MediaSetup({
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
+
+      <OneClickVideoWizard
+        isOpen={isWizardOpen}
+        onClose={() => setIsWizardOpen(false)}
+        onApplyProject={(params) => {
+          onSrtLoaded(params.srtData);
+          onAudioLoaded(params.audioBuffer, params.audioFileName);
+          onImagesLoaded(params.loadedImages);
+          onSettingsChange({ cueAssetMap: params.cueAssetMap });
+        }}
+      />
     </div>
   );
 }

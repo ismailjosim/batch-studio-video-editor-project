@@ -31,6 +31,9 @@ interface SubtitleToolsSidebarProps {
   onExportSrt: () => void;
   onSendToVideoGenerator: () => void;
   onSendToBatchSplitter: () => void;
+  onOpenMicRecorder?: () => void;
+  onOpenSearchReplace?: () => void;
+  onOpenTranslator?: () => void;
 }
 
 export function SubtitleToolsSidebar({
@@ -59,6 +62,9 @@ export function SubtitleToolsSidebar({
   onExportSrt,
   onSendToVideoGenerator,
   onSendToBatchSplitter,
+  onOpenMicRecorder,
+  onOpenSearchReplace,
+  onOpenTranslator,
 }: SubtitleToolsSidebarProps) {
   return (
     <aside className="w-full lg:w-72 flex flex-col gap-5 p-4 bg-[#0e1018]/90 border border-white/10 rounded-3xl shadow-xl backdrop-blur-xl shrink-0">
@@ -77,6 +83,7 @@ export function SubtitleToolsSidebar({
         onLoadDemoBgm={onLoadDemoBgm}
         onLoadTimeline={onLoadTimeline}
         onLoadDemoProject={onLoadDemoProject}
+        onOpenMicRecorder={onOpenMicRecorder}
       />
 
       <div className="border-t border-white/10" />
@@ -93,6 +100,8 @@ export function SubtitleToolsSidebar({
         onDeleteSelected={onDeleteSelected}
         onUndo={onUndo}
         onResetProject={onResetProject}
+        onOpenSearchReplace={onOpenSearchReplace}
+        onOpenTranslator={onOpenTranslator}
       />
 
       <div className="border-t border-white/10" />

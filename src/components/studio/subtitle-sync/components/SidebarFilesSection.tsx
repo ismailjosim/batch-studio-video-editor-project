@@ -3,6 +3,7 @@
 import {
   ArrowRight,
   Loader2,
+  Mic,
   Music,
   Plus,
   Radio,
@@ -26,6 +27,7 @@ interface SidebarFilesSectionProps {
   onLoadDemoBgm?: () => void;
   onLoadTimeline: () => void;
   onLoadDemoProject: () => void;
+  onOpenMicRecorder?: () => void;
 }
 
 export function SidebarFilesSection({
@@ -42,6 +44,7 @@ export function SidebarFilesSection({
   onLoadDemoBgm,
   onLoadTimeline,
   onLoadDemoProject,
+  onOpenMicRecorder,
 }: SidebarFilesSectionProps) {
   const audioInputRef = useRef<HTMLInputElement | null>(null);
   const srtInputRef = useRef<HTMLInputElement | null>(null);
@@ -92,25 +95,38 @@ export function SidebarFilesSection({
         }}
       />
 
-      {/* Audio Picker Button */}
-      <button
-        type="button"
-        onClick={() => audioInputRef.current?.click()}
-        className="flex items-center gap-3 p-2.5 rounded-2xl border border-white/10 hover:border-cyan-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-left transition-all cursor-pointer group"
-      >
-        <div className="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-          <Music className="w-4 h-4" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <span className="text-xs font-bold text-slate-200 block truncate">
-            {audioFileName || "Choose audio"}
-          </span>
-          <span className="text-[10px] text-slate-400 block truncate">
-            Voiceover track
-          </span>
-        </div>
-        <Plus className="w-4 h-4 text-slate-400 group-hover:text-white" />
-      </button>
+      {/* Audio Picker & Mic Button */}
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => audioInputRef.current?.click()}
+          className="flex-1 flex items-center gap-2.5 p-2.5 rounded-2xl border border-white/10 hover:border-cyan-500/40 bg-[#131622]/90 hover:bg-[#181c2c] text-left transition-all cursor-pointer group min-w-0"
+        >
+          <div className="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <Music className="w-4 h-4" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <span className="text-xs font-bold text-slate-200 block truncate">
+              {audioFileName || "Choose audio"}
+            </span>
+            <span className="text-[10px] text-slate-400 block truncate">
+              Voiceover track
+            </span>
+          </div>
+          <Plus className="w-4 h-4 text-slate-400 group-hover:text-white shrink-0" />
+        </button>
+
+        {onOpenMicRecorder && (
+          <button
+            type="button"
+            onClick={onOpenMicRecorder}
+            className="p-3 rounded-2xl border border-red-500/30 hover:border-red-400 bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-sm group"
+            title="Record voice live via microphone"
+          >
+            <Mic className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          </button>
+        )}
+      </div>
 
       {/* SRT Picker Button */}
       <button

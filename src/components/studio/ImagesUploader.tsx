@@ -17,6 +17,49 @@ function naturalSort(a: File, b: File): number {
   });
 }
 
+function extractVideoFrame(file: File): Promise<HTMLImageElement> {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    video.preload = "auto";
+    video.muted = true;
+    const url = URL.createObjectURL(file);
+    video.src = url;
+
+    video.onloadeddata = () => {
+      video.currentTime = Math.min(0.5, (video.duration || 1) / 2);
+    };
+
+    video.onseeked = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth || 1920;
+        canvas.height = video.videoHeight || 1080;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+        const img = new Image();
+        img.src = canvas.toDataURL("image/jpeg", 0.95);
+        (img as HTMLImageElement & { fileName?: string }).fileName = file.name;
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(img);
+      } catch {
+        const fallback = new Image();
+        (fallback as HTMLImageElement & { fileName?: string }).fileName =
+          file.name;
+        resolve(fallback);
+      }
+    };
+
+    video.onerror = () => {
+      const fallback = new Image();
+      (fallback as HTMLImageElement & { fileName?: string }).fileName =
+        file.name;
+      resolve(fallback);
+    };
+  });
+}
+
 export function ImagesUploader({
   srtData,
   loadedImages,
@@ -26,47 +69,49 @@ export function ImagesUploader({
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const processFiles = (files: File[]) => {
-    const imgFiles = files.filter(
+  const processFiles = async (files: File[]) => {
+    const mediaFiles = files.filter(
       (f) =>
         f.type.startsWith("image/") ||
-        /\.(jpg|jpeg|png|webp|bmp)$/i.test(f.name),
+        f.type.startsWith("video/") ||
+        /\.(jpg|jpeg|png|webp|bmp|mp4|webm|mov)$/i.test(f.name),
     );
-    if (imgFiles.length === 0) {
-      alert("Please select valid image files (JPG, PNG, WEBP).");
+    if (mediaFiles.length === 0) {
+      alert(
+        "Please select valid image (JPG, PNG, WEBP) or video files (MP4, WEBM).",
+      );
       return;
     }
 
-    imgFiles.sort(naturalSort);
+    mediaFiles.sort(naturalSort);
     setIsLoading(true);
 
-    const images: HTMLImageElement[] = [];
-    let loadedCount = 0;
-
-    imgFiles.forEach((file) => {
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.src = url;
-      (img as HTMLImageElement & { fileName?: string }).fileName = file.name;
-
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === imgFiles.length) {
-          setIsLoading(false);
-          onImagesLoaded(images);
+    try {
+      const promises = mediaFiles.map((file) => {
+        if (
+          file.type.startsWith("video/") ||
+          /\.(mp4|webm|mov)$/i.test(file.name)
+        ) {
+          return extractVideoFrame(file);
         }
-      };
+        return new Promise<HTMLImageElement>((resolve) => {
+          const img = new Image();
+          const url = URL.createObjectURL(file);
+          img.src = url;
+          (img as HTMLImageElement & { fileName?: string }).fileName =
+            file.name;
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(img);
+        });
+      });
 
-      img.onerror = () => {
-        loadedCount++;
-        if (loadedCount === imgFiles.length) {
-          setIsLoading(false);
-          onImagesLoaded(images);
-        }
-      };
-
-      images.push(img);
-    });
+      const images = await Promise.all(promises);
+      onImagesLoaded(images);
+    } catch (err) {
+      console.error("Error loading media files:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const cueCount = srtData ? srtData.cues.length : 0;
@@ -113,13 +158,13 @@ export function ImagesUploader({
               : "Upload All Storyboard Images"}
         </div>
         <div className="text-xs text-slate-400">
-          Select all split images (PNG, JPG, WEBP) — Automatically sorted
-          naturally (1, 2, 3...)
+          Select or drop images (PNG, JPG, WEBP) or motion video clips (MP4,
+          WEBM) — Automatically sorted naturally (1, 2, 3...)
         </div>
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/*,.mp4,.webm,.mov,video/mp4,video/webm"
           multiple
           className="hidden"
           onChange={(e) => {

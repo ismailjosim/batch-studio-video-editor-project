@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { MicrophoneRecorderModal } from "@/components/studio/MicrophoneRecorderModal";
+import { ExportSubtitleModal } from "./components/ExportSubtitleModal";
 import { SubtitleHeader } from "./components/SubtitleHeader";
+import { SubtitleSearchReplaceModal } from "./components/SubtitleSearchReplaceModal";
 import { SubtitleStatusBar } from "./components/SubtitleStatusBar";
+import { SubtitleTranslatorModal } from "./components/SubtitleTranslatorModal";
 import { useSubtitleCues } from "./hooks/useSubtitleCues";
 import { useSubtitlePlayback } from "./hooks/useSubtitlePlayback";
 import { useSubtitleSession } from "./hooks/useSubtitleSession";
@@ -13,6 +17,12 @@ import { SubtitleToolsSidebar } from "./SubtitleToolsSidebar";
 import { SubtitleTransport } from "./SubtitleTransport";
 
 export function SubtitleSyncStudio() {
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isSearchReplaceModalOpen, setIsSearchReplaceModalOpen] =
+    useState(false);
+  const [isTranslatorModalOpen, setIsTranslatorModalOpen] = useState(false);
+  const [isMicRecorderModalOpen, setIsMicRecorderModalOpen] = useState(false);
+
   // Playback & BGM Hook
   const playback = useSubtitlePlayback(
     [], // temporary placeholder, connected below
@@ -108,7 +118,7 @@ export function SubtitleSyncStudio() {
       // Export: Ctrl+E or Cmd+E
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "e") {
         e.preventDefault();
-        session.handleExportSrt();
+        setIsExportModalOpen(true);
         return;
       }
 
@@ -154,7 +164,7 @@ export function SubtitleSyncStudio() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [cueEngine, session, playback]);
+  }, [cueEngine, playback]);
 
   const selectedCue =
     cueEngine.cues.find((c) => c.id === cueEngine.selectedId) || null;
@@ -200,7 +210,7 @@ export function SubtitleSyncStudio() {
         audioFileName={session.audioFileName}
         cuesCount={cueEngine.cues.length}
         duration={playback.duration}
-        onExportSrt={session.handleExportSrt}
+        onExportSrt={() => setIsExportModalOpen(true)}
       />
 
       {/* Main Workspace: Sidebar + Editor */}
@@ -229,9 +239,12 @@ export function SubtitleSyncStudio() {
           onDeleteSelected={cueEngine.handleDeleteSelected}
           onUndo={cueEngine.handleUndo}
           onResetProject={session.handleResetProject}
-          onExportSrt={session.handleExportSrt}
+          onExportSrt={() => setIsExportModalOpen(true)}
           onSendToVideoGenerator={session.handleSendToVideoGenerator}
           onSendToBatchSplitter={session.handleSendToBatchSplitter}
+          onOpenMicRecorder={() => setIsMicRecorderModalOpen(true)}
+          onOpenSearchReplace={() => setIsSearchReplaceModalOpen(true)}
+          onOpenTranslator={() => setIsTranslatorModalOpen(true)}
         />
 
         {/* Right Editor Area */}
@@ -321,6 +334,38 @@ export function SubtitleSyncStudio() {
         statusText={session.statusText}
         zoom={playback.zoom}
         isAudioLoading={session.isAudioLoading}
+      />
+
+      {/* Studio Suite Modals */}
+      <ExportSubtitleModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        cues={cueEngine.cues}
+        baseFileName={session.srtFileName || session.audioFileName}
+      />
+
+      <SubtitleSearchReplaceModal
+        isOpen={isSearchReplaceModalOpen}
+        onClose={() => setIsSearchReplaceModalOpen(false)}
+        cues={cueEngine.cues}
+        onUpdateCues={cueEngine.setCues}
+        onSaveUndoState={cueEngine.saveUndoState}
+      />
+
+      <SubtitleTranslatorModal
+        isOpen={isTranslatorModalOpen}
+        onClose={() => setIsTranslatorModalOpen(false)}
+        cues={cueEngine.cues}
+        onApplyTranslatedCues={cueEngine.setCues}
+        onSaveUndoState={cueEngine.saveUndoState}
+      />
+
+      <MicrophoneRecorderModal
+        isOpen={isMicRecorderModalOpen}
+        onClose={() => setIsMicRecorderModalOpen(false)}
+        onAudioRecorded={(file) => {
+          session.handleSelectAudioFile(file);
+        }}
       />
     </div>
   );

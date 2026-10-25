@@ -1,6 +1,15 @@
 "use client";
 
-import { Plus, RotateCcw, Scissors, Trash2, Undo2, Wand2 } from "lucide-react";
+import {
+  Globe,
+  Plus,
+  Replace,
+  RotateCcw,
+  Scissors,
+  Trash2,
+  Undo2,
+  Wand2,
+} from "lucide-react";
 import type { SubtitleCue } from "../subtitle-sync-types";
 
 interface SidebarEditToolsProps {
@@ -14,6 +23,8 @@ interface SidebarEditToolsProps {
   onDeleteSelected: () => void;
   onUndo: () => void;
   onResetProject: () => void;
+  onOpenSearchReplace?: () => void;
+  onOpenTranslator?: () => void;
 }
 
 export function SidebarEditTools({
@@ -27,12 +38,52 @@ export function SidebarEditTools({
   onDeleteSelected,
   onUndo,
   onResetProject,
+  onOpenSearchReplace,
+  onOpenTranslator,
 }: SidebarEditToolsProps) {
   return (
     <div className="flex flex-col gap-2">
       <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 px-1">
         Subtitle Tools
       </span>
+
+      {/* AI Subtitle Translator */}
+      {onOpenTranslator && (
+        <button
+          type="button"
+          onClick={onOpenTranslator}
+          disabled={!hasSrt}
+          className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-violet-500/30 hover:border-violet-400 bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 hover:text-white text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group shadow-sm"
+          title="Translate subtitles into 40+ languages using AI"
+        >
+          <div className="flex items-center gap-2.5">
+            <Globe className="w-4 h-4 text-violet-400 group-hover:scale-110 transition-transform" />
+            <span>AI Subtitle Translator</span>
+          </div>
+          <span className="px-1.5 py-0.5 rounded-md bg-violet-400/20 border border-violet-400/30 text-[9px] font-mono text-violet-300">
+            40+ Langs
+          </span>
+        </button>
+      )}
+
+      {/* Search & Replace + Filler Cleaner */}
+      {onOpenSearchReplace && (
+        <button
+          type="button"
+          onClick={onOpenSearchReplace}
+          disabled={!hasSrt}
+          className="flex items-center justify-between w-full p-2.5 rounded-2xl border border-orange-500/30 hover:border-orange-400 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 hover:text-white text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed group shadow-sm"
+          title="Search & replace text or auto-clean filler words ('um', 'uh')"
+        >
+          <div className="flex items-center gap-2.5">
+            <Replace className="w-4 h-4 text-orange-400 group-hover:scale-110 transition-transform" />
+            <span>Search & Filler Cleaner</span>
+          </div>
+          <span className="px-1.5 py-0.5 rounded-md bg-orange-400/20 border border-orange-400/30 text-[9px] font-mono text-orange-300">
+            Clean
+          </span>
+        </button>
+      )}
 
       {/* Auto-Align to Speech (AI VAD) */}
       <button

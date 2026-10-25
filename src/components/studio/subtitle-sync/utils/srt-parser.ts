@@ -1,5 +1,5 @@
 import type { SubtitleCue } from "../subtitle-sync-types";
-import { formatTimecode, parseTimecode } from "./time-utils";
+import { parseTimecode } from "./time-utils";
 
 /**
  * Parses raw SRT text into SubtitleCue items.
@@ -48,18 +48,7 @@ export function parseSrt(text: string): SubtitleCue[] {
   return cues.sort((a, b) => a.startMs - b.startMs);
 }
 
-/**
- * Serializes SubtitleCue items into standard SRT string.
- */
-export function renderSrt(cues: SubtitleCue[]): string {
-  const sorted = [...cues].sort((a, b) => a.startMs - b.startMs);
-  const blocks = sorted.map((cue, index) => {
-    const startMs = Math.max(0, cue.startMs);
-    const endMs = Math.max(startMs + 50, cue.endMs);
-    return `${index + 1}\n${formatTimecode(startMs)} --> ${formatTimecode(endMs)}\n${cue.text.trim()}`;
-  });
-  return blocks.join("\n\n") + (blocks.length ? "\n" : "");
-}
+export { renderSrt } from "./subtitle-converters";
 
 /**
  * Splits cue text at word boundaries based on time split ratio.

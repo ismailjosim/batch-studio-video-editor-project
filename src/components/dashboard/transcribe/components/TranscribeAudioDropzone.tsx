@@ -1,6 +1,6 @@
 "use client";
 
-import { FileAudio, Music, Sparkles, UploadCloud } from "lucide-react";
+import { FileAudio, Mic, Music, Sparkles, UploadCloud } from "lucide-react";
 import { useRef, useState } from "react";
 
 interface TranscribeAudioDropzoneProps {
@@ -8,6 +8,7 @@ interface TranscribeAudioDropzoneProps {
   audioUrl: string | null;
   onSelectFile: (file: File) => void;
   onLoadDemoAudio: () => void;
+  onOpenMicRecorder?: () => void;
 }
 
 export function TranscribeAudioDropzone({
@@ -15,6 +16,7 @@ export function TranscribeAudioDropzone({
   audioUrl,
   onSelectFile,
   onLoadDemoAudio,
+  onOpenMicRecorder,
 }: TranscribeAudioDropzoneProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -44,15 +46,29 @@ export function TranscribeAudioDropzone({
           <Music className="w-3.5 h-3.5 text-violet-400" />
           <span>Upload Audio File</span>
         </span>
-        <button
-          type="button"
-          onClick={onLoadDemoAudio}
-          className="flex items-center gap-1 px-2.5 py-1 rounded-xl border border-violet-500/30 bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 text-[10px] font-semibold transition-all cursor-pointer"
-          title="Load public/demo.wav sample"
-        >
-          <Sparkles className="w-3 h-3 text-violet-400" />
-          <span>Use Sample (demo.wav)</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {onOpenMicRecorder && (
+            <button
+              type="button"
+              onClick={onOpenMicRecorder}
+              className="flex items-center gap-1 px-2.5 py-1 rounded-xl border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-300 text-[10px] font-semibold transition-all cursor-pointer shadow-xs"
+              title="Record voice live with microphone"
+            >
+              <Mic className="w-3 h-3 text-red-400" />
+              <span>Record Mic</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={onLoadDemoAudio}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-xl border border-violet-500/30 bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 text-[10px] font-semibold transition-all cursor-pointer"
+            title="Load public/demo.wav sample"
+          >
+            <Sparkles className="w-3 h-3 text-violet-400" />
+            <span>Use Sample</span>
+          </button>
+        </div>
       </div>
 
       <input

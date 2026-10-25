@@ -60,9 +60,10 @@ export function SubtitleHeader({
           onClick={onExportSrt}
           disabled={cuesCount === 0}
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r from-[#00d2ff] via-[#ec4899] to-[#f97316] hover:opacity-95 text-black font-extrabold text-xs shadow-lg shadow-cyan-500/25 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          title="Export subtitles in multiple formats (.srt, .vtt, .ass, .txt, .json)"
         >
           <Download className="w-4 h-4" />
-          <span>Export SRT</span>
+          <span>Export Subtitles</span>
           <kbd className="hidden sm:inline-block px-1.5 py-0.2 rounded bg-black/20 text-[9px] font-mono ml-1">
             Ctrl E
           </kbd>

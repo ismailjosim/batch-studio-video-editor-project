@@ -24,21 +24,21 @@ export function SidebarExportBridges({
           Export & Studio Suite
         </span>
 
-        {/* Export SRT */}
+        {/* Export Subtitles */}
         <button
           type="button"
           onClick={onExportSrt}
           disabled={!hasSrt}
           className="flex items-center justify-between w-full p-2.5 rounded-2xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-400 text-xs font-bold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-          title="Export edited subtitles to .srt file (Ctrl+E)"
+          title="Export edited subtitles to .srt, .vtt, .ass, .txt, or .json (Ctrl+E)"
         >
           <div className="flex items-center gap-2">
             <Download className="w-4 h-4" />
-            <span>Export SRT</span>
+            <span>Export Subtitles</span>
           </div>
-          <kbd className="px-1.5 py-0.5 rounded-lg bg-black/40 border border-cyan-500/30 text-[10px] font-mono text-cyan-400">
-            Ctrl E
-          </kbd>
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-black/40 text-cyan-300 border border-cyan-500/30">
+            SRT · VTT · ASS
+          </span>
         </button>
 
         {/* Send to 2K Video Generator */}

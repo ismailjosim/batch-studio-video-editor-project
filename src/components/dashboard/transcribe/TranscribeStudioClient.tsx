@@ -1,6 +1,8 @@
 "use client";
 
 import { Wand2 } from "lucide-react";
+import { useState } from "react";
+import { MicrophoneRecorderModal } from "@/components/studio/MicrophoneRecorderModal";
 import { TranscribeAudioDropzone } from "./components/TranscribeAudioDropzone";
 import { TranscribeFormatSelector } from "./components/TranscribeFormatSelector";
 import { TranscribeResultPreview } from "./components/TranscribeResultPreview";
@@ -29,6 +31,8 @@ export function TranscribeStudioClient() {
     handleOpenInSubtitleStudio,
     handleSendToVideoGenerator,
   } = useTranscribeStudio();
+
+  const [isMicModalOpen, setIsMicModalOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-5 w-full max-w-full min-w-0 overflow-x-hidden animate-in fade-in duration-300 pb-16">
@@ -74,6 +78,7 @@ export function TranscribeStudioClient() {
             audioUrl={audioUrl}
             onSelectFile={handleSelectFile}
             onLoadDemoAudio={handleLoadDemoAudio}
+            onOpenMicRecorder={() => setIsMicModalOpen(true)}
           />
 
           <div className="border-t border-white/10" />
@@ -122,6 +127,15 @@ export function TranscribeStudioClient() {
           </span>
         </div>
       </div>
+
+      {/* Microphone Recorder Modal */}
+      <MicrophoneRecorderModal
+        isOpen={isMicModalOpen}
+        onClose={() => setIsMicModalOpen(false)}
+        onAudioRecorded={(file) => {
+          handleSelectFile(file);
+        }}
+      />
     </div>
   );
 }

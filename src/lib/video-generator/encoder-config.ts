@@ -64,17 +64,24 @@ async function probeCanEncode(config: VideoEncoderConfig): Promise<boolean> {
 
       tempEncoder.configure(config);
 
-      canvas =
-        typeof OffscreenCanvas !== "undefined"
-          ? new OffscreenCanvas(config.width, config.height)
-          : document.createElement("canvas");
-      canvas.width = config.width;
-      canvas.height = config.height;
-
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx.fillStyle = "#0c0c10";
-        ctx.fillRect(0, 0, config.width, config.height);
+      if (typeof OffscreenCanvas !== "undefined") {
+        const offscreen = new OffscreenCanvas(config.width, config.height);
+        const ctx = offscreen.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "#0c0c10";
+          ctx.fillRect(0, 0, config.width, config.height);
+        }
+        canvas = offscreen;
+      } else {
+        const domCanvas = document.createElement("canvas");
+        domCanvas.width = config.width;
+        domCanvas.height = config.height;
+        const ctx = domCanvas.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "#0c0c10";
+          ctx.fillRect(0, 0, config.width, config.height);
+        }
+        canvas = domCanvas;
       }
 
       // Encode 3 frames: frame 0 (keyframe), frame 1 (delta), frame 2 (delta)

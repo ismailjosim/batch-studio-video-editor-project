@@ -148,11 +148,41 @@ export function useAudioSynthesis(scriptText: string) {
     }
 
     setIsSynthesizing(true);
-    setStatusMessage("Synthesizing audio buffer...");
+    setStatusMessage("Synthesizing neural audio buffer...");
 
     try {
-      const sampleRate = 44100;
       const wordCount = scriptText.trim().split(/\s+/).length;
+
+      // 1. First attempt high-fidelity Neural TTS
+      try {
+        const res = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: scriptText.trim(),
+            lang: "en",
+          }),
+        });
+
+        if (res.ok) {
+          const audioData = await res.blob();
+          if (audioUrl) URL.revokeObjectURL(audioUrl);
+          const newUrl = URL.createObjectURL(audioData);
+          setAudioBlob(audioData);
+          setAudioUrl(newUrl);
+          setStatusMessage(`Neural voiceover generated (${wordCount} words)`);
+          toast.success("Generated crystal-clear Neural AI Voiceover!");
+          return;
+        }
+      } catch (neuralErr) {
+        console.warn(
+          "Neural TTS request failed, using client fallback:",
+          neuralErr,
+        );
+      }
+
+      // 2. Client-side synthesis fallback
+      const sampleRate = 44100;
       const durationSec = Math.max(3, (wordCount / (145 * rate)) * 60);
       const totalSamples = Math.floor(sampleRate * durationSec);
 
