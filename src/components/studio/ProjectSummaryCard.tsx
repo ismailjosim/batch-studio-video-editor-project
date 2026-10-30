@@ -104,7 +104,7 @@ export function ProjectSummaryCard({
           <div className="text-[11px] text-slate-400">
             {cuesCount} cues •{" "}
             {settings.isSubtitleBurnInEnabled !== false
-              ? `Burn-In (${settings.subtitlePreset || "hormozi-pop"})`
+              ? `Burn-In: ${settings.subtitlePreset || "hormozi-pop"} (${settings.subtitleFont || "Impact"} • ${settings.subtitleAnimation || "pop-bounce"})`
               : "Burn-In disabled"}
           </div>
         </div>

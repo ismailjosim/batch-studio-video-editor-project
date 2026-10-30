@@ -40,6 +40,10 @@ export function VideoEditorClient({ onOpenProjects }: VideoEditorClientProps) {
     selectedAnims: new Set(ANIMATIONS_LIST.map((a) => a.id)),
     sfxMode: "random",
     selectedSfx: new Set(SFX_LIST.map((s) => s.id)),
+    isSubtitleBurnInEnabled: true,
+    subtitlePreset: "hormozi-pop",
+    subtitleFont: "Impact",
+    subtitleAnimation: "pop-bounce",
   });
 
   // Preview & projects modal state

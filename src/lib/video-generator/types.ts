@@ -33,6 +33,33 @@ export type WatermarkPosition =
   | "bottom-left"
   | "center";
 
+export type SubtitlePresetOption =
+  | "hormozi-pop"
+  | "capcut-karaoke"
+  | "dollar-doodles-brand"
+  | "beast-bold"
+  | "jc-cyan-glow"
+  | "emerald-glow"
+  | "neon-purple"
+  | "classic-yellow"
+  | "boxed-badge"
+  | "minimal-clean";
+
+export type SubtitleFontOption =
+  | "Impact"
+  | "Montserrat"
+  | "Inter"
+  | "Anton"
+  | "Poppins"
+  | "Bangers";
+
+export type SubtitleAnimationOption =
+  | "pop-bounce"
+  | "fade-smooth"
+  | "slide-up"
+  | "zoom-fade"
+  | "none";
+
 export interface VideoSettings {
   resolution: ResolutionOption;
   aspectRatio: AspectRatioOption;
@@ -44,12 +71,9 @@ export interface VideoSettings {
   sfxMode: "random" | "custom";
   selectedSfx: Set<string>;
   isSubtitleBurnInEnabled?: boolean;
-  subtitlePreset?:
-    | "hormozi-pop"
-    | "jc-cyan-glow"
-    | "emerald-glow"
-    | "classic-yellow"
-    | "minimal-clean";
+  subtitlePreset?: SubtitlePresetOption;
+  subtitleFont?: SubtitleFontOption;
+  subtitleAnimation?: SubtitleAnimationOption;
   // Brand Watermark Overlay
   isWatermarkEnabled?: boolean;
   watermarkImage?: HTMLImageElement | null;

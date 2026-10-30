@@ -33,7 +33,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@700;800;900&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap"
           rel="stylesheet"
         />
         <Script src="/sfx-bundle.js" strategy="beforeInteractive" />

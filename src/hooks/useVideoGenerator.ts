@@ -424,6 +424,10 @@ export function useVideoGenerator() {
             0,
             (currentTimeMs - cue.startMs) / 1000,
           );
+          const cueDurationSec = Math.max(
+            0.1,
+            (cue.endMs - cue.startMs) / 1000,
+          );
 
           const getCueImage = (idx: number): HTMLImageElement => {
             if (
@@ -456,15 +460,26 @@ export function useVideoGenerator() {
               aspectH,
             );
           } else {
-            const isZoomIn = currentCueIdx % 2 === 0;
-            const driftProgress = Math.min(
-              1.0,
-              (timeIntoCueSec - transitionDurationSec) / 4.0,
-            );
-            const zoom = isZoomIn
-              ? 1.0 + 0.04 * driftProgress
-              : 1.04 - 0.04 * driftProgress;
-            drawFitImage(ctx, currImg, aspectW, aspectH, zoom, 0, 0);
+            // Smooth cinematic Ken Burns drift with zero-velocity start
+            const holdDurationSec = cueDurationSec - transitionDurationSec;
+            // For short cues (< 1.2s or hold < 0.5s), keep image perfectly stable to prevent jittery/rushed motion
+            if (cueDurationSec < 1.2 || holdDurationSec < 0.5) {
+              drawFitImage(ctx, currImg, aspectW, aspectH, 1.0, 0, 0);
+            } else {
+              // Smoothstep easing: zero velocity derivative at t=0 and t=1, so zoom begins imperceptibly smoothly
+              const rawProgress = Math.min(
+                1.0,
+                Math.max(
+                  0,
+                  (timeIntoCueSec - transitionDurationSec) / holdDurationSec,
+                ),
+              );
+              const easedProgress =
+                rawProgress * rawProgress * (3 - 2 * rawProgress);
+              // Max subtle drift of 2.2% (1.000 -> 1.022) with seamless transition match
+              const zoom = 1.0 + 0.022 * easedProgress;
+              drawFitImage(ctx, currImg, aspectW, aspectH, zoom, 0, 0);
+            }
           }
 
           // Burn-In Animated Subtitles
@@ -476,6 +491,8 @@ export function useVideoGenerator() {
               canvasWidth: aspectW,
               canvasHeight: aspectH,
               preset: settings.subtitlePreset || "hormozi-pop",
+              font: settings.subtitleFont || "Impact",
+              animation: settings.subtitleAnimation || "pop-bounce",
               isPortrait: !isLandscape,
             });
           }
