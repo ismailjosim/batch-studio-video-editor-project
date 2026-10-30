@@ -4,6 +4,7 @@ import {
   AudioLines,
   ChevronLeft,
   ChevronRight,
+  Clapperboard,
   FileAudio,
   Film,
   FolderGit2,
@@ -94,6 +95,14 @@ export function DashboardSidebar({
       icon: Wand2,
       badge: "Multi-AI",
       isActive: pathname.startsWith("/dashboard/image-generator"),
+    },
+    {
+      href: "/dashboard/prompt-studio",
+      label: "AI Prompt Director",
+      sublabel: "Prompts 2 & 3 • Gemini",
+      icon: Clapperboard,
+      badge: "Prompt 2 & 3",
+      isActive: pathname.startsWith("/dashboard/prompt-studio"),
     },
   ];
 

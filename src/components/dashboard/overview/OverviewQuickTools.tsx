@@ -3,6 +3,7 @@
 import {
   ArrowRight,
   AudioLines,
+  Clapperboard,
   Film,
   Scissors,
   Sparkles,
@@ -72,6 +73,21 @@ export function OverviewQuickTools() {
       accentText: "text-amber-400",
       buttonText: "Open Image Generator",
     },
+    {
+      title: "AI Prompt Director",
+      tagline: "Prompt 2 & 3 • Gemini 3.8",
+      description:
+        "Translate scripts & .srt files into Google Flow 2D Stickman scene prompts (02-Style.txt, 02-Scene-Prompts.txt) and viral YouTube metadata (03-Metadata.txt).",
+      icon: Clapperboard,
+      href: "/dashboard/prompt-studio",
+      badge: "Prompt 2 & 3",
+      color: "emerald",
+      bgGradient: "from-emerald-500/10 via-emerald-950/20 to-transparent",
+      borderColor: "border-emerald-500/30 hover:border-emerald-400/60",
+      accentBg: "bg-emerald-500",
+      accentText: "text-emerald-400",
+      buttonText: "Open Prompt Director",
+    },
   ];
 
   return (
@@ -86,7 +102,7 @@ export function OverviewQuickTools() {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {tools.map((tool) => {
           const Icon = tool.icon;
           return (
